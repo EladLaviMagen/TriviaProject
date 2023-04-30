@@ -138,6 +138,8 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="Request.h" />
+    <ClInclude Include="Response.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
