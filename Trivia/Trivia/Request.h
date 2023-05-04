@@ -8,33 +8,33 @@
 #define USERNAME "username"
 #define EMAIL "email"
 
-struct LoginRequest
+typedef struct LoginRequest
 {
 	std::string username;
 	std::string password;
-} typedef LoginRequest;
+} LoginRequest;
 
-struct SignUpRequest
+typedef struct SignUpRequest
 {
 	std::string username;
 	std::string password;
 	std::string email;
-}typedef SignUpRequest;
+} SignUpRequest;
 
 
-struct RequestResult
+typedef struct RequestResult
 {
 	std::vector<unsigned char> response;
 	IRequestHandler* newHandler;
-}typedef RequestResult;
+}RequestResult;
 
 
 
-struct RequestInfo
+typedef struct RequestInfo
 {
 	unsigned char id;
 	std::vector<byte> buffer;
-}typedef RequestInfo;
+}RequestInfo;
 
 
 

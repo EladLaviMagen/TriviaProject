@@ -1,17 +1,20 @@
 #include <iostream>
 #define STATUS "status"
 #define MESSAGE "message"
-struct LoginResponse
+#define SUCCESS_CODE '1'
+#define FAILURE_CODE '4'
+#define ERROR_CODE '0'
+typedef struct LoginResponse
 {
 	unsigned int status;
-}typedef LoginResponse;
+} LoginResponse;
 
-struct SignUpResponse
+typedef struct SignUpResponse
 {
 	unsigned int status;
-}typedef SignUpResponse;
+} SignUpResponse;
 
-struct ErrorResponse
+typedef struct ErrorResponse
 {
 	std::string message;
-}typedef ErrorResponse;
+} ErrorResponse;

@@ -6,7 +6,23 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Error
 {
 	json buff;
 	buff[MESSAGE] = err.message;
+	std::string bufferStr = "";
+	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
+	int size = ser.length();
+	std::string buffSize = Helper::getPaddedNumber(size, 5);
+	bufferStr += buffSize + ser;
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.size(); ++i) 
+	{
+		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
+	}
+	return output;
+
+	
+
+	
+	
 	std::vector<unsigned char> ret;
 	for (int i = 0; i < ser.length(); i++)
 	{
