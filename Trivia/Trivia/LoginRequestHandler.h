@@ -4,6 +4,6 @@
 class LoginRequestHandler : public IRequestHandler
 {
 public:
-	virtual bool isRequestRelevant(RequestInfo) override;
-	virtual RequestResult handleRequest(RequestInfo) override;
+	virtual bool isRequestRelevant(RequestInfo info) override;
+	virtual RequestResult handleRequest(RequestInfo info) override;
 };
