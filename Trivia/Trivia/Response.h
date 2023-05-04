@@ -1,5 +1,6 @@
 #include <iostream>
-
+#define STATUS "status"
+#define MESSAGE "message"
 struct LoginResponse
 {
 	unsigned int status;

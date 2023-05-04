@@ -1,8 +1,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "IRequestHandler.h"
+#include "LoginRequestHandler.h"
 #include "Communicator.h"
+
+#define PASSWORD "password"
+#define USERNAME "username"
+#define EMAIL "email"
 
 struct LoginRequest
 {
