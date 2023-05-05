@@ -18,41 +18,40 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Error
 		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
 	}
 	return output;
-
-	
-
-	
-	
-	std::vector<unsigned char> ret;
-	for (int i = 0; i < ser.length(); i++)
-	{
-		ret.push_back(ser[i]);
-	}
-	return ret;
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LoginResponse log)
 {
 	json buff;
 	buff[STATUS] = log.status;
+	std::string bufferStr = "";
+	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
-	std::vector<unsigned char> ret;
-	for (int i = 0; i < ser.length(); i++)
+	int size = ser.length();
+	std::string buffSize = Helper::getPaddedNumber(size, 5);
+	bufferStr += buffSize + ser;
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.size(); ++i)
 	{
-		ret.push_back(ser[i]);
+		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
 	}
-	return ret;
+	return output;
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(SignUpResponse sign)
 {
 	json buff;
 	buff[STATUS] = sign.status;
+	std::string bufferStr = "";
+	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
-	std::vector<unsigned char> ret;
-	for (int i = 0; i < ser.length(); i++)
+	int size = ser.length();
+	std::string buffSize = Helper::getPaddedNumber(size, 5);
+	bufferStr += buffSize + ser;
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.size(); ++i)
 	{
-		ret.push_back(ser[i]);
+		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
 	}
-	return ret;
+	return output;
 }

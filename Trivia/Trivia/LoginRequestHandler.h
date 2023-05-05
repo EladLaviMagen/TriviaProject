@@ -1,8 +1,13 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "Request.h"
+#include "Request.h"
+#include "JsonRequestPacketDeserializer.h"
 
-#define RELEVANT 7
+#define SIGN 7
+#define LOG 3
+#define STATUS_SUCCESS 1
+#define STATUS_FAILED 0
 
 class LoginRequestHandler : public IRequestHandler
 {
