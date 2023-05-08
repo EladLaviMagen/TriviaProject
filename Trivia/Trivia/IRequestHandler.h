@@ -1,6 +1,10 @@
 #pragma once
 #include "Request.h"
 #include "Response.h"
+
+struct RequestInfo;
+struct RequestResult;
+
 class IRequestHandler
 {
 public:

@@ -5,6 +5,11 @@
 #include "json.hpp"
 #include "Helper.h"
 #include <bitset>
+
+struct ErrorResponse;
+struct LoginResponse;
+struct SignUpResponse;
+
 class JsonResponsePacketSerializer
 {
 public:

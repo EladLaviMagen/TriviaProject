@@ -6,12 +6,17 @@
 
 #define PASSWORD "password"
 #define USERNAME "username"
-#define EMAIL "email"
+#define EMAIL "mail"
+
+class LoginRequestHandler;
+class Communicator;
+class IRequestHandler;
 
 typedef struct LoginRequest
 {
 	std::string username;
 	std::string password;
+
 } LoginRequest;
 
 typedef struct SignUpRequest
@@ -33,7 +38,7 @@ typedef struct RequestResult
 typedef struct RequestInfo
 {
 	unsigned char id;
-	std::vector<byte> buffer;
+	std::vector<unsigned char> buffer;
 }RequestInfo;
 
 

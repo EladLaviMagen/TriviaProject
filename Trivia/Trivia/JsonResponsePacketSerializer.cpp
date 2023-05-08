@@ -2,6 +2,27 @@
 
 using json = nlohmann::json;
 
+std::string int_to_bin_str(int num) {
+	std::string binary = "";
+
+	while (num > 0) {
+		int digit = num % 2;
+		binary = std::to_string(digit) + binary;
+		num = num / 2;
+	}
+
+	return binary;
+}
+
+std::string str_to_bin_str(const std::string& str) {
+	std::string binary_str = "";
+	for (char c : str) {
+		// Convert the character to its ASCII code and then to binary string
+		binary_str += std::bitset<8>(c).to_string();
+	}
+	return binary_str;
+}
+
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(ErrorResponse err)
 {
 	json buff;
@@ -10,12 +31,16 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Error
 	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
 	int size = ser.length();
-	std::string buffSize = Helper::getPaddedNumber(size, 5);
-	bufferStr += buffSize + ser;
-	std::vector<unsigned char> output;
-	for (int i = 0; i < bufferStr.size(); ++i) 
+	std::string buffSize = int_to_bin_str(size);
+	for (int i = buffSize.length(); i < 32; i++)
 	{
-		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
+		buffSize = '0' + buffSize;
+	}
+	bufferStr += buffSize + str_to_bin_str(ser);
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.length(); i++)
+	{
+		output.push_back(bufferStr[i]);
 	}
 	return output;
 }
@@ -28,12 +53,17 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Login
 	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
 	int size = ser.length();
-	std::string buffSize = Helper::getPaddedNumber(size, 5);
-	bufferStr += buffSize + ser;
-	std::vector<unsigned char> output;
-	for (int i = 0; i < bufferStr.size(); ++i)
+	std::string buffSize = int_to_bin_str(size);
+	for (int i = buffSize.length(); i < 32; i++)
 	{
-		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
+		buffSize = '0' + buffSize;
+	}
+	std::cout << buffSize;
+	bufferStr += buffSize + str_to_bin_str(ser);
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.length(); i++)
+	{
+		output.push_back(bufferStr[i]);
 	}
 	return output;
 }
@@ -46,12 +76,16 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(SignU
 	bufferStr += ERROR_CODE;
 	std::string ser = buff.dump();
 	int size = ser.length();
-	std::string buffSize = Helper::getPaddedNumber(size, 5);
-	bufferStr += buffSize + ser;
-	std::vector<unsigned char> output;
-	for (int i = 0; i < bufferStr.size(); ++i)
+	std::string buffSize = int_to_bin_str(size);
+	for (int i = buffSize.length(); i < 32; i++)
 	{
-		output.push_back(static_cast<unsigned char>(std::bitset<8>(bufferStr[i]).to_ulong())); //create the bitset for the inputed c string
+		buffSize = '0' + buffSize;
+	}
+	bufferStr += buffSize + str_to_bin_str(ser);
+	std::vector<unsigned char> output;
+	for (int i = 0; i < bufferStr.length(); i++)
+	{
+		output.push_back(bufferStr[i]);
 	}
 	return output;
 }

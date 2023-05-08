@@ -3,6 +3,8 @@
 #include <fstream>
 #include "json.hpp"
 
+struct LoginRequest;
+struct SignUpRequest;
 
 class JsonRequestPacketDeserializer
 {

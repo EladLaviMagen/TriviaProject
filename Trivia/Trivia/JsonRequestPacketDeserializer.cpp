@@ -17,13 +17,22 @@ std::string binaryToString(std::string binaryStr) {
 
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer)
 {
-	int size = int(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]);
-	for (int i = 0; i < 4; i++)
+	int size = 0;
+	std::string biSize = "";
+
+	for (int i = 0; i < SIZE / 8; i++)
 	{
-		buffer.erase(buffer.begin());
+		biSize = "";
+		size *= 10;
+		for (size_t i = 0; i < CODE; i++)
+		{
+			biSize += buffer[0];
+			buffer.erase(buffer.begin());
+		}
+		size += std::stoi(biSize, 0, 2);
 	}
 	std::string str = "";
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size * 8; i++)
 	{
 		str += buffer[i];
 	}
@@ -38,19 +47,27 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<
 
 SignUpRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer)
 {
-	int size = int(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]);
-	for (int i = 0; i < 4; i++)
+	int size = 0;
+	std::string biSize = "";
+
+	for (int i = 0; i < SIZE / 8; i++)
 	{
-		buffer.erase(buffer.begin());
+		biSize = "";
+		size *= 10;
+		for (size_t i = 0; i < CODE; i++)
+		{
+			biSize += buffer[0];
+			buffer.erase(buffer.begin());
+		}
+		size += std::stoi(biSize, 0, 2);
 	}
 	std::string str = "";
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size * 8; i++)
 	{
 		str += buffer[i];
 	}
 	str = binaryToString(str);
 	json j = json::parse(str);
-
 	SignUpRequest sign;
 	sign.password = j[PASSWORD];
 	sign.username = j[USERNAME];

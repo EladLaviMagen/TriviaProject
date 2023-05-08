@@ -1,11 +1,10 @@
 #pragma once
 #include "IRequestHandler.h"
-#include "Request.h"
-#include "Request.h"
 #include "JsonRequestPacketDeserializer.h"
 
-#define SIGN 7
-#define LOG 3
+class IRequestHandler;
+#define SIGN 3
+#define LOG 1
 #define STATUS_SUCCESS 1
 #define STATUS_FAILED 0
 

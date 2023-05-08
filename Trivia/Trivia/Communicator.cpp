@@ -54,8 +54,18 @@ void Communicator::handleNewClient(SOCKET sock)
 		std::string dataToSend = "";
 		std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);
 		int code = std::stoi(biNumber, 0, 2);
-		std::string biSize = Helper::getStringPartFromSocket(sock, SIZE);
-		int size = std::stoi(biSize, 0, 2);
+		int size = 0;
+		std::string keep = "";
+		std::string biSize = "";
+		
+		for (int i = 0; i < SIZE / 8; i++)
+		{
+			size *= 10;
+			keep = Helper::getStringPartFromSocket(sock, CODE);
+			size += std::stoi(keep, 0, 2);
+			biSize += keep;
+			
+		}
 		std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);
 		std::vector<byte> buffer;
 		for (int i = 0; i < biSize.length(); i++)
@@ -75,8 +85,6 @@ void Communicator::handleNewClient(SOCKET sock)
 			{
 				dataToSend += result.response[i];
 			}
-			
-			
 		}
 		else
 		{
@@ -87,7 +95,6 @@ void Communicator::handleNewClient(SOCKET sock)
 			{
 				dataToSend += response[i];
 			}
-			
 		}
 		Helper::sendData(sock, dataToSend);
 	}
