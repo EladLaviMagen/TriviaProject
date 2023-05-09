@@ -134,19 +134,25 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="MyException.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="Response.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
