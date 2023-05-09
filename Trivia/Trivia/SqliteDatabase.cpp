@@ -9,7 +9,7 @@ const char* SqliteDatabase::NAME_COLUMN = "username";
 /*
 * C'tor
 */
-SqliteDatabase::SqliteDatabase()
+SqliteDatabase::SqliteDatabase() : IDatabase()
 {
     //Checking if database exists
    // if not exists - create new database

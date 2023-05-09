@@ -2,7 +2,7 @@
 #include "IDatabase.h"
 #include <sstream>
 #include"MyException.h"
-class SqliteDatabase : IDatabase
+class SqliteDatabase : public IDatabase
 {
 public:
 	SqliteDatabase();

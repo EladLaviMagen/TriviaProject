@@ -12,20 +12,23 @@
 
 class IRequestHandler;
 class LoginRequestHandler;
+class RequestHandlerFactory;
 
 class Communicator
 {
 public:
 	void operator() ();
 	void operator() (SOCKET sock);
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	void startHandleRequest();
+	
 
 private:
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	void bindAndListen();
 	void handleNewClient(SOCKET sock);
+	RequestHandlerFactory& m_handlerFactory;
 	
 };
 

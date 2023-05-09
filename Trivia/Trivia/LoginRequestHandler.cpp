@@ -1,5 +1,7 @@
 #include "LoginRequestHandler.h"
 
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+{}
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
     if (info.id == SIGN || info.id == LOG)

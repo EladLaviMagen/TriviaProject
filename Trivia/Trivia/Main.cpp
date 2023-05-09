@@ -7,7 +7,8 @@ int main()
 {
     std::string input = "";
     WSAInitializer wsaInit;
-    Server server;
+    RequestHandlerFactory HandlerFactory;
+    Server server(HandlerFactory);
     server.run();
     while(input != "EXIT")
     {

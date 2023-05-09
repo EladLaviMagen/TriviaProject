@@ -1,6 +1,6 @@
 #include "Communicator.h"
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -31,7 +31,7 @@ void Communicator::bindAndListen()
 
 	while (true)
 	{
-		IRequestHandler* handler = new LoginRequestHandler();
+		IRequestHandler* handler = new LoginRequestHandler(m_handlerFactory);
 		// this accepts the client and create a specific socket from server to this client
 		// the process will not continue until a client connects to the server
 		SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
