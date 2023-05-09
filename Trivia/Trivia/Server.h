@@ -1,10 +1,9 @@
 #pragma once
 #include "Communicator.h"
-#include <WinSock2.h>
 class Server
 {
 public:
-	Server();
+	Server() = default;
 	void run();
 	void operator() ();
 private:
