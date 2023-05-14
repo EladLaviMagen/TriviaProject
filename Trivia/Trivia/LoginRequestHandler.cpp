@@ -1,6 +1,6 @@
 #include "LoginRequestHandler.h"
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager) : m_handlerFactory(handlerFactory), m_loginManager(loginManager)
 {}
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
@@ -31,4 +31,14 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
     //for now, no other handlers yet
     result.newHandler = nullptr;
     return result;
+}
+
+RequestResult LoginRequestHandler::login(RequestInfo)
+{
+    return RequestResult();
+}
+
+RequestResult LoginRequestHandler::signUp(RequestInfo)
+{
+    return RequestResult();
 }

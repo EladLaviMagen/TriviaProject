@@ -54,6 +54,15 @@
     <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AccLoggedException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IncorrectPasswordException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserNotExistException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -108,6 +117,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RequestHandlerFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccLoggedException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IncorrectPasswordException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserNotExistException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

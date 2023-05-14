@@ -3,7 +3,7 @@
 class LoggedUser
 {
 public:
-	LoggedUser();
+	LoggedUser(std::string name);
 	std::string getUserName();
 private:
 	std::string m_username;
