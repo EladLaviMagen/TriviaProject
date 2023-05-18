@@ -31,7 +31,7 @@ void Communicator::bindAndListen()
 
 	while (true)
 	{
-		IRequestHandler* handler = new LoginRequestHandler(m_handlerFactory);
+		IRequestHandler* handler = m_handlerFactory.createLoginRequestHandler();
 		// this accepts the client and create a specific socket from server to this client
 		// the process will not continue until a client connects to the server
 		SOCKET client_socket = accept(m_serverSocket, NULL, NULL);

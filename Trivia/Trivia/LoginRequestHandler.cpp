@@ -16,29 +16,54 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
     RequestResult result;
     if (info.id == SIGN)
     {
-        SignUpRequest request = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
-        std::cout << request.username << "\n" << request.username << "\n" << request.email << "\n";
-        SignUpResponse response = { STATUS_SUCCESS };
-        result.response = JsonResponsePacketSerializer::serializeResponse(response);
+        
+        
+        
+
+       
+        
     }
     else
     {
-        LoginRequest request = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
-        std::cout << request.username << "\n" << request.username << "\n";
-        LoginResponse response = { STATUS_SUCCESS };
-        result.response = JsonResponsePacketSerializer::serializeResponse(response);
+        
     }
     //for now, no other handlers yet
     result.newHandler = nullptr;
     return result;
 }
 
-RequestResult LoginRequestHandler::login(RequestInfo)
+RequestResult LoginRequestHandler::login(RequestInfo info)
 {
-    return RequestResult();
+    RequestResult result;
+    SignUpRequest request = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
+    SignUpResponse response = { STATUS_SUCCESS };
+    try
+    {
+        m_loginManager.signUp(request.username, request.password, request.email);
+        result.response = JsonResponsePacketSerializer::serializeResponse(response);
+    }
+    catch (MyException& ex)
+    {
+        ErrorResponse err = { ex.what() };
+        result.response = JsonResponsePacketSerializer::serializeResponse(err);
+    }
+    return result;
 }
 
-RequestResult LoginRequestHandler::signUp(RequestInfo)
+RequestResult LoginRequestHandler::signUp(RequestInfo info)
 {
-    return RequestResult();
+    RequestResult result;
+    SignUpRequest request = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
+    SignUpResponse response = { STATUS_SUCCESS };
+    try
+    {
+        m_loginManager.signUp(request.username, request.password, request.email);
+        result.response = JsonResponsePacketSerializer::serializeResponse(response);
+    }
+    catch (MyException& ex)
+    {
+        ErrorResponse err = { ex.what() };
+        result.response = JsonResponsePacketSerializer::serializeResponse(err);
+    }
+    return result;
 }
