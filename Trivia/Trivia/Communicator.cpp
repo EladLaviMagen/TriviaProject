@@ -49,54 +49,61 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET sock)
 {
-	while (true)
+	try
 	{
-		std::string dataToSend = "";
-		std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);
-		int code = std::stoi(biNumber, 0, 2);
-		int size = 0;
-		std::string keep = "";
-		std::string biSize = "";
-		
-		for (int i = 0; i < SIZE / 8; i++)
+		while (true)
 		{
-			size *= 10;
-			keep = Helper::getStringPartFromSocket(sock, CODE);
-			size += std::stoi(keep, 0, 2);
-			biSize += keep;
-			
-		}
-		std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);
-		std::vector<byte> buffer;
-		for (int i = 0; i < biSize.length(); i++)
-		{
-			buffer.push_back(biSize[i]);
-		}
-		for (int i = 0; i < msg.length(); i++)
-		{
-			buffer.push_back(msg[i]);
-		}
-		RequestInfo info = { code, buffer };
-		if (m_clients[sock]->isRequestRelevant(info))
-		{
-			RequestResult result = m_clients[sock]->handleRequest(info);
-			m_clients[sock] = result.newHandler;
-			for (int i = 0; i < result.response.size(); i++)
+			std::string dataToSend = "";
+			std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);
+			int code = std::stoi(biNumber, 0, 2);
+			int size = 0;
+			std::string keep = "";
+			std::string biSize = "";
+
+			for (int i = 0; i < SIZE / 8; i++)
 			{
-				dataToSend += result.response[i];
+				size *= 10;
+				keep = Helper::getStringPartFromSocket(sock, CODE);
+				size += std::stoi(keep, 0, 2);
+				biSize += keep;
+
 			}
-		}
-		else
-		{
-			ErrorResponse err = { "Request irrelevant" };
-			std::vector<unsigned char> response = JsonResponsePacketSerializer::serializeResponse(err);
-			
-			for (int i = 0; i < response.size(); i++)
+			std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);
+			std::vector<byte> buffer;
+			for (int i = 0; i < biSize.length(); i++)
 			{
-				dataToSend += response[i];
+				buffer.push_back(biSize[i]);
 			}
+			for (int i = 0; i < msg.length(); i++)
+			{
+				buffer.push_back(msg[i]);
+			}
+			RequestInfo info = { code, buffer };
+			if (m_clients[sock]->isRequestRelevant(info))
+			{
+				RequestResult result = m_clients[sock]->handleRequest(info);
+				m_clients[sock] = result.newHandler;
+				for (int i = 0; i < result.response.size(); i++)
+				{
+					dataToSend += result.response[i];
+				}
+			}
+			else
+			{
+				ErrorResponse err = { "Request irrelevant" };
+				std::vector<unsigned char> response = JsonResponsePacketSerializer::serializeResponse(err);
+
+				for (int i = 0; i < response.size(); i++)
+				{
+					dataToSend += response[i];
+				}
+			}
+			Helper::sendData(sock, dataToSend);
 		}
-		Helper::sendData(sock, dataToSend);
+	}
+	catch (std::exception ex)
+	{
+		m_clients.erase(sock);
 	}
 	
 }
