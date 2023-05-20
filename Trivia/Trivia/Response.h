@@ -2,6 +2,7 @@
 #include <iostream>
 #include "LoginRequestHandler.h"
 #include "Communicator.h"
+#include "Room.h"
 #define STATUS "status"
 #define MESSAGE "message"
 #define SUCCESS_CODE "00000001"
@@ -26,3 +27,41 @@ typedef struct ErrorResponse
 {
 	std::string message;
 } ErrorResponse;
+
+typedef struct LogoutResponse
+{
+	unsigned int status;
+};
+
+typedef struct GetRoomsResponse
+{
+	unsigned int status;
+	std::vector<RoomData> rooms;
+};
+
+typedef struct GetPlayersInRoomResponse
+{
+	std::vector<std::string> players;
+};
+
+typedef struct getHighScoreResponse
+{
+	unsigned int status;
+	std::vector<std::string> statistics;
+};
+
+typedef struct getPersonalStatsResponse
+{
+	unsigned int status;
+	std::vector<std::string> statistics;
+};
+
+typedef struct JoinRoomResponse
+{
+	unsigned int status;
+};
+
+typedef struct CreateRoomResponse
+{
+	unsigned int status;
+};

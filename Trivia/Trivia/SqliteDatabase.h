@@ -11,6 +11,13 @@ public:
 	virtual bool doesUserExist(std::string name) override;
 	virtual bool doesPasswordMatch(std::string name, std::string password) override;
 	virtual void addNewUser(std::string name, std::string password, std::string mail) override;
+	virtual std::list<std::string> getQuestions(int numOf) override;
+	virtual float getPlayerAverageAnswerTime(std::string name) override;
+	virtual int getNumOfCorrectAnswer(std::string name) override;
+	virtual int getNumOfTotalAnswers(std::string name) override;
+	virtual int getNumOfPlayerGames(std::string name) override;
+	virtual int getPlayerScore(std::string name) override;
+	virtual std::vector<std::string> getHighScores() override;
 	
 private:
 	static int passwordMatch(void* data, int argc, char** argv, char** azColName);

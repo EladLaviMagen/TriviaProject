@@ -17,8 +17,8 @@ public:
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
 private:
-	RequestResult login(RequestInfo);
-	RequestResult signUp(RequestInfo);
+	RequestResult login(RequestInfo info);
+	RequestResult signUp(RequestInfo info);
 	RequestHandlerFactory& m_handlerFactory;
 	LoginManager& m_loginManager;
 };

@@ -41,5 +41,23 @@ typedef struct RequestInfo
 	std::vector<unsigned char> buffer;
 }RequestInfo;
 
+typedef struct CreateRoomRequest
+{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+};
+
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+};
+
+typedef struct JoinRoomRequest
+{
+	unsigned int roomId;
+};
+
 
 
