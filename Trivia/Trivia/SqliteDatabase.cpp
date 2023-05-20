@@ -2,10 +2,22 @@
 
 const char* SqliteDatabase::DB_FILE_NAME = "DB.sqlite";
 const char* SqliteDatabase::USERS_TABLE = "users:";
-const char* SqliteDatabase::ID_COLUMN = "id";
 const char* SqliteDatabase::PASSWORD_COLUMN = "password";
 const char* SqliteDatabase::MAIL_COLUMN = "mail";
 const char* SqliteDatabase::NAME_COLUMN = "username";
+const char* SqliteDatabase::QUESTIONS_TABLE = "questions";
+const char* SqliteDatabase::QUESTION_COLUMN = "question";
+const char* SqliteDatabase::CORRECT_ANSWER_COLUMN = "answer";
+const char* SqliteDatabase::ANSWER1_COLUMN = "fake1";
+const char* SqliteDatabase::ANSWER2_COLUMN = "fake2";
+const char* SqliteDatabase::ANSWER3_COLUMN = "fake3";
+const char* SqliteDatabase::STATISTICS_TABLE = "statistics";
+const char* SqliteDatabase::TIME_COLUMN = "time";
+const char* SqliteDatabase::RIGHT_ANS_COLUMN = "rights";
+const char* SqliteDatabase::ANSWERS_COLUMN = "ans";
+const char* SqliteDatabase::GAMES_COLUMN = "games";
+const char* SqliteDatabase::SCORE_COLUMN = "score";
+
 /*
 * C'tor
 */
@@ -66,6 +78,15 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
     sqlRequest(sql);
 }
 
+std::list<std::string> SqliteDatabase::getQuestions(int numOf)
+{
+    std::list<std::string> questionList;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << QUESTIONS_TABLE << " LIMIT " << numOf << ";";
+    sqlRequest(sql, SqliteDatabase::sqlGetQuestions, &questionList);
+    return questionList;
+}
+
 /*
 * Function builds a new database
 * Input : None
@@ -77,10 +98,28 @@ void SqliteDatabase::build()
     char* error = nullptr;
     std::stringstream sql;
     sql << "CREATE TABLE " <<  USERS_TABLE << "("
-        << ID_COLUMN << " INTEGER PRIMARY KEY AUTOINCREMENT, "
-        << NAME_COLUMN << " TEXT NOT NULL, "
+        << NAME_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
         << PASSWORD_COLUMN << " TEXT NOT NULL, "
         << MAIL_COLUMN << " TEXT NOT NULL);";
+    sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
+    //This is a reset, it simply deletes all the previous strings that were inserted to it
+    sql.str("");
+    sql << "CREATE TABLE " << QUESTIONS_TABLE << "("
+        << QUESTION_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
+        << CORRECT_ANSWER_COLUMN << " TEXT NOT NULL, "
+        << ANSWER1_COLUMN << " TEXT NOT NULL, "
+        << ANSWER2_COLUMN << " TEXT NOT NULL, "
+        << ANSWER3_COLUMN << " TEXT NOT NULL);";
+    sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
+    //This is a reset, it simply deletes all the previous strings that were inserted to it
+    sql.str("");
+    sql << "CREATE TABLE " << STATISTICS_TABLE << "("
+        << NAME_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
+        << TIME_COLUMN << " FLOAT NOT NULL, "
+        << RIGHT_ANS_COLUMN << " INTEGER NOT NULL, "
+        << ANSWERS_COLUMN << " INTEGER NOT NULL, "
+        << SCORE_COLUMN << " INTEGER NOT NULL, "
+        << GAMES_COLUMN << " INTEGER NOT NULL);";
     sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
     //This is a reset, it simply deletes all the previous strings that were inserted to it
     sql.str("");
@@ -105,6 +144,14 @@ int SqliteDatabase::userExist(void* data, int argc, char** argv, char** azColNam
     //Takes ID and inputs it into pointer
     int* id = (int*)data;
     *id = 1;
+    return 0;
+}
+
+int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** azColName)
+{
+    //Takes ID and inputs it into pointer
+    std::list<std::string>* vec = (std::list<std::string>*)data;
+    vec->push_back(argv[0]);
     return 0;
 }
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <io.h>
 #include <list>
+#include <vector>
 #include "sqlite3.h"
 class IDatabase
 {

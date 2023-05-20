@@ -11,6 +11,7 @@ public:
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
 private:
+	static int id;
 	std::map<int, Room> m_rooms;
 };
 

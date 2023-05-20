@@ -8,9 +8,7 @@ int main()
     std::string input = "";
     WSAInitializer wsaInit;
     IDatabase* data = new SqliteDatabase();
-    LoginManager log = LoginManager(data);
-    RequestHandlerFactory HandlerFactory = RequestHandlerFactory(log, data);
-    Server server(HandlerFactory);
+    Server server(RequestHandlerFactory(LoginManager(data), data));
     server.run();
     while(input != "EXIT")
     {
