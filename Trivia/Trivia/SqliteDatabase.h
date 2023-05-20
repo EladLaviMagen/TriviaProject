@@ -23,6 +23,12 @@ private:
 	static int passwordMatch(void* data, int argc, char** argv, char** azColName);
 	static int userExist(void* data, int argc, char** argv, char** azColName);
 	static int sqlGetQuestions(void* data, int argc, char** argv, char** azColName);
+	static int getAverage(void* data, int argc, char** argv, char** azColName);
+	static int getCorrects(void* data, int argc, char** argv, char** azColName);
+	static int getTotal(void* data, int argc, char** argv, char** azColName);
+	static int getScore(void* data, int argc, char** argv, char** azColName);
+	static int getGames(void* data, int argc, char** argv, char** azColName);
+	static int getHighestScores(void* data, int argc, char** argv, char** azColName);
 	void sqlRequest(const std::stringstream& sql, int(*callback)(void*, int, char**, char**) = nullptr, void* data = nullptr);
 	void sqlRequest(const char* sql, int(*callback)(void*, int, char**, char**) = nullptr, void* data = nullptr);
 

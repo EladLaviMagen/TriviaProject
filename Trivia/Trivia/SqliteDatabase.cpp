@@ -87,6 +87,38 @@ std::list<std::string> SqliteDatabase::getQuestions(int numOf)
     return questionList;
 }
 
+float SqliteDatabase::getPlayerAverageAnswerTime(std::string name)
+{
+    float average = 0.0;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+}
+
+int SqliteDatabase::getNumOfCorrectAnswer(std::string name)
+{
+    return 0;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(std::string name)
+{
+    return 0;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(std::string name)
+{
+    return 0;
+}
+
+int SqliteDatabase::getPlayerScore(std::string name)
+{
+    return 0;
+}
+
+std::vector<std::string> SqliteDatabase::getHighScores()
+{
+    return std::vector<std::string>();
+}
+
 /*
 * Function builds a new database
 * Input : None
@@ -152,6 +184,83 @@ int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** az
     //Takes ID and inputs it into pointer
     std::list<std::string>* vec = (std::list<std::string>*)data;
     vec->push_back(argv[0]);
+    return 0;
+}
+
+int SqliteDatabase::getAverage(void* data, int argc, char** argv, char** azColName)
+{
+    float* average = (float*)data;
+    int numOfQuestions = 0;
+    for (int i = 0; i < argc; i++)
+    {
+        if (azColName[i] == TIME_COLUMN)
+        {
+            *average = std::stof(argv[i]);
+        }
+        else if (azColName[i] == ANSWERS_COLUMN)
+        {
+            numOfQuestions = std::stoi(argv[i]);
+        }
+    }
+
+    *average /= (float)numOfQuestions;
+    return 0;
+}
+
+int SqliteDatabase::getCorrects(void* data, int argc, char** argv, char** azColName)
+{
+    int* num = (int*)data;
+    for (int i = 0; i < argc; i++)
+    {
+        if (azColName[i] == RIGHT_ANS_COLUMN)
+        {
+            *num = std::stoi(argv[i]);
+        }
+    }
+    return 0;
+}
+
+int SqliteDatabase::getTotal(void* data, int argc, char** argv, char** azColName)
+{
+    int* num = (int*)data;
+    for (int i = 0; i < argc; i++)
+    {
+        if (azColName[i] == ANSWERS_COLUMN)
+        {
+            *num = std::stoi(argv[i]);
+        }
+    }
+    return 0;
+}
+
+int SqliteDatabase::getScore(void* data, int argc, char** argv, char** azColName)
+{
+    int* num = (int*)data;
+    for (int i = 0; i < argc; i++)
+    {
+        if (azColName[i] == SCORE_COLUMN)
+        {
+            *num = std::stoi(argv[i]);
+        }
+    }
+    return 0;
+}
+
+int SqliteDatabase::getGames(void* data, int argc, char** argv, char** azColName)
+{
+    int* num = (int*)data;
+    for (int i = 0; i < argc; i++)
+    {
+        if (azColName[i] == GAMES_COLUMN)
+        {
+            *num = std::stoi(argv[i]);
+        }
+    }
+    return 0;
+}
+
+int SqliteDatabase::getHighestScores(void* data, int argc, char** argv, char** azColName)
+{
     return 0;
 }
 
