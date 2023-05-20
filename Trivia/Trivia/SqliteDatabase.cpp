@@ -92,31 +92,53 @@ float SqliteDatabase::getPlayerAverageAnswerTime(std::string name)
     float average = 0.0;
     std::stringstream sql;
     sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sqlRequest(sql, SqliteDatabase::getAverage, &average);
+    return average;
 }
 
 int SqliteDatabase::getNumOfCorrectAnswer(std::string name)
 {
-    return 0;
+    int corrects = 0;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sqlRequest(sql, SqliteDatabase::getCorrects, &corrects);
+    return corrects;
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(std::string name)
 {
-    return 0;
+    int total = 0;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sqlRequest(sql, SqliteDatabase::getTotal, &total);
+    return total;
 }
 
 int SqliteDatabase::getNumOfPlayerGames(std::string name)
 {
-    return 0;
+    int games = 0;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sqlRequest(sql, SqliteDatabase::getGames, &games);
+    return games;
 }
 
 int SqliteDatabase::getPlayerScore(std::string name)
 {
-    return 0;
+    int score = 0;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sqlRequest(sql, SqliteDatabase::getScore, &score);
+    return score;
 }
 
 std::vector<std::string> SqliteDatabase::getHighScores()
 {
-    return std::vector<std::string>();
+    std::vector<std::string> highestScorers;
+    std::stringstream sql;
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " ORDER BY " << SCORE_COLUMN << " DESC LIMIT 5;";
+    sqlRequest(sql, SqliteDatabase::getHighestScores, &highestScorers);
+    return highestScorers;
 }
 
 /*
@@ -261,6 +283,8 @@ int SqliteDatabase::getGames(void* data, int argc, char** argv, char** azColName
 
 int SqliteDatabase::getHighestScores(void* data, int argc, char** argv, char** azColName)
 {
+    std::vector<std::string>* vec = (std::vector<std::string>*)data;
+    vec->push_back(argv[0]);
     return 0;
 }
 
