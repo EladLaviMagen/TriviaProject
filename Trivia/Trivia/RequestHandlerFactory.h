@@ -1,6 +1,7 @@
 #pragma once
 #include "LoginRequestHandler.h"
 #include "LoginManager.h"
+#include "MenuRequestHandler.h"
 #include "SqliteDatabase.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
@@ -14,7 +15,7 @@ public:
 	RequestHandlerFactory(LoginManager m_login, IDatabase* m_data);
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
-	MenuRequestHandler* createMenuRequestHandler(LoggedUser);
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 private:

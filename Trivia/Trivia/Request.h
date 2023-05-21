@@ -7,6 +7,7 @@
 #define PASSWORD "password"
 #define USERNAME "username"
 #define EMAIL "mail"
+#define ID "roomId"
 
 class LoginRequestHandler;
 class Communicator;
