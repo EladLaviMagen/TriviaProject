@@ -7,7 +7,12 @@
 #define PASSWORD "password"
 #define USERNAME "username"
 #define EMAIL "mail"
-#define ID "roomId"
+#define ID_JSON "roomId"
+#define TIME "time"
+#define MAX_USERS "max"
+#define QUESTION_COUNT "count"
+#define NAME "name"
+
 
 class LoginRequestHandler;
 class Communicator;

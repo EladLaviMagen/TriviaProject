@@ -91,7 +91,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRo
 {
 	json buff;
 	buff[STATUS] = res.status;
-	buff
+	buff[ROOMS] = roomToString(res.rooms);
 	return createBuffer(buff, SUCCESS_CODE);
 }
 
