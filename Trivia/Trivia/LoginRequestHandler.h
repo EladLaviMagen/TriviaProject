@@ -3,8 +3,7 @@
 
 class RequestHandlerFactory;
 class IRequestHandler;
-#define SIGN 3
-#define LOG 1
+
 
 
 class LoginRequestHandler : public IRequestHandler

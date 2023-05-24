@@ -5,7 +5,7 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager& roomManager
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 {
-	if (info.id == RELEVANT)
+	if (info.id == LOGOUT || info.id == JOINROOM || info.id == GETPLAYERSTATS || info.id == GETPLAYERSINROOM || info.id == CREATEROOM || info.id == GETALLROOMS || info.id == GETHIGHSCORES)
 	{
 		return true;
 	}
@@ -14,7 +14,36 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 
 RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 {
-	return RequestResult();
+	RequestResult result;
+	if (info.id == LOGOUT)
+	{
+		result = signout(info);
+	}
+	else if(info.id == JOINROOM)
+	{
+		result = joinRoom(info);
+	}
+	else if (info.id == GETPLAYERSTATS)
+	{
+		result = getPersonalStats(info);
+	}
+	else if (info.id == GETPLAYERSINROOM)
+	{
+		result = getPlayersInRoom(info);
+	}
+	else if (info.id == CREATEROOM)
+	{
+		result = createRoom(info);
+	}
+	else if (info.id == GETALLROOMS)
+	{
+		result = getRooms(info);
+	}
+	else
+	{
+		result = getHighScore(info);
+	}
+	return result;
 }
 
 RequestResult MenuRequestHandler::signout(RequestInfo info)

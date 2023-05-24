@@ -13,6 +13,16 @@
 #define QUESTION_COUNT "count"
 #define NAME "name"
 
+#define SIGN 3
+#define LOGOUT 2
+#define LOG 1
+#define CREATEROOM 8
+#define GETPLAYERSINROOM 7
+#define JOINROOM 5
+#define GETALLROOMS 9
+#define GETPLAYERSTATS 6
+#define GETHIGHSCORES 10
+
 
 class LoginRequestHandler;
 class Communicator;
