@@ -82,6 +82,11 @@ void Communicator::handleNewClient(SOCKET sock)
 			if (m_clients[sock]->isRequestRelevant(info))
 			{
 				RequestResult result = m_clients[sock]->handleRequest(info);
+				if (m_clients[sock] != result.newHandler)
+				{
+					delete m_clients[sock];
+					
+				}
 				m_clients[sock] = result.newHandler;
 				for (int i = 0; i < result.response.size(); i++)
 				{
@@ -103,6 +108,18 @@ void Communicator::handleNewClient(SOCKET sock)
 	}
 	catch (std::exception ex)
 	{
+		if (m_clients[sock] != nullptr)
+		{
+			RequestInfo check;
+			check.id = 12;
+			if (m_clients[sock]->isRequestRelevant(check))
+			{
+				RequestResult removal = m_clients[sock]->handleRequest(check);
+				delete removal.newHandler;
+			}
+			delete m_clients[sock];
+			m_clients[sock] = nullptr;
+		}
 		m_clients.erase(sock);
 	}
 	

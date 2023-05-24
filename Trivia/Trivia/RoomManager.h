@@ -10,6 +10,8 @@ public:
 	unsigned int getRoomState(int ID);
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
+	int assignID();
+	int getID();
 private:
 	static int id;
 	std::map<int, Room> m_rooms;

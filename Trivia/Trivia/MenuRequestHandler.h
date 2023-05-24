@@ -2,6 +2,7 @@
 #include "LoggedUser.h"
 #include "IRequestHandler.h"
 
+
 #define RELEVANT 7
 
 class MenuRequestHandler : public IRequestHandler
@@ -10,6 +11,7 @@ public:
 	MenuRequestHandler(LoggedUser user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory);
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
+
 	
 private:
 	RequestResult signout(RequestInfo info);

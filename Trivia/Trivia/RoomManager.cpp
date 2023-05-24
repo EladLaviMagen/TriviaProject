@@ -30,3 +30,15 @@ Room& RoomManager::getRoom(int ID)
 {
 	return m_rooms[ID];
 }
+
+int RoomManager::assignID()
+{
+	int ret = this->id;
+	this->id++;
+	return ret;
+}
+
+int RoomManager::getID()
+{
+	return id;
+}

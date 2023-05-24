@@ -95,7 +95,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRo
 	return createBuffer(buff, SUCCESS_CODE);
 }
 
-std::vector<unsigned char> JsonResponsePacketSerializer::serializerResponse(GetPlayersInRoomResponse res)
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse res)
 {
 	json buff;
 	buff[PLAYERS] = res.players;
