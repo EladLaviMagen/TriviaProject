@@ -85,9 +85,9 @@ void Communicator::handleNewClient(SOCKET sock)
 				if (m_clients[sock] != result.newHandler)
 				{
 					delete m_clients[sock];
+					m_clients[sock] = result.newHandler;
 					
 				}
-				m_clients[sock] = result.newHandler;
 				for (int i = 0; i < result.response.size(); i++)
 				{
 					dataToSend += result.response[i];
