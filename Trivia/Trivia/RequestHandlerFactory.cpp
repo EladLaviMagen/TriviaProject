@@ -29,3 +29,4 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 {
     return m_roomManager;
 }
+

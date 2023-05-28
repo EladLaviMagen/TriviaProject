@@ -8,6 +8,9 @@
 #define PLAYERS "players"
 #define STATISTICS "stats"
 #define ROOMS "rooms"
+#define QCOUNT "questionCount"
+#define ANSTIMEOUT "answerTimeout"
+#define HASBEG "has game begun"
 #define SUCCESS_CODE "00000001"
 #define FAILURE_CODE "00000100"
 #define ERROR_CODE "00000000"
@@ -67,4 +70,28 @@ typedef struct JoinRoomResponse
 typedef struct CreateRoomResponse
 {
 	unsigned int status;
+};
+
+typedef struct CloseRoomResponse
+{
+	unsigned int status;
+};
+
+typedef struct StartGameResponse
+{
+	unsigned int status;
+};
+
+typedef struct LeaveRoomResponse
+{
+	unsigned int status;
+};
+
+typedef struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	std::vector<std::string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
 };

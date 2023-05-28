@@ -131,3 +131,32 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(getPe
 	buff[STATISTICS] = res.statistics;
 	return createBuffer(buff, SUCCESS_CODE);
 }
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse close)
+{
+	json buff;
+	buff[STATUS] = close.status;
+	return createBuffer(buff, SUCCESS_CODE);
+}
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(StartGameResponse start)
+{
+	json buff;
+	buff[STATUS] = start.status;
+	return createBuffer(buff, SUCCESS_CODE);
+}
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse state)
+{
+	
+	json buff;
+	buff[STATUS] = state.status;
+	buff[HASBEG] = state.hasGameBegun;
+	buff[QCOUNT] = state.questionCount;
+	buff[PLAYERS] = state.players;
+	buff[ANSTIMEOUT] = state.answerTimeout;
+	return createBuffer(buff, SUCCESS_CODE);
+}
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leave)
+{
+	json buff;
+	buff[STATUS] = leave.status;
+	return createBuffer(buff, SUCCESS_CODE);
+}
