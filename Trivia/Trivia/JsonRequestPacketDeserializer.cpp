@@ -82,7 +82,7 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(st
 {
 	json j = createJson(buffer);
 	CreateRoomRequest createRoom;
-	createRoom.answerTimeout = j[ID_JSON];
+	createRoom.answerTimeout = j[TIME];
 	createRoom.maxUsers = j[MAX_USERS];
 	createRoom.questionCount = j[QUESTION_COUNT];
 	createRoom.roomName = j[NAME];

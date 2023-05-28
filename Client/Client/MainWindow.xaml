@@ -8,8 +8,8 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="0,10,0,0">
 
-        <Button Content="Login" HorizontalAlignment="Left" Margin="226,294,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click"/>
-        <Button Content="Sign up" HorizontalAlignment="Left" Margin="503,294,0,0" VerticalAlignment="Top" Width="60"/>
+        <Button Content="Sign up" HorizontalAlignment="Left" Margin="226,294,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click"/>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="503,294,0,0" VerticalAlignment="Top" Width="60"/>
         <Grid.Background>
             <ImageBrush ImageSource="https://media.wired.com/photos/5c9ba67d1e34481170ef2bcd/16:9/w_2400,h_1350,c_limit/Culture_Matrix_RedPillBluePill-1047403844.jpg"/>
         </Grid.Background>

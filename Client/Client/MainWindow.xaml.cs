@@ -28,8 +28,9 @@ namespace Client
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           Signup signup = new Signup();
-           signup.ShowDialog();
+            Signup signup = new Signup();
+            this.Close();
+            signup.ShowDialog();
         }
     }
 }
