@@ -13,6 +13,9 @@ class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
+class Room;
+class StatisticsManager;
+class RoomManager;
 
 class RequestHandlerFactory
 {

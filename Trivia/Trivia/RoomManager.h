@@ -2,6 +2,10 @@
 #include <map>
 #include "LoggedUser.h"
 #include "Room.h"
+
+class LoggedUser;
+class Room;
+
 class RoomManager
 {
 public:

@@ -8,6 +8,8 @@
 #include "AccLoggedException.h"
 #include "IncorrectPasswordException.h"
 
+class LoggedUser;
+
 class LoginManager
 {
 public:

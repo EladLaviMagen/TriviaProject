@@ -5,6 +5,14 @@
 
 #define RELEVANT 7
 
+class LoggedUser;
+class RoomManager;
+class StatisticsManager;
+class RequestHandlerFactory;
+struct RequestInfo;
+struct RequestResult;
+class IRequestHandler;
+
 class MenuRequestHandler : public IRequestHandler
 {
 public:

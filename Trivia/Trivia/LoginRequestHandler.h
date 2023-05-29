@@ -3,7 +3,9 @@
 
 class RequestHandlerFactory;
 class IRequestHandler;
-
+class LoginManager;
+struct RequestInfo;
+struct RequestResult;
 
 
 class LoginRequestHandler : public IRequestHandler

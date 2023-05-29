@@ -10,6 +10,13 @@
 
 struct RequestInfo;
 struct RequestResult;
+class LoggedUser;
+class RoomManager;
+class StatisticsManager;
+class RequestHandlerFactory;
+struct RequestInfo;
+struct RequestResult;
+class JsonRequestPacketDeserializer;
 
 class IRequestHandler
 {

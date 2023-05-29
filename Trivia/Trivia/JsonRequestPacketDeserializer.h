@@ -6,6 +6,9 @@ using json = nlohmann::json;
 
 struct LoginRequest;
 struct SignUpRequest;
+struct GetPlayersInRoomRequest;
+struct JoinRoomRequest;
+struct CreateRoomRequest;
 
 class JsonRequestPacketDeserializer
 {

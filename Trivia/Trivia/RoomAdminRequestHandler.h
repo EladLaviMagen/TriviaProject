@@ -2,6 +2,11 @@
 #include "Room.h"
 #include "RoomManager.h"
 #include "RequestHandlerFactory.h"
+
+class RoomManager;
+class RequestHandlerFactory;
+class Room;
+
 class RoomAdminRequestHandler
 {
 public:

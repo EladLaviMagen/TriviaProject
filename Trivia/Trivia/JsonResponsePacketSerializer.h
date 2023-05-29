@@ -9,6 +9,17 @@
 struct ErrorResponse;
 struct LoginResponse;
 struct SignUpResponse;
+struct LogoutResponse;
+struct GetRoomsResponse;
+struct GetPlayersInRoomResponse;
+struct JoinRoomResponse;
+struct CreateRoomResponse;
+struct getHighScoreResponse;
+struct getPersonalStatsResponse;
+struct CloseRoomResponse;
+struct StartGameResponse;
+struct GetRoomStateResponse;
+struct LeaveRoomResponse;
 
 class JsonResponsePacketSerializer
 {

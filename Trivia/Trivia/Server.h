@@ -2,6 +2,10 @@
 #include "Communicator.h"
 #include "SqliteDatabase.h"
 #include "RequestHandlerFactory.h"
+
+class Communicator;
+class RequestHandlerFactory;
+
 class Server
 {
 public:
