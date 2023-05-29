@@ -111,7 +111,7 @@ void Communicator::handleNewClient(SOCKET sock)
 		if (m_clients[sock] != nullptr)
 		{
 			RequestInfo check;
-			check.id = 12;
+			check.id = LOGOUT;
 			if (m_clients[sock]->isRequestRelevant(check))
 			{
 				RequestResult removal = m_clients[sock]->handleRequest(check);
