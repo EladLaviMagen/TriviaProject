@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
-#include "LoginRequestHandler.h"
-#include "Communicator.h"
+#include "IRequestHandler.h"
 #include "Room.h"
 #define STATUS "status"
 #define MESSAGE "message"
@@ -15,9 +14,9 @@
 #define FAILURE_CODE "00000100"
 #define ERROR_CODE "00000000"
 
-class LoginRequestHandler;
 class Communicator;
 class IRequestHandler;
+class Room;
 
 typedef struct LoginResponse
 {

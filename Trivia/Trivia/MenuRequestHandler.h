@@ -1,17 +1,13 @@
 #pragma once
-#include "LoggedUser.h"
-#include "IRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 
-#define RELEVANT 7
-
-class LoggedUser;
+class RequestHandlerFactory;
 class RoomManager;
 class StatisticsManager;
-class RequestHandlerFactory;
+class LoginManager;
 struct RequestInfo;
 struct RequestResult;
-class IRequestHandler;
 
 class MenuRequestHandler : public IRequestHandler
 {

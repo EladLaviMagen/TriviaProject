@@ -5,6 +5,7 @@
 
 class Communicator;
 class RequestHandlerFactory;
+class IDatabase;
 
 class Server
 {

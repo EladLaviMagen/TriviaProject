@@ -5,6 +5,6 @@ class UserNotExistException : public MyException
 public:
 	UserNotExistException(std::string msg);
 	virtual ~UserNotExistException() noexcept = default;
-	virtual const char* what() const;
+	virtual const char* what() const noexcept override;
 };
 

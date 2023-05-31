@@ -1,6 +1,6 @@
 #include "RoomManager.h"
 
-int id = 1;
+int RoomManager::id = 1;
 void RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	this->m_rooms[id] = Room(user, data);

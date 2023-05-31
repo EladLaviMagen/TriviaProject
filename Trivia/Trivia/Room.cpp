@@ -1,5 +1,7 @@
 #include "Room.h"
 
+
+
 Room::Room(LoggedUser user, RoomData data)
 {
 	this->m_users.push_back(user);

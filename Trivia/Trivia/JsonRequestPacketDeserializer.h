@@ -2,6 +2,8 @@
 #include "Request.h"
 #include <fstream>
 #include "json.hpp"
+#include <bitset>
+#include "Helper.h"
 using json = nlohmann::json;
 
 struct LoginRequest;
@@ -9,6 +11,9 @@ struct SignUpRequest;
 struct GetPlayersInRoomRequest;
 struct JoinRoomRequest;
 struct CreateRoomRequest;
+class IRequestHandler;
+
+
 
 class JsonRequestPacketDeserializer
 {

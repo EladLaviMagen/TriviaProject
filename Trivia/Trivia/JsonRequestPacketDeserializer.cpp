@@ -2,7 +2,6 @@
 
 
 
-#include <bitset>
 
 
 std::string binaryToString(std::string binaryStr) {

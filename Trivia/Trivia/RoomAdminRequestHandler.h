@@ -1,17 +1,18 @@
 #pragma once
-#include "Room.h"
-#include "RoomManager.h"
 #include "RequestHandlerFactory.h"
+#include "LoggedUser.h"
 
-class RoomManager;
+
 class RequestHandlerFactory;
-class Room;
 
-class RoomAdminRequestHandler
+
+
+
+class RoomAdminRequestHandler : public IRequestHandler
 {
 public:
-	bool isRequestRelevant(RequestInfo info);
-	RequestResult handleRequest(RequestInfo info);
+	virtual bool isRequestRelevant(RequestInfo info) override;
+	virtual RequestResult handleRequest(RequestInfo info) override;
 
 
 private:

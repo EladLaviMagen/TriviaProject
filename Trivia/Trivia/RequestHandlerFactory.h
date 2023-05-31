@@ -7,14 +7,15 @@
 #include "StatisticsManager.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
-#include "Room.h"
+#include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
-class Room;
 class StatisticsManager;
+class LoginManager;
 class RoomManager;
 
 class RequestHandlerFactory

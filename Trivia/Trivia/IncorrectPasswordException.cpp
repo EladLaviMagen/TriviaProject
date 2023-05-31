@@ -4,7 +4,7 @@ IncorrectPasswordException::IncorrectPasswordException(std::string msg) : MyExce
 {
 }
 
-const char* IncorrectPasswordException::what() const
+const char* IncorrectPasswordException::what() const noexcept
 {
 	return m_message.c_str();
 }

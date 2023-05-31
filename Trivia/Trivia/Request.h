@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "LoginRequestHandler.h"
-#include "Communicator.h"
+#include "IRequestHandler.h"
 
 #define PASSWORD "password"
 #define USERNAME "username"
@@ -24,8 +23,6 @@
 #define GETHIGHSCORES 10
 
 
-class LoginRequestHandler;
-class Communicator;
 class IRequestHandler;
 
 typedef struct LoginRequest

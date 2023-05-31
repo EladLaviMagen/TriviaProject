@@ -9,6 +9,7 @@
 #include "IncorrectPasswordException.h"
 
 class LoggedUser;
+class IDatabase;
 
 class LoginManager
 {

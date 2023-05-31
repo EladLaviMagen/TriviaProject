@@ -3,6 +3,11 @@
 #include "Server.h"
 #include <iostream>
 #include <exception>
+
+class Server;
+class LoginManager;
+class RequestHandlerFactory;
+
 int main()
 {
     std::string input = "";

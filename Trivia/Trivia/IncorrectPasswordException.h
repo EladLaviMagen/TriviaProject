@@ -5,6 +5,6 @@ class IncorrectPasswordException : public MyException
 public:
 	IncorrectPasswordException(std::string msg);
 	virtual ~IncorrectPasswordException() noexcept = default;
-	virtual const char* what() const;
+	virtual const char* what() const noexcept override;
 };
 

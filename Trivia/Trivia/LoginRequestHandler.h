@@ -1,11 +1,13 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 class RequestHandlerFactory;
-class IRequestHandler;
-class LoginManager;
 struct RequestInfo;
 struct RequestResult;
+class RoomManager;
+class StatisticsManager;
+class LoginManager;
 
 
 class LoginRequestHandler : public IRequestHandler
