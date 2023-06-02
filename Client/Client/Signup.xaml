@@ -15,5 +15,6 @@
         <TextBox x:Name="password" HorizontalAlignment="Left" Margin="595,178,0,0" TextWrapping="Wrap" Text="password" VerticalAlignment="Top" Width="152" Height="19"/>
         <TextBox x:Name="mail" HorizontalAlignment="Left" Margin="595,217,0,0" TextWrapping="Wrap" Text="mail" VerticalAlignment="Top" Width="152" Height="19"/>
         <Button Content="return" HorizontalAlignment="Left" Margin="45,71,0,0" VerticalAlignment="Top" Click="returnToMain"/>
+        <TextBlock x:Name="notify" HorizontalAlignment="Left" Margin="110,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="32" Width="308" FontSize="20" FontWeight="Bold"/>
     </Grid>
 </Window>

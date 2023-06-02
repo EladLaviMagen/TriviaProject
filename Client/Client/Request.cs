@@ -16,7 +16,7 @@ namespace Client
                 this.username = username;
                 this.password = password;
             }
-    }
+        }
 
         class SignUpRequest
         {
@@ -30,7 +30,7 @@ namespace Client
                 this.password = password;
                 this.mail = mail;
             }
-    }
+        }
 
 
         class CreateRoomRequest

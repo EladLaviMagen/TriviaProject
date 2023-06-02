@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    internal class Response
-    {
-    }
+
+        class ErrorResponse
+        {
+            public string message;
+            public ErrorResponse(string message)
+            {
+                this.message = message;
+            }
+        }
 }

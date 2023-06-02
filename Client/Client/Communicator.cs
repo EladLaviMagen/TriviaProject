@@ -13,5 +13,6 @@ namespace Client
         public static TcpClient client = new TcpClient();
         public static IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 42069);
 
+
     }
 }
