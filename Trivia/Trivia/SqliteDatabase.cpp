@@ -1,7 +1,7 @@
 #include "SqliteDatabase.h"
 
 const char* SqliteDatabase::DB_FILE_NAME = "DB.sqlite";
-const char* SqliteDatabase::USERS_TABLE = "users:";
+const char* SqliteDatabase::USERS_TABLE = "users";
 const char* SqliteDatabase::PASSWORD_COLUMN = "password";
 const char* SqliteDatabase::MAIL_COLUMN = "mail";
 const char* SqliteDatabase::NAME_COLUMN = "username";
@@ -151,15 +151,15 @@ void SqliteDatabase::build()
     //Preparations
     char* error = nullptr;
     std::stringstream sql;
-    sql << "CREATE TABLE " <<  USERS_TABLE << "("
-        << NAME_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
+    sql << "CREATE TABLE " << USERS_TABLE << "("
+        << NAME_COLUMN << " KEY TEXT NOT NULL, "
         << PASSWORD_COLUMN << " TEXT NOT NULL, "
         << MAIL_COLUMN << " TEXT NOT NULL);";
     sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
     //This is a reset, it simply deletes all the previous strings that were inserted to it
     sql.str("");
     sql << "CREATE TABLE " << QUESTIONS_TABLE << "("
-        << QUESTION_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
+        << QUESTION_COLUMN << " KEY TEXT NOT NULL, "
         << CORRECT_ANSWER_COLUMN << " TEXT NOT NULL, "
         << ANSWER1_COLUMN << " TEXT NOT NULL, "
         << ANSWER2_COLUMN << " TEXT NOT NULL, "
@@ -168,7 +168,7 @@ void SqliteDatabase::build()
     //This is a reset, it simply deletes all the previous strings that were inserted to it
     sql.str("");
     sql << "CREATE TABLE " << STATISTICS_TABLE << "("
-        << NAME_COLUMN << "PRIMARY KEY TEXT NOT NULL, "
+        << NAME_COLUMN << " KEY TEXT NOT NULL, "
         << TIME_COLUMN << " FLOAT NOT NULL, "
         << RIGHT_ANS_COLUMN << " INTEGER NOT NULL, "
         << ANSWERS_COLUMN << " INTEGER NOT NULL, "

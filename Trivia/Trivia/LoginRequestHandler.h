@@ -9,7 +9,6 @@ class RoomManager;
 class StatisticsManager;
 class LoginManager;
 
-
 class LoginRequestHandler : public IRequestHandler
 {
 public:

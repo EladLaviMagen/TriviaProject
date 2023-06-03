@@ -103,6 +103,18 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	{
 		response.status = STATUS_FAILED;
 		result.newHandler = this;
+		JoinRoomResponse res;
+		res.status = 1;
+		result.response = JsonResponsePacketSerializer::serializeResponse(res);
+
+	}
+	else if (m_roomManager.getRoom(req.roomId).getAllUsers().size() == m_roomManager.getRoom(req.roomId).getData().maxPlayers)
+	{
+		response.status = STATUS_FAILED;
+		result.newHandler = this;
+		JoinRoomResponse res;
+		res.status = 2;
+		result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	}
 	else
 	{

@@ -21,6 +21,9 @@
 #define GETALLROOMS 9
 #define GETPLAYERSTATS 6
 #define GETHIGHSCORES 10
+#define CLOSEROOM 11
+#define STARTGAME 12
+#define GETSTATE 13
 
 
 class IRequestHandler;

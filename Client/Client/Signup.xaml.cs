@@ -52,8 +52,8 @@ namespace Client
                 clientStream.Write(buffer, 0, buffer.Length);
                 clientStream.Flush();
 
-                byte[] code = new byte[1];
-                int bytesRead = clientStream.Read(code, 0, 1);
+                byte[] code = new byte[8];
+                int bytesRead = clientStream.Read(code, 0, 8);
                 string code_str = System.Text.Encoding.Default.GetString(code);
                 if(Convert.ToInt32(code_str, 2) == 1)
                 {
@@ -61,8 +61,8 @@ namespace Client
                 }
                 else
                 {
-                    byte[] size = new byte[4];
-                    bytesRead = clientStream.Read(size, 0, 4);
+                    byte[] size = new byte[32];
+                    bytesRead = clientStream.Read(size, 0, 32);
                     string size_str = System.Text.Encoding.Default.GetString(size);
                     byte[] err = new byte[Convert.ToInt32(size_str, 2)];
                     bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2));

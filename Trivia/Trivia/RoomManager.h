@@ -2,6 +2,7 @@
 #include <map>
 #include "LoggedUser.h"
 #include "Room.h"
+#include "RoomNotExist.h"
 
 class LoggedUser;
 class Room;
@@ -9,7 +10,6 @@ class Room;
 class RoomManager
 {
 public:
-	
 	void createRoom(LoggedUser user, RoomData data);
 	void deleteRoom(int ID);
 	unsigned int getRoomState(int ID);

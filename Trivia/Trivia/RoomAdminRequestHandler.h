@@ -1,7 +1,7 @@
 #pragma once
 #include "RequestHandlerFactory.h"
 #include "LoggedUser.h"
-
+#include "RoomNotExist.h"
 
 class RequestHandlerFactory;
 

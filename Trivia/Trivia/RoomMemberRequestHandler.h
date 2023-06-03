@@ -1,8 +1,9 @@
 #pragma once
 #include "RequestHandlerFactory.h"
 #include "LoggedUser.h"
+#include "RoomNotExist.h"
 
-
+#define ROOMCLOSED
 
 
 class RequestHandlerFactory;

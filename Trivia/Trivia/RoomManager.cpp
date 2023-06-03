@@ -28,7 +28,15 @@ std::vector<RoomData> RoomManager::getRooms()
 
 Room& RoomManager::getRoom(int ID)
 {
-	return m_rooms[ID];
+	try
+	{
+		return m_rooms[ID];
+	}
+	catch (std::exception ex)
+	{
+		throw(Room)
+	}
+	
 }
 
 int RoomManager::assignID()
