@@ -3,7 +3,7 @@
 #include "LoggedUser.h"
 #include "RoomNotExist.h"
 
-#define ROOMCLOSED
+#define ROOMCLOSED 3
 
 
 class RequestHandlerFactory;

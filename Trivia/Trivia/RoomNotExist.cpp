@@ -1,4 +1,9 @@
 #include "RoomNotExist.h"
 
-RoomNotExist::RoomNotExist(const std::string& message) : MyException(message)
+RoomNotExist::RoomNotExist(std::string msg) : MyException(msg)
 {}
+
+const char* RoomNotExist::what() const noexcept
+{
+	return m_message.c_str();
+}

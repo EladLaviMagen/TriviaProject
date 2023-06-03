@@ -32,6 +32,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
     RequestResult result;
     result.newHandler = m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
+    m_roomManager.deleteRoom(m_room.getData().id);
     return result;
 }
 
@@ -45,11 +46,23 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;
-    res.answerTimeout = data.timePerQuestion;
-    res.hasGameBegun = data.isActive;
-    res.players = m_room.getAllUsers();
-    res.questionCount = data.numOfQuestions;
-    res.status = STATUS_SUCCESS;
-    result.newHandler = this;
+    try
+    {
+        res.answerTimeout = m_roomManager.getRoom(data.id).getData().timePerQuestion;
+        res.hasGameBegun = m_roomManager.getRoom(data.id).getData().isActive;
+        res.players = m_roomManager.getRoom(data.id).getAllUsers();
+        res.questionCount = m_roomManager.getRoom(data.id).getData().numOfQuestions;
+        res.status = STATUS_SUCCESS;
+        result.newHandler = this;
+    }
+    catch (RoomNotExist& ex)
+    {
+        result.newHandler = m_handlerFactory.createMenuRequestHandler(m_loggedUser);
+        res.answerTimeout = 1;
+        res.hasGameBegun = 3;
+        res.questionCount = 1;
+        res.status = ROOMCLOSED;
+    }
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
+    return result;
 }

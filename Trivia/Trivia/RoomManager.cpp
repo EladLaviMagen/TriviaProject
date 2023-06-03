@@ -34,7 +34,7 @@ Room& RoomManager::getRoom(int ID)
 	}
 	catch (std::exception ex)
 	{
-		throw(Room)
+		throw RoomNotExist("fake");
 	}
 	
 }

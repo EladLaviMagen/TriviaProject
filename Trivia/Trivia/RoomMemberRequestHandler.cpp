@@ -31,10 +31,15 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
         res.questionCount = m_roomManager.getRoom(data.id).getData().numOfQuestions;
         res.status = STATUS_SUCCESS;
         result.newHandler = this;
-        result.response = JsonResponsePacketSerializer::serializeResponse(res);
     }
-    catch ()
+    catch (RoomNotExist& ex)
     {
-
+        result.newHandler = m_handlerFactory.createMenuRequestHandler(m_loggedUser);
+        res.answerTimeout = 1;
+        res.hasGameBegun = 3;
+        res.questionCount = 1;
+        res.status = ROOMCLOSED;
     }
+    result.response = JsonResponsePacketSerializer::serializeResponse(res);
+    return result;
 }
