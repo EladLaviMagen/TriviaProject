@@ -1,9 +1,11 @@
 #include "RequestHandlerFactory.h"
 
-RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data) : m_loginManager(m_login)
+RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, RoomManager m_rooms, StatisticsManager m_statistics) : m_loginManager(m_login), m_roomManager(m_rooms)
 {
+    m_StatisticsManager = m_statistics;
     m_database = m_data;
 }
+
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
@@ -32,11 +34,11 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, Room room)
 {
-    return nullptr;
+    return new RoomAdminRequestHandler(room, loggedUser, m_roomManager, *this);
 }
 
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, Room room)
 {
-    return nullptr;
+    return new RoomMemberRequestHandler(room, loggedUser, m_roomManager, *this);
 }
 

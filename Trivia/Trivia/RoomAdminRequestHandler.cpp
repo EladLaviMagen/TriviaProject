@@ -1,5 +1,9 @@
 #include "RoomAdminRequestHandler.h"
 
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+{
+}
+
 bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo info)
 {
     if (info.id == CLOSEROOM || info.id == STARTGAME || info.id == GETSTATE)

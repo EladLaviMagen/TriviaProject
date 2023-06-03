@@ -1,13 +1,30 @@
 #include "RoomMemberRequestHandler.h"
 
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+{
+}
+
 bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo info)
 {
+    if (info.id == LEAVEROOM || info.id == GETSTATE)
+    {
+        return true;
+    }
     return false;
 }
 
 RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 {
-    return RequestResult();
+    RequestResult result;
+    if (info.id == LEAVEROOM)
+    {
+        result = leaveRoom(info);
+    }
+    else
+    {
+        result = getRoomState(info);
+    }
+    return result;
 }
 
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)

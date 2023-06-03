@@ -10,6 +10,7 @@ class Room;
 class RoomManager
 {
 public:
+	RoomManager();
 	void createRoom(LoggedUser user, RoomData data);
 	void deleteRoom(int ID);
 	unsigned int getRoomState(int ID);

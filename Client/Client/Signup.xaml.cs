@@ -58,6 +58,7 @@ namespace Client
                 if(Convert.ToInt32(code_str, 2) == 1)
                 {
                     clientStream.Flush();
+
                 }
                 else
                 {

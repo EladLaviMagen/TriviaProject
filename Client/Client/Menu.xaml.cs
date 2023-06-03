@@ -22,6 +22,7 @@ namespace Client
         public Menu()
         {
             InitializeComponent();
+            string x = combo.Text;
         }
     }
 }

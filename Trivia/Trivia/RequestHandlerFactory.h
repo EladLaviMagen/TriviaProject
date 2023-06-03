@@ -21,7 +21,7 @@ class RoomManager;
 class RequestHandlerFactory
 {
 public:
-	RequestHandlerFactory(LoginManager m_login, IDatabase* m_data);
+	RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, RoomManager m_rooms, StatisticsManager m_statistics);
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);

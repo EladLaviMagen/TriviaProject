@@ -119,7 +119,8 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	else
 	{
 		response.status = STATUS_SUCCESS;
-		result.newHandler = nullptr;
+		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager.getRoom(req.roomId));
+		m_roomManager.getRoom(req.roomId).addUser(m_user);
 	}
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
@@ -135,7 +136,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	this->m_roomManager.createRoom(this->m_user, room);
 	CreateRoomResponse response;
 	response.status = STATUS_SUCCESS;
-	result.newHandler = nullptr;
+	result.newHandler = m_handlerFactory.createRoomAdminRequestHandler(m_user, m_roomManager.getRoom(room.id));
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }

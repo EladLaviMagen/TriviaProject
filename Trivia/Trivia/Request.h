@@ -24,6 +24,7 @@
 #define CLOSEROOM 11
 #define STARTGAME 12
 #define GETSTATE 13
+#define LEAVEROOM 15
 
 
 class IRequestHandler;
