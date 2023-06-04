@@ -87,3 +87,8 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(st
 	createRoom.roomName = j[NAME];
 	return createRoom;
 }
+
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(std::vector<unsigned char> buffer)
+{
+	return SubmitAnswerRequest();
+}

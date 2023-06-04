@@ -1,9 +1,10 @@
 #include "Question.h"
 
-Question::Question(std::string question, std::vector<std::string> ans)
+Question::Question(std::string question, std::vector<std::string> ans, int id)
 {
     m_question = question;
     m_possibleAnswers = ans;
+    correctId = id;
 }
 
 std::vector<std::string> Question::getPossibleAnswers()

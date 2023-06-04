@@ -4,7 +4,7 @@
 class Question
 {
 public:
-	Question(std::string question, std::vector<std::string> ans);
+	Question(std::string question, std::vector<std::string> ans, int id);
 	std::vector <std::string> getPossibleAnswers();
 	int getCorrectAnswerID();
 	std::string getQuestion();
@@ -12,6 +12,7 @@ public:
 private:
 	std::string m_question;
 	std::vector<std::string> m_possibleAnswers;
+	int correctId;
 
 };
 

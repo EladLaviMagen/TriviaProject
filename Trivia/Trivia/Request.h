@@ -77,4 +77,8 @@ typedef struct JoinRoomRequest
 };
 
 
+typedef struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+};
 

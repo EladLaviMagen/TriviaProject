@@ -3,7 +3,7 @@ int Game::id = 1;
 
 Question Game::getQuestionForUser(LoggedUser user)
 {
-    return Question("What the hell", std::vector<std::string>());
+    return Question("What the hell", std::vector<std::string>(), 1);
 }
 
 void Game::submitAnswer(LoggedUser user, unsigned int id)

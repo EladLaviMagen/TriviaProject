@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <map>
 #include "IRequestHandler.h"
 #include "Room.h"
 #define STATUS "status"
@@ -93,4 +94,37 @@ typedef struct GetRoomStateResponse
 	std::vector<std::string> players;
 	unsigned int questionCount;
 	unsigned int answerTimeout;
+};
+
+typedef struct PlayerResults
+{
+	std::string username;
+	float averageAnswerTime;
+	unsigned int correctAnswerCount;
+	unsigned int answerTimeout;
+};
+
+
+typedef struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+};
+
+typedef struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerId;
+};
+
+typedef struct GetQuestionResponse
+{
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, std::string> answers;
+};
+
+typedef struct LeaveGameResponse
+{
+	unsigned int status;
 };

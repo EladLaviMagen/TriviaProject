@@ -38,5 +38,9 @@ public:
 	static std::vector<unsigned char> serializeResponse(StartGameResponse start);
 	static std::vector<unsigned char> serializeResponse(GetRoomStateResponse state);
 	static std::vector<unsigned char> serializeResponse(LeaveRoomResponse leave);
+	static std::vector<unsigned char> serializeResponse(GetGameResultsResponse gameRes);
+	static std::vector<unsigned char> serializeResponse(SubmitAnswerResponse res);
+	static std::vector<unsigned char> serializeResponse(GetQuestionResponse res);
+	static std::vector<unsigned char> serializeResponse(LeaveGameResponse res);
 };
 

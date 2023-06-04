@@ -160,3 +160,23 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Leave
 	buff[STATUS] = leave.status;
 	return createBuffer(buff, SUCCESS_CODE);
 }
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse gameRes)
+{
+	return std::vector<unsigned char>();
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse res)
+{
+	return std::vector<unsigned char>();
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse res)
+{
+	return std::vector<unsigned char>();
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse res)
+{
+	return std::vector<unsigned char>();
+}

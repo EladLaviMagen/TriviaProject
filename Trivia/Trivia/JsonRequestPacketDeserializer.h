@@ -23,5 +23,6 @@ public:
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(std::vector<unsigned char> buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(std::vector<unsigned char> buffer);
 	static CreateRoomRequest deserializeCreateRoomRequest(std::vector<unsigned char> buffer);
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(std::vector<unsigned char> buffer);
 };
 
