@@ -6,7 +6,7 @@
 #define PASSWORD "password"
 #define USERNAME "username"
 #define EMAIL "mail"
-#define ID_JSON "roomId"
+#define ID_JSON "id"
 #define TIME "time"
 #define MAX_USERS "max"
 #define QUESTION_COUNT "count"

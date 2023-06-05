@@ -90,5 +90,7 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(st
 
 SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(std::vector<unsigned char> buffer)
 {
-	return SubmitAnswerRequest();
+	SubmitAnswerRequest req;
+	json j = createJson(buffer);
+	req.answerId = j[ID_JSON];
 }

@@ -6,6 +6,7 @@
 
 #define STATUS_SUCCESS 1
 #define STATUS_FAILED 0
+#define GAMEBEGUN 6
 
 class JsonRequestPacketDeserializer;
 struct LoginRequest;
