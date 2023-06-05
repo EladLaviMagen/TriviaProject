@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Client
 {
@@ -26,6 +28,11 @@ namespace Client
         public Signup()
         {
             InitializeComponent();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+            openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\used_to.mp3";
+            Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
+            Audio.mediaPlayer.Play();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -55,10 +62,13 @@ namespace Client
                 byte[] code = new byte[8];
                 int bytesRead = clientStream.Read(code, 0, 8);
                 string code_str = System.Text.Encoding.Default.GetString(code);
-                if(Convert.ToInt32(code_str, 2) == 1)
+                clientStream.Flush();
+                if (Convert.ToInt32(code_str, 2) == 1)
                 {
-                    clientStream.Flush();
-
+                    Audio.mediaPlayer.Close();
+                    Menu menu = new Menu();
+                    this.Close();
+                    menu.ShowDialog();
                 }
                 else
                 {
@@ -77,6 +87,7 @@ namespace Client
 
         private void returnToMain(object sender, RoutedEventArgs e)
         {
+            Audio.mediaPlayer.Close();
             MainWindow mainWindow = new MainWindow();
             this.Close();
             mainWindow.ShowDialog();

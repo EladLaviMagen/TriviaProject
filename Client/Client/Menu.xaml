@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="Menu" Height="450" Width="800">
     <Grid>
-        <ComboBox x:Name="combo" HorizontalAlignment="Center" Margin="0,195,0,0" VerticalAlignment="Top" Width="120"/>
-
+        <Grid.Background>
+            <ImageBrush ImageSource="https://cdn.discordapp.com/attachments/912783177465085983/1115250742127755264/1200.png"/>
+        </Grid.Background>
+        <ListBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="572,217,47,110" SelectionChanged="ListBox_SelectionChanged"/>
+        <Button x:Name="ready" Content="" Margin="578,325,53,50" RenderTransformOrigin="-0.14,-0.275" Click="ready_Click" Background="{x:Null}"/>
+        <Button x:Name="sign_out" Content="" Margin="46,10,652,373"  Background="{x:Null}" Click="sign_out_Click"/>
+        <Button x:Name="create" Content="" Margin="530,190,233,201" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Click="create_Click"/>
+        <Button x:Name="lead" Content="" Margin="517,43,180,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="lead_Click"/>
+        <Button x:Name="shop" Margin="387,43,330,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="shop_Click"/>
+        <Button x:Name="profile" Margin="457,43,271,355" Background="{x:Null}" Click="profile_Click"/>
     </Grid>
 </Window>
