@@ -32,7 +32,6 @@ namespace Client
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\and_theme.mp3";
             Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
-            
             Audio.mediaPlayer.Play();
             
         }
