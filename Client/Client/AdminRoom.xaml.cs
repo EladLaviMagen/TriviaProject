@@ -15,21 +15,26 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for AdminRoom.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class AdminRoom : Window
     {
-        public Login()
+        public AdminRoom()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void membersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void returnToMain(object sender, RoutedEventArgs e)
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
 
         }

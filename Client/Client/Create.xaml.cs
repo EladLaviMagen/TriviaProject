@@ -15,21 +15,21 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class Create : Window
     {
-        public Login()
+        public Create()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void returnToMain(object sender, RoutedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
