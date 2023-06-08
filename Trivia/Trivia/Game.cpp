@@ -1,6 +1,18 @@
 #include "Game.h"
 int Game::id = 1;
 
+Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players)
+{
+    m_questions = questions;
+    GameData start = { m_questions[0], 0, 0, 0 };
+    for (int i = 0; i < players.size(); i++)
+    {
+        m_players[players[i]] = start;
+    }
+    gameId = id;
+    id++;
+}
+
 Question Game::getQuestionForUser(LoggedUser user)
 {
     return m_players[user].currentQuestion;
@@ -25,7 +37,15 @@ void Game::submitAnswer(LoggedUser user, unsigned int id)
             it = m_questions.end();
         }
     }
-    m_players[user].currentQuestion = m_questions[i];
+    if (i == m_questions.size())
+    {
+        m_players[user].currentQuestion = Question("fake", std::vector <std::string>(), -1);
+    }
+    else
+    {
+        m_players[user].currentQuestion = m_questions[i];
+    }
+    
 }
 
 void Game::removeUser(LoggedUser user)

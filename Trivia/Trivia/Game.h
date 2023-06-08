@@ -2,6 +2,7 @@
 #include "Question.h"
 #include "LoggedUser.h"
 #include <map>
+
 typedef struct GameData
 {
 	Question currentQuestion;
@@ -13,7 +14,7 @@ typedef struct GameData
 class Game
 {
 public:
-	Game();
+	Game(std::vector<Question> questions, std::vector<LoggedUser> players);
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, unsigned int id);
 	void removeUser(LoggedUser user);
