@@ -65,7 +65,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
         res.answerTimeout = 1;
         res.hasGameBegun = 3;
         res.questionCount = 1;
-        res.status = ROOMCLOSED;
+        res.status = STATUS_SUCCESS;
     }
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
     return result;

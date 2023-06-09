@@ -93,4 +93,5 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 	SubmitAnswerRequest req;
 	json j = createJson(buffer);
 	req.answerId = j[ID_JSON];
+	return req;
 }

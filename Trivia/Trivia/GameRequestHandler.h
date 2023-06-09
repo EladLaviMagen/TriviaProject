@@ -9,12 +9,12 @@ class GameRequestHandler : public IRequestHandler
 {
 public:
 	GameRequestHandler(Game game, LoggedUser user, GameManager manager, RequestHandlerFactory factory);
-	virtual bool isRequestRelevant(RequestInfo) override;
-	virtual RequestResult handleRequest(RequestInfo) override;
-	RequestResult getQuestion(RequestInfo);
-	RequestResult submitAnswer(RequestInfo);
-	RequestResult getGameResults(RequestInfo);
-	RequestResult leaveGame(RequestInfo);
+	virtual bool isRequestRelevant(RequestInfo info) override;
+	virtual RequestResult handleRequest(RequestInfo info) override;
+	RequestResult getQuestion(RequestInfo info);
+	RequestResult submitAnswer(RequestInfo info);
+	RequestResult getGameResults(RequestInfo info);
+	RequestResult leaveGame(RequestInfo info);
 private:
 	Game& m_game;
 	LoggedUser m_user;

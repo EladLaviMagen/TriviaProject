@@ -10,6 +10,7 @@ class RequestHandlerFactory;
 
 int main()
 {
+
     std::string input = "";
     WSAInitializer wsaInit;
     IDatabase* data = new SqliteDatabase();
