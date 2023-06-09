@@ -43,5 +43,13 @@ namespace Client
             this.Close();
             signup.ShowDialog();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Audio.mediaPlayer.Close();
+            Login signup = new Login();
+            this.Close();
+            signup.ShowDialog();
+        }
     }
 }
