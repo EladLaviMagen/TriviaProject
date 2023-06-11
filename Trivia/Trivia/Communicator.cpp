@@ -84,8 +84,9 @@ void Communicator::handleNewClient(SOCKET sock)
 				RequestResult result = m_clients[sock]->handleRequest(info);
 				if (m_clients[sock] != result.newHandler)
 				{
-					delete m_clients[sock];
+					IRequestHandler* del = m_clients[sock];
 					m_clients[sock] = result.newHandler;
+					delete del;
 					
 				}
 				for (int i = 0; i < result.response.size(); i++)
