@@ -4,6 +4,7 @@
 class Question
 {
 public:
+	Question() = default;
 	Question(std::string question, std::vector<std::string> ans, int id);
 	std::vector <std::string> getPossibleAnswers();
 	int getCorrectAnswerID();

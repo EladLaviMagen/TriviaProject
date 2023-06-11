@@ -6,6 +6,13 @@
 
 typedef struct GameData
 {
+	GameData() = default;
+	GameData(Question q, unsigned int c, unsigned int w, float a) : currentQuestion(q)
+	{
+		correctAnswerCount = c;
+		wrongAnswerCount = w;
+		averageAnswerTime = a;
+	}
 	Question currentQuestion;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
@@ -21,7 +28,7 @@ public:
 	void removeUser(LoggedUser user);
 private:
 	std::vector<Question> m_questions;
-	std::map<LoggedUser, GameData> m_players;
+	std::map<std::string, GameData> m_players;
 	time_t timer;
 	int _time;
 	unsigned int gameId;
