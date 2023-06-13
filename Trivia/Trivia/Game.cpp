@@ -17,13 +17,13 @@ Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, int
 
 Question Game::getQuestionForUser(LoggedUser user)
 {
-    return m_players[user.getUserName()].currentQuestion;
     timer = time(0);
+    return m_players[user.getUserName()].currentQuestion;
 }
 
 void Game::submitAnswer(LoggedUser user, unsigned int id)
 {
-    
+ 
     if (getQuestionForUser(user).getCorrectAnswerID() == id)
     {
         m_players[user.getUserName()].correctAnswerCount++;
@@ -49,6 +49,8 @@ void Game::submitAnswer(LoggedUser user, unsigned int id)
     {
         m_players[user.getUserName()].currentQuestion = m_questions[i];
     }
+    while (difftime(time(0), timer) >= (double)_time)
+    {}
     
 }
 

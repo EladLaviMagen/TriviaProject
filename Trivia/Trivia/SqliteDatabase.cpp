@@ -1,4 +1,7 @@
 #include "SqliteDatabase.h"
+#include <algorithm>
+#include <random>
+#include <chrono> 
 
 const char* SqliteDatabase::DB_FILE_NAME = "DB.sqlite";
 const char* SqliteDatabase::USERS_TABLE = "users";
@@ -78,9 +81,9 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
     sqlRequest(sql);
 }
 
-std::list<std::string> SqliteDatabase::getQuestions(int numOf)
+std::vector<Question> SqliteDatabase::getQuestions(int numOf)
 {
-    std::list<std::string> questionList;
+    std::vector<Question> questionList;
     std::stringstream sql;
     sql << "SELECT * FROM " << QUESTIONS_TABLE << " LIMIT " << numOf << ";";
     sqlRequest(sql, SqliteDatabase::sqlGetQuestions, &questionList);
@@ -204,8 +207,23 @@ int SqliteDatabase::userExist(void* data, int argc, char** argv, char** azColNam
 int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** azColName)
 {
     //Takes ID and inputs it into pointer
-    std::list<std::string>* vec = (std::list<std::string>*)data;
-    vec->push_back(argv[0]);
+    std::vector<Question>* vec = (std::vector<Question>*)data;
+    std::vector<std::string> ans;
+    for (int i = 1; i < argc; i++)
+    {
+        ans.push_back(argv[i]);
+    }
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(ans.begin(), ans.end(), std::default_random_engine(seed));
+    int correct = -1;
+    for (int i = 0; i < ans.size(); i++)
+    {
+        if (ans[i] == argv[1])
+        {
+            correct = i;
+        }
+    }
+    vec->push_back(Question(argv[0], ans, correct));
     return 0;
 }
 
