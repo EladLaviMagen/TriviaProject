@@ -49,6 +49,7 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET sock)
 {
+	IRequestHandler* hold = nullptr;
 	try
 	{
 		while (true)
@@ -108,21 +109,18 @@ void Communicator::handleNewClient(SOCKET sock)
 	}
 	catch (std::exception ex)
 	{
-		if (m_clients[sock] != nullptr)
+		if (hold != nullptr)
 		{
 			RequestInfo check;
 			check.id = LOGOUT;
-			if (m_clients[sock]->isRequestRelevant(check))
+			if (hold->isRequestRelevant(check))
 			{
-				RequestResult removal = m_clients[sock]->handleRequest(check);
+				RequestResult removal = hold->handleRequest(check);
 				delete removal.newHandler;
 			}
-			delete m_clients[sock];
-			m_clients[sock] = nullptr;
+			delete hold;
 		}
-		m_clients.erase(sock);
 	}
-	
 }
 
 void Communicator::startHandleRequest()
