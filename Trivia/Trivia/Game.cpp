@@ -50,7 +50,7 @@ int Game::submitAnswer(LoggedUser user, unsigned int id)
     {
         m_players[user.getUserName()].currentQuestion = m_questions[i];
     }
-    while (difftime(time(0), timer) > (double)_time)
+    while (difftime(time(0), timer) < (double)_time)
     {}
     return right;
 }

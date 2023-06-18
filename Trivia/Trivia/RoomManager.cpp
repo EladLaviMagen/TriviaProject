@@ -1,6 +1,7 @@
 #include "RoomManager.h"
 
 int RoomManager::id = 1;
+std::mutex RoomManager::room_lock;
 RoomManager::RoomManager()
 {
 }
@@ -11,27 +12,45 @@ void RoomManager::createRoom(LoggedUser user, RoomData data)
 
 void RoomManager::deleteRoom(int ID)
 {
-	m_rooms.erase(ID);
+	{
+		std::lock_guard<std::mutex> locker(room_lock);
+		m_rooms.erase(ID);
+	}
+	
 }
 
 unsigned int RoomManager::getRoomState(int ID)
 {
-	return (m_rooms[ID].getData()).isActive;
+	{
+		std::lock_guard<std::mutex> locker(room_lock);
+		return (m_rooms[ID].getData()).isActive;
+	}
+	
 }
 
 std::vector<RoomData> RoomManager::getRooms()
 {
 	std::vector<RoomData> rooms;
-	for (auto it = this->m_rooms.begin(); it != this->m_rooms.end(); it++)
+	if(m_rooms.size() != 0)
 	{
-		rooms.push_back(it->second.getData());
+		{
+			std::lock_guard<std::mutex> locker(room_lock);
+			for (auto it = this->m_rooms.begin(); it != this->m_rooms.end(); it++)
+			{
+				rooms.push_back(it->second.getData());
+			}
+		}	
 	}
 	return rooms;
 }
 
 Room& RoomManager::getRoom(int ID)
 {
-	return m_rooms[ID];
+	{
+		std::lock_guard<std::mutex> locker(room_lock);
+		return m_rooms[ID];
+	}
+	
 }
 
 int RoomManager::assignID()

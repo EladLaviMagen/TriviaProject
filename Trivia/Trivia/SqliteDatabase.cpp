@@ -3,6 +3,7 @@
 #include <random>
 #include <chrono> 
 
+std::mutex SqliteDatabase::users_lock;
 const char* SqliteDatabase::DB_FILE_NAME = "DB.sqlite";
 const char* SqliteDatabase::USERS_TABLE = "users";
 const char* SqliteDatabase::PASSWORD_COLUMN = "password";
@@ -55,7 +56,11 @@ bool SqliteDatabase::doesUserExist(std::string name)
     std::stringstream sql;
     sql << "SELECT * FROM " << USERS_TABLE << " WHERE "
         << NAME_COLUMN << " = '" << name << "';";
-    sqlRequest(sql, SqliteDatabase::userExist, &answer);
+    {
+        std::lock_guard<std::mutex> locker(users_lock);
+        sqlRequest(sql, SqliteDatabase::userExist, &answer);
+    }
+    
     return answer == 1;
 }
 
@@ -65,7 +70,10 @@ bool SqliteDatabase::doesPasswordMatch(std::string name, std::string password)
     std::stringstream sql;
     sql << "SELECT password FROM " << USERS_TABLE << " WHERE "
         << NAME_COLUMN << " = '" << name << "';";
-    sqlRequest(sql, SqliteDatabase::passwordMatch, &answer);
+    {
+        std::lock_guard<std::mutex> locker(users_lock);
+        sqlRequest(sql, SqliteDatabase::passwordMatch, &answer);
+    }
     if (answer == "1")
     {
         return false;
@@ -77,8 +85,12 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 {
     std::stringstream sql;
     sql << "INSERT INTO " << USERS_TABLE
-        << " ( " << NAME_COLUMN << ", " << PASSWORD_COLUMN << ", " << MAIL_COLUMN << " ) VALUES (" << " '" << name << "', '" << password << "', '" << mail << "' );";
-    sqlRequest(sql);
+    << " ( " << NAME_COLUMN << ", " << PASSWORD_COLUMN << ", " << MAIL_COLUMN << " ) VALUES (" << " '" << name << "', '" << password << "', '" << mail << "' );";
+    {
+        std::lock_guard<std::mutex> locker(users_lock);
+        sqlRequest(sql);
+    }
+   
 }
 
 std::vector<Question> SqliteDatabase::getQuestions(int numOf)

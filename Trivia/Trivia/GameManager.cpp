@@ -1,5 +1,6 @@
 #include "GameManager.h"
 
+std::mutex GameManager::gamer_lock;
 GameManager::GameManager(IDatabase* data)
 {
 	m_database = data;
@@ -14,7 +15,11 @@ Game GameManager::createGame(Room room)
 		vec.push_back(LoggedUser(players[i]));
 	}
 	Game game = Game(m_database->getQuestions((room.getData()).timePerQuestion), vec, (room.getData()).timePerQuestion);
-	m_games.push_back(game);
+	{
+		std::lock_guard<std::mutex> locker(gamer_lock);
+		m_games.push_back(game);
+	}
+	
 	return game;
 }
 
@@ -22,26 +27,35 @@ void GameManager::deleteGame(unsigned int gameId)
 {
 	if (m_games.size() != 0)
 	{
-		for (auto it = this->m_games.begin(); it != this->m_games.end(); it++)
 		{
-			if (it->getId() == gameId)
+			std::lock_guard<std::mutex> locker(gamer_lock);
+			for (auto it = this->m_games.begin(); it != this->m_games.end(); it++)
 			{
-				m_games.erase(it);
+				if (it->getId() == gameId)
+				{
+					m_games.erase(it);
+				}
 			}
 		}
+		
 	}
 }
 
 Game& GameManager::getGame(std::string name)
 {
-	for (int i = 0; i < m_games.size(); i++)
+
 	{
-		for (auto it = m_games[i].getPlayers().begin(); it != m_games[i].getPlayers().end(); it++)
+		std::lock_guard<std::mutex> locker(gamer_lock);
+		for (int i = 0; i < m_games.size(); i++)
 		{
-			if (it->first == name)
+			for (auto it = m_games[i].getPlayers().begin(); it != m_games[i].getPlayers().end(); it++)
 			{
-				return m_games[i];
+				if (it->first == name)
+				{
+					return m_games[i];
+				}
 			}
 		}
 	}
+	
 }

@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "RoomNotExist.h"
+#include <mutex>
 
 class LoggedUser;
 class Room;
@@ -19,6 +20,7 @@ public:
 	int assignID();
 	int getID();
 private:
+	static std::mutex room_lock;
 	static int id;
 	std::map<int, Room> m_rooms;
 };

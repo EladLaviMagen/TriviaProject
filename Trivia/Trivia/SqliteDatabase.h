@@ -1,6 +1,7 @@
 #pragma once
 #include "IDatabase.h"
 #include <sstream>
+#include <mutex>
 #include"MyException.h"
 class SqliteDatabase : public IDatabase
 {
@@ -50,6 +51,7 @@ private:
 	static const char* ANSWERS_COLUMN;
 	static const char* GAMES_COLUMN;
 	static const char* SCORE_COLUMN;
+	static std::mutex users;
 	sqlite3* _db;
 };
 
