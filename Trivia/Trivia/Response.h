@@ -14,6 +14,7 @@
 #define CORRECT "correctAns"
 #define ANSWER "answer"
 #define QUESTION "question"
+#define RESULTS "results"
 #define SUCCESS_CODE "00000001"
 #define FAILURE_CODE "00000100"
 #define ERROR_CODE "00000000"

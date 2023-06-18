@@ -1,7 +1,7 @@
 #include "GameRequestHandler.h"
 
 
-GameRequestHandler::GameRequestHandler(Game game, LoggedUser user, GameManager manager, RequestHandlerFactory factory) : m_game(game), m_user(user), m_gameManager(manager), m_handlerFactory(factory)
+GameRequestHandler::GameRequestHandler(Game& game, LoggedUser user, GameManager manager, RequestHandlerFactory factory) : m_game(game), m_user(user), m_gameManager(manager), m_handlerFactory(factory)
 {}
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo info) 
@@ -87,5 +87,6 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 	}
 	RequestResult result;
 	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	result.response = JsonResponsePacketSerializer::serializeEmptyResponse();
 	return result;
 }

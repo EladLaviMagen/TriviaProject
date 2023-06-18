@@ -139,7 +139,7 @@ std::vector<std::string> SqliteDatabase::getHighScores()
 {
     std::vector<std::string> highestScorers;
     std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " ORDER BY " << SCORE_COLUMN << " DESC LIMIT 5;";
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " ORDER BY " << RIGHT_ANS_COLUMN << " DESC LIMIT 5;";
     sqlRequest(sql, SqliteDatabase::getHighestScores, &highestScorers);
     return highestScorers;
 }
@@ -167,6 +167,8 @@ void SqliteDatabase::build()
         << ANSWER1_COLUMN << " TEXT NOT NULL, "
         << ANSWER2_COLUMN << " TEXT NOT NULL, "
         << ANSWER3_COLUMN << " TEXT NOT NULL);";
+
+
     sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
     //This is a reset, it simply deletes all the previous strings that were inserted to it
     sql.str("");
@@ -175,7 +177,6 @@ void SqliteDatabase::build()
         << TIME_COLUMN << " FLOAT NOT NULL, "
         << RIGHT_ANS_COLUMN << " INTEGER NOT NULL, "
         << ANSWERS_COLUMN << " INTEGER NOT NULL, "
-        << SCORE_COLUMN << " INTEGER NOT NULL, "
         << GAMES_COLUMN << " INTEGER NOT NULL);";
     sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
     //This is a reset, it simply deletes all the previous strings that were inserted to it
@@ -302,7 +303,10 @@ int SqliteDatabase::getGames(void* data, int argc, char** argv, char** azColName
 int SqliteDatabase::getHighestScores(void* data, int argc, char** argv, char** azColName)
 {
     std::vector<std::string>* vec = (std::vector<std::string>*)data;
-    vec->push_back(argv[0]);
+    std::string stat = argv[0];
+    stat += '-';
+    stat += argv[2];
+    vec->push_back(stat);
     return 0;
 }
 

@@ -33,6 +33,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
     RequestResult result;
     this->m_room.removeUser(m_loggedUser);
     result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
+    result.response = JsonResponsePacketSerializer::serializeEmptyResponse();
     return result;
 }
 
@@ -57,7 +58,6 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
         res.hasGameBegun = false;
         res.questionCount = 1;
         res.status = ROOMCLOSED;
-        leaveRoom(info);
         RequestResult grab = leaveRoom(info);
         delete grab.newHandler;
         grab.newHandler = nullptr;

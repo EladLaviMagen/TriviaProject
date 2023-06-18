@@ -27,6 +27,7 @@ public:
 	Question getQuestionForUser(LoggedUser user);
 	int submitAnswer(LoggedUser user, unsigned int id);
 	std::vector<PlayerResults> getResults(LoggedUser user);
+	std::map<std::string, GameData> getPlayers();
 	void removeUser(LoggedUser user);
 	bool isEmpty();
 	unsigned int getId();

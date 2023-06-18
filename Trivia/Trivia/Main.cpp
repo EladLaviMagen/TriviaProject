@@ -10,12 +10,6 @@ class RequestHandlerFactory;
 
 int main()
 {
-    json buff;
-    std::map<int, std::string> a;
-    a[1] = "a";
-    a[2] = "aaaaa";
-    buff["chec"] = a;
-    std::cout << buff.dump();
     std::string input = "";
     WSAInitializer wsaInit;
     IDatabase* data = new SqliteDatabase();

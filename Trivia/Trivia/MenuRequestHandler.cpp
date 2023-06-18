@@ -86,12 +86,25 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
-	return RequestResult();
+	RequestResult result;
+	getPersonalStatsResponse response;
+	response.status = STATUS_SUCCESS;
+	response.statistics = m_statisticsManager.getUserStatistics(m_user.getUserName());
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
+
 }
 
 RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 {
-	return RequestResult();
+	RequestResult result;
+	getPersonalStatsResponse response;
+	response.status = STATUS_SUCCESS;
+	response.statistics = m_statisticsManager.getHighScore();
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
@@ -99,28 +112,22 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	RequestResult result;
 	JoinRoomRequest req = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
 	JoinRoomResponse response;
-	if (m_roomManager.getRoomState(req.roomId) == 1)
+	if (m_roomManager.getRoomState(req.roomId) == 0)
 	{
-		response.status = STATUS_FAILED;
-		result.newHandler = this;
-		JoinRoomResponse res;
-		res.status = 1;
-		result.response = JsonResponsePacketSerializer::serializeResponse(res);
-
+		response.status = STATUS_SUCCESS;
+		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager.getRoom(req.roomId));
+		m_roomManager.getRoom(req.roomId).addUser(m_user);
+		
 	}
 	else if (m_roomManager.getRoom(req.roomId).getAllUsers().size() == m_roomManager.getRoom(req.roomId).getData().maxPlayers)
 	{
 		response.status = STATUS_FAILED;
 		result.newHandler = this;
-		JoinRoomResponse res;
-		res.status = 2;
-		result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	}
 	else
 	{
-		response.status = STATUS_SUCCESS;
-		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager.getRoom(req.roomId));
-		m_roomManager.getRoom(req.roomId).addUser(m_user);
+		response.status = STATUS_FAILED;
+		result.newHandler = this;
 	}
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;

@@ -14,25 +14,18 @@ std::string int_to_bin_str(int num) {
 	return binary;
 }
 
-std::string roomToString(std::vector<RoomData> vec)
+std::vector<std::string> roomToString(std::vector<RoomData> vec)
 {
-	std::string rooms = "";
-	for (auto it = vec.begin(); it != vec.end(); it++)
+	std::vector<std::string> rooms;
+	for (int i = 0; i < vec.size(); i++)
 	{
-		rooms += std::to_string(it->id);
-		rooms += '|';
-		rooms += std::to_string(it->isActive);
-		rooms += '|';
-		rooms += std::to_string(it->maxPlayers);
-		rooms += '|';
-		rooms += it->name;
-		rooms += '|';
-		rooms += std::to_string(it->numOfQuestions);
-		rooms += '|';
-		rooms += std::to_string(it->timePerQuestion);
-		rooms += '|';
+		rooms.push_back(std::to_string(vec[i].id));
+		rooms.push_back(std::to_string(vec[i].isActive));
+		rooms.push_back(std::to_string(vec[i].maxPlayers));
+		rooms.push_back(vec[i].name);
+		rooms.push_back(std::to_string(vec[i].numOfQuestions));
+		rooms.push_back(std::to_string(vec[i].timePerQuestion));
 	}
-	rooms.pop_back();
 	return rooms;
 }
 
@@ -65,17 +58,7 @@ std::vector<unsigned char> createBuffer(json buff, std::string code)
 	return output;
 }
 
-std::string vectorToString(std::vector<std::string> vec)
-{
-	std::string ret = "";
-	for (int i = 0; i < vec.size(); i++)
-	{
-		ret += vec[i];
-		ret += '|';
-	}
-	ret.pop_back();
-	return ret;
-}
+
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(ErrorResponse err)
 {
@@ -117,7 +100,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRo
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse res)
 {
 	json buff;
-	buff[PLAYERS] = vectorToString(res.players);
+	buff[PLAYERS] = res.players;
 	return createBuffer(buff, SUCCESS_CODE);
 }
 
@@ -139,7 +122,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(getHi
 {
 	json buff;
 	buff[STATUS] = res.status;
-	buff[STATISTICS] = vectorToString(res.statistics);
+	buff[STATISTICS] = res.statistics;
 	return createBuffer(buff, SUCCESS_CODE);
 }
 
@@ -147,7 +130,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(getPe
 {
 	json buff;
 	buff[STATUS] = res.status;
-	buff[STATISTICS] = vectorToString(res.statistics);
+	buff[STATISTICS] = res.statistics;
 	return createBuffer(buff, SUCCESS_CODE);
 }
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse close)
@@ -169,15 +152,22 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRo
 	buff[STATUS] = state.status;
 	buff[HASBEG] = state.hasGameBegun;
 	buff[QCOUNT] = state.questionCount;
-	buff[PLAYERS] = vectorToString(state.players);
+	buff[PLAYERS] = state.players;
 	buff[ANSTIMEOUT] = state.answerTimeout;
 	return createBuffer(buff, SUCCESS_CODE);
 }
 
-//std::vector<unsigned char> JsonResponsePacketSerializer::serializeEmptyResponse()
-//{
-//
-//}
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeEmptyResponse()
+{
+	std::string buffer = SUCCESS_CODE;
+	buffer += "0000";
+	std::vector<unsigned char> ret;
+	for (int i = 0; i < buffer.size(); i++)
+	{
+		ret.push_back(buffer[i]);
+	}
+	return ret;
+}
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leave)
 {
@@ -190,7 +180,16 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetGa
 {
 	json buff;
 	buff[STATUS] = gameRes.status;
-	//buff[RESULTS] = gameRes.results;
+	std::vector<std::string> vec;
+	for (int i = 0; i < gameRes.results.size(); i++)
+	{
+		vec.push_back(std::to_string(gameRes.results[i].answerTimeout));
+		vec.push_back(std::to_string(gameRes.results[i].averageAnswerTime));
+		vec.push_back(std::to_string(gameRes.results[i].correctAnswerCount));
+		vec.push_back(gameRes.results[i].username);
+	}
+	buff[RESULTS] = vec;
+
 	return createBuffer(buff, SUCCESS_CODE);
 }
 

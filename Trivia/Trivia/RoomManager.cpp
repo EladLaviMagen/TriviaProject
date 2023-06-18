@@ -31,15 +31,7 @@ std::vector<RoomData> RoomManager::getRooms()
 
 Room& RoomManager::getRoom(int ID)
 {
-	try
-	{
-		return m_rooms[ID];
-	}
-	catch (std::exception ex)
-	{
-		throw RoomNotExist("fake");
-	}
-	
+	return m_rooms[ID];
 }
 
 int RoomManager::assignID()

@@ -7,10 +7,15 @@ StatisticsManager::StatisticsManager(IDatabase* data)
 
 std::vector<std::string> StatisticsManager::getHighScore()
 {
-	return std::vector<std::string>();
+	return m_database->getHighScores();
 }
 
 std::vector<std::string> StatisticsManager::getUserStatistics(std::string userName)
 {
-	return std::vector<std::string>();
+	std::vector<std::string> stats;
+	stats.push_back(std::to_string(m_database->getNumOfCorrectAnswer(userName)));
+	stats.push_back(std::to_string(m_database->getNumOfTotalAnswers(userName)));
+	stats.push_back(std::to_string(m_database->getPlayerAverageAnswerTime(userName)));
+	stats.push_back(std::to_string(m_database->getNumOfPlayerGames(userName)));
+	return stats;
 }

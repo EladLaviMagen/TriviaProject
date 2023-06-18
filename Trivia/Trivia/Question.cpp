@@ -14,7 +14,7 @@ std::vector<std::string> Question::getPossibleAnswers()
 
 int Question::getCorrectAnswerID()
 {
-    return 0;
+    return correctId;
 }
 
 std::string Question::getQuestion()

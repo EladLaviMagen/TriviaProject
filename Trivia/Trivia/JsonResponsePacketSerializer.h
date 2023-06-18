@@ -42,5 +42,6 @@ public:
 	static std::vector<unsigned char> serializeResponse(SubmitAnswerResponse res);
 	static std::vector<unsigned char> serializeResponse(GetQuestionResponse res);
 	static std::vector<unsigned char> serializeResponse(LeaveGameResponse res);
+	static std::vector<unsigned char> serializeEmptyResponse();
 };
 

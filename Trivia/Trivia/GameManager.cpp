@@ -31,3 +31,17 @@ void GameManager::deleteGame(unsigned int gameId)
 		}
 	}
 }
+
+Game& GameManager::getGame(std::string name)
+{
+	for (int i = 0; i < m_games.size(); i++)
+	{
+		for (auto it = m_games[i].getPlayers().begin(); it != m_games[i].getPlayers().end(); it++)
+		{
+			if (it->first == name)
+			{
+				return m_games[i];
+			}
+		}
+	}
+}
