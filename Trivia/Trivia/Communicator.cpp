@@ -83,10 +83,12 @@ void Communicator::handleNewClient(SOCKET sock)
 			if (m_clients[sock]->isRequestRelevant(info))
 			{
 				RequestResult result = m_clients[sock]->handleRequest(info);
+				hold = result.newHandler;
 				if (m_clients[sock] != result.newHandler)
 				{
-					delete m_clients[sock];
+					IRequestHandler* temp =  m_clients[sock];
 					m_clients[sock] = result.newHandler;
+					delete temp;
 					
 				}
 				for (int i = 0; i < result.response.size(); i++)

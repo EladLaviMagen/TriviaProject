@@ -20,5 +20,14 @@ Game GameManager::createGame(Room room)
 
 void GameManager::deleteGame(unsigned int gameId)
 {
-
+	if (m_games.size() != 0)
+	{
+		for (auto it = this->m_games.begin(); it != this->m_games.end(); it++)
+		{
+			if (it->getId() == gameId)
+			{
+				m_games.erase(it);
+			}
+		}
+	}
 }

@@ -21,9 +21,10 @@ Question Game::getQuestionForUser(LoggedUser user)
     return m_players[user.getUserName()].currentQuestion;
 }
 
-void Game::submitAnswer(LoggedUser user, unsigned int id)
+int Game::submitAnswer(LoggedUser user, unsigned int id)
 {
  
+    int right = getQuestionForUser(user).getCorrectAnswerID();
     if (getQuestionForUser(user).getCorrectAnswerID() == id)
     {
         m_players[user.getUserName()].correctAnswerCount++;
@@ -51,10 +52,43 @@ void Game::submitAnswer(LoggedUser user, unsigned int id)
     }
     while (difftime(time(0), timer) >= (double)_time)
     {}
+    return right;
+}
+
+std::vector<PlayerResults> Game::getResults(LoggedUser user)
+{
+    GameData data;
+    PlayerResults results;
+    std::vector<PlayerResults> vec;
+    if (m_players.size() != 0)
+    {
+        for (auto it = m_players.begin(); it != m_players.end(); it++)
+        {
+            data = it->second;
+            results.username = it->first;
+            results.averageAnswerTime = data.averageAnswerTime / m_questions.size();
+            results.correctAnswerCount = data.correctAnswerCount;
+            results.answerTimeout = 0;
+            vec.push_back(results);
+        }
+    }
+    return vec;
+
+    
     
 }
 
 void Game::removeUser(LoggedUser user)
 {
     m_players.erase(user.getUserName());
+}
+
+bool Game::isEmpty()
+{
+    return m_players.size() == 0;
+}
+
+unsigned int Game::getId()
+{
+    return this->gameId;
 }

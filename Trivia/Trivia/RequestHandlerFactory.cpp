@@ -43,6 +43,7 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 
 GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser)
 {
+    //m_gameManager.
     return nullptr;
 }
 

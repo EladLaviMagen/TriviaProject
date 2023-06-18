@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include <ctime>
 #include <map>
+#include "Response.h"
 
 typedef struct GameData
 {
@@ -24,8 +25,11 @@ class Game
 public:
 	Game(std::vector<Question> questions, std::vector<LoggedUser> players, int time);
 	Question getQuestionForUser(LoggedUser user);
-	void submitAnswer(LoggedUser user, unsigned int id);
+	int submitAnswer(LoggedUser user, unsigned int id);
+	std::vector<PlayerResults> getResults(LoggedUser user);
 	void removeUser(LoggedUser user);
+	bool isEmpty();
+	unsigned int getId();
 private:
 	std::vector<Question> m_questions;
 	std::map<std::string, GameData> m_players;

@@ -1,6 +1,8 @@
 #pragma once
 #include "LoggedUser.h"
 #include <vector>
+#define GAMEBEGUN 6
+#define CLOSED 3
 
 typedef struct RoomData
 {
@@ -20,6 +22,8 @@ public:
 	void addUser(LoggedUser user);
 	void removeUser(LoggedUser user);
 	std::vector<std::string> getAllUsers();
+	void activate();
+	void close();
 	RoomData getData();
 private:
 	RoomData m_metadata;

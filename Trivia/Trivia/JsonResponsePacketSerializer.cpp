@@ -173,6 +173,12 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRo
 	buff[ANSTIMEOUT] = state.answerTimeout;
 	return createBuffer(buff, SUCCESS_CODE);
 }
+
+//std::vector<unsigned char> JsonResponsePacketSerializer::serializeEmptyResponse()
+//{
+//
+//}
+
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leave)
 {
 	json buff;
@@ -182,20 +188,32 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Leave
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse gameRes)
 {
-	return std::vector<unsigned char>();
+	json buff;
+	buff[STATUS] = gameRes.status;
+	//buff[RESULTS] = gameRes.results;
+	return createBuffer(buff, SUCCESS_CODE);
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse res)
 {
-	return std::vector<unsigned char>();
+	json buff;
+	buff[STATUS] = res.status;
+	buff[CORRECT] = res.correctAnswerId;
+	return createBuffer(buff, SUCCESS_CODE);
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse res)
 {
-	return std::vector<unsigned char>();
+	json buff;
+	buff[STATUS] = res.status;
+	buff[QUESTION] = res.question;
+	buff[ANSWER] = res.answers;
+	return createBuffer(buff, SUCCESS_CODE);
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse res)
 {
-	return std::vector<unsigned char>();
+	json buff;
+	buff[STATUS] = res.status;
+	return createBuffer(buff, SUCCESS_CODE);
 }

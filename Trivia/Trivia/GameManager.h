@@ -8,6 +8,7 @@ public:
 	GameManager(IDatabase* data);
 	Game createGame(Room room);
 	void deleteGame(unsigned int gameId);
+	//Game& getGame
 private:
 	IDatabase* m_database;
 	std::vector<Game> m_games;

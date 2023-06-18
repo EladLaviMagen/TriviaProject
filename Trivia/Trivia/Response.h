@@ -17,6 +17,7 @@
 #define SUCCESS_CODE "00000001"
 #define FAILURE_CODE "00000100"
 #define ERROR_CODE "00000000"
+#define STATUS_GAME_FINISHED 8
 
 class Communicator;
 class IRequestHandler;

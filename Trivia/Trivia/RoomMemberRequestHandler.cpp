@@ -1,4 +1,5 @@
 #include "RoomMemberRequestHandler.h"
+#define WAITING 0
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
 {
@@ -40,22 +41,45 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;
-    try
+    if(m_roomManager.getRoom(data.id).getData().isActive == WAITING)
     {
         res.answerTimeout = m_roomManager.getRoom(data.id).getData().timePerQuestion;
-        res.hasGameBegun = m_roomManager.getRoom(data.id).getData().isActive;
+        res.hasGameBegun = false;
         res.players = m_roomManager.getRoom(data.id).getAllUsers();
         res.questionCount = m_roomManager.getRoom(data.id).getData().numOfQuestions;
         res.status = STATUS_SUCCESS;
         result.newHandler = this;
     }
-    catch (RoomNotExist& ex)
+    else if (m_roomManager.getRoom(data.id).getData().isActive == ROOMCLOSED)
     {
         result.newHandler = m_handlerFactory.createMenuRequestHandler(m_loggedUser);
         res.answerTimeout = 1;
-        res.hasGameBegun = 3;
+        res.hasGameBegun = false;
         res.questionCount = 1;
         res.status = ROOMCLOSED;
+        leaveRoom(info);
+        RequestResult grab = leaveRoom(info);
+        delete grab.newHandler;
+        grab.newHandler = nullptr;
+        if (m_roomManager.getRoom(data.id).getAllUsers().size() == 0)
+        {
+            m_roomManager.deleteRoom(m_room.getData().id);
+        }
+    }
+    else
+    {
+        result.newHandler = m_handlerFactory.createGameRequestHandler(m_loggedUser);
+        res.answerTimeout = 1;
+        res.hasGameBegun = true;
+        res.questionCount = 1;
+        res.status = GAMEBEGUN;
+        RequestResult grab = leaveRoom(info);
+        delete grab.newHandler;
+        grab.newHandler = nullptr;
+        if (m_roomManager.getRoom(data.id).getAllUsers().size() == 0)
+        {
+            m_roomManager.deleteRoom(m_room.getData().id);
+        }
     }
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
     return result;

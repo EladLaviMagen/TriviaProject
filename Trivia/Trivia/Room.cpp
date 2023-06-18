@@ -34,6 +34,16 @@ std::vector<std::string> Room::getAllUsers()
 	return users;
 }
 
+void Room::activate()
+{
+	m_metadata.isActive = GAMEBEGUN;
+}
+
+void Room::close()
+{
+	m_metadata.isActive = CLOSED;
+}
+
 RoomData Room::getData()
 {
 	return m_metadata;

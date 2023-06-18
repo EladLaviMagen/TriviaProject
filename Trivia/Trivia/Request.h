@@ -25,6 +25,10 @@
 #define STARTGAME 12
 #define GETSTATE 13
 #define LEAVEROOM 15
+#define GETQUESTION 16
+#define SUBMITANS 17
+#define GETRESULTS 18
+#define LEAVEGAME 19
 
 
 class IRequestHandler;
