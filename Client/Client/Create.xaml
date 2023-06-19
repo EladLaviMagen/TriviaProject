@@ -1,0 +1,26 @@
+﻿<Window x:Class="Client.Create"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Create" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://cdn.discordapp.com/attachments/912783177465085983/1116405794393563216/images.jpg"/>
+        </Grid.Background>
+        <ComboBox x:Name="numOfMem" Width="120" Margin="259,62,421,348" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBox Width="120"/>
+        </ComboBox>
+        <ComboBox x:Name="numOfMem_Copy" Width="120" Margin="400,74,280,336" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBox Width="120"/>
+        </ComboBox>
+        <ComboBox x:Name="numOfMem_Copy1" Width="120" Margin="598,46,82,364" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBox Width="120"/>
+        </ComboBox>
+        <TextBox x:Name="name" TextWrapping="Wrap" Text="Room Name" Width="120" Margin="98,50,582,361" TextChanged="TextBox_TextChanged"/>
+        <Button x:Name="create" Content="create" Margin="329,361,329,38"/>
+        <Button x:Name="_return" Content="return" Margin="0,0,727,405"/>
+    </Grid>
+</Window>

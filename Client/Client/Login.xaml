@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Login" Height="450" Width="800">
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush ImageSource="https://api.time.com/wp-content/uploads/2019/08/caveman-spongebob-spongegar.png"/>
+        </Grid.Background>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="650,238,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBox x:Name="username" HorizontalAlignment="Left" Margin="595,133,0,0" TextWrapping="Wrap" Text="username" VerticalAlignment="Top" Width="152" Height="19"/>
+        <TextBox x:Name="password" HorizontalAlignment="Left" Margin="595,178,0,0" TextWrapping="Wrap" Text="password" VerticalAlignment="Top" Width="152" Height="19"/>
+        <Button Content="return" HorizontalAlignment="Left" Margin="45,71,0,0" VerticalAlignment="Top" Click="returnToMain"/>
+        <TextBlock x:Name="notify" HorizontalAlignment="Left" Margin="110,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="32" Width="308" FontSize="20" FontWeight="Bold"/>
     </Grid>
 </Window>
