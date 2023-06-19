@@ -51,7 +51,7 @@ private:
 	static const char* ANSWERS_COLUMN;
 	static const char* GAMES_COLUMN;
 	static const char* SCORE_COLUMN;
-	static std::mutex users;
+	static std::mutex users_lock;
 	sqlite3* _db;
 };
 

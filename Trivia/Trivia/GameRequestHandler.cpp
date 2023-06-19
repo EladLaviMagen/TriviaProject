@@ -39,22 +39,15 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 	GetQuestionResponse res;
 	Question question = m_game.getQuestionForUser(m_user);
 	std::map<unsigned int, std::string> ans;
-	if (question.getCorrectAnswerID() != -1)
+	for (int i = 0; i < 4; i++)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			ans[i] = (question.getPossibleAnswers())[i];
-		}
-		res.answers = ans;
-		res.question = question.getQuestion();
-		res.status = 1;
-		result.newHandler = this;
-		result.response = JsonResponsePacketSerializer::serializeResponse(res);
+		ans[i] = (question.getPossibleAnswers())[i];
 	}
-	else
-	{
-		result = getGameResults(info);
-	}
+	res.answers = ans;
+	res.question = question.getQuestion();
+	res.status = 1;
+	result.newHandler = this;
+	result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	return result;
 }
 RequestResult GameRequestHandler::submitAnswer(RequestInfo info)

@@ -38,6 +38,7 @@ SqliteDatabase::SqliteDatabase() : IDatabase()
         build();
 
 }
+
 bool SqliteDatabase::open()
 {
 	return sqlite3_open(DB_FILE_NAME, &_db) == SQLITE_OK;
