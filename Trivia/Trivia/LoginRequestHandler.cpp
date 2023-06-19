@@ -34,6 +34,7 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
     {
         m_loginManager.login(request.username, request.password);
         result.response = JsonResponsePacketSerializer::serializeResponse(response);
+        result.newHandler = m_handlerFactory.createMenuRequestHandler(LoggedUser(request.username));
 
     }
     catch (MyException& ex)

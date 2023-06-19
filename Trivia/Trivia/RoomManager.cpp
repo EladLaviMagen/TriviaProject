@@ -7,6 +7,7 @@ RoomManager::RoomManager()
 }
 void RoomManager::createRoom(LoggedUser user, RoomData data)
 {
+	std::lock_guard<std::mutex> locker(room_lock);
 	this->m_rooms[id] = Room(user, data);
 }
 

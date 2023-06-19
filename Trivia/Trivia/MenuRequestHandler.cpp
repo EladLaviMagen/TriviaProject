@@ -50,10 +50,6 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	RequestResult result;
 	m_handlerFactory.getLoginManager().logout(m_user.getUserName());
-	for (int i = 1; i < m_roomManager.getID(); i++)
-	{
-		m_roomManager.getRoom(i).removeUser(m_user);
-	}
 	LogoutResponse response;
 	response.status = STATUS_SUCCESS;
 	result.newHandler = m_handlerFactory.createLoginRequestHandler();

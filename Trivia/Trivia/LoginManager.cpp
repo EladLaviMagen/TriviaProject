@@ -4,6 +4,7 @@
 LoginManager::LoginManager(IDatabase* database)
 {
 	m_database = database;
+	m_loggedUsers.push_back(LoggedUser("Dummy"));
 }
 
 void LoginManager::signUp(std::string name, std::string password, std::string mail)

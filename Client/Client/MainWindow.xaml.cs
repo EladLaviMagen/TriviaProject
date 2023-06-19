@@ -35,11 +35,20 @@ namespace Client
             Audio.mediaPlayer.Play();
             
         }
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Audio.mediaPlayer.Close();
             Signup signup = new Signup();
+            this.Close();
+            signup.ShowDialog();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Audio.mediaPlayer.Close();
+            Login signup = new Login();
             this.Close();
             signup.ShowDialog();
         }
