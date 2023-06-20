@@ -1,16 +1,17 @@
 #include "LoginManager.h"
-
+std::mutex LoginManager::login_lock;
 
 LoginManager::LoginManager(IDatabase* database)
 {
+	std::lock_guard<std::mutex> locker(login_lock);
 	m_database = database;
-	m_loggedUsers.push_back(LoggedUser("Dummy"));
 }
 
 void LoginManager::signUp(std::string name, std::string password, std::string mail)
 {
 	if (!m_database->doesUserExist(name))
 	{
+		std::lock_guard<std::mutex> locker(login_lock);
 		m_database->addNewUser(name, password, mail);
 		m_loggedUsers.push_back(LoggedUser(name));
 	}
@@ -26,9 +27,10 @@ void LoginManager::login(std::string name, std::string password)
 	{
 		if (m_database->doesPasswordMatch(name, password))
 		{
-			for (auto it = m_loggedUsers.begin(); it != m_loggedUsers.end(); it++)
+			std::lock_guard<std::mutex> locker(login_lock);
+			for (int i = 0; i < m_loggedUsers.size(); i++)
 			{
-				if (it->getUserName() == name)
+				if (m_loggedUsers[i].getUserName() == name)
 				{
 					throw(AccLoggedException("Account already logged in"));
 				}
@@ -48,13 +50,11 @@ void LoginManager::login(std::string name, std::string password)
 }
 void LoginManager::logout(std::string name)
 {
-	bool notDeleted = true;
-	for (auto it = m_loggedUsers.begin(); it != m_loggedUsers.end(); it++)
+	for (int i = 0; i < m_loggedUsers.size(); i++)
 	{
-		if (it->getUserName() == name)
+		if (m_loggedUsers[i].getUserName() == name)
 		{
-			m_loggedUsers.erase(it);
-			notDeleted = false;
+			m_loggedUsers[i].signout();
 		}
 	}
 }

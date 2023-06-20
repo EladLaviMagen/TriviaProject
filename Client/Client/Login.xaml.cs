@@ -23,6 +23,7 @@ namespace Client
     /// </summary>
     public partial class Login : Window
     {
+        private bool first = true;
         public Login()
         {
             InitializeComponent();
@@ -49,7 +50,11 @@ namespace Client
                 string json = JsonConvert.SerializeObject(sign);
                 msg += Translations.padLeft(Convert.ToString(json.Length, 2), 32);
                 msg += Translations.stringToBinary(json);
-                Communicator.client.Connect(Communicator.serverEndPoint);
+                if(first)
+                {
+                    Communicator.client.Connect(Communicator.serverEndPoint);
+                    first = false;
+                }
                 NetworkStream clientStream = Communicator.client.GetStream();
 
                 byte[] buffer = new ASCIIEncoding().GetBytes(msg);

@@ -84,9 +84,6 @@ void Communicator::handleNewClient(SOCKET sock)
 			{
 				RequestResult result = m_clients[sock]->handleRequest(info);
 				hold = result.newHandler;
-				RequestInfo check;
-				check.id = LOGOUT;
-				hold->isRequestRelevant(check);
 				if (m_clients[sock] != result.newHandler)
 				{
 					IRequestHandler* temp =  m_clients[sock];
@@ -109,6 +106,7 @@ void Communicator::handleNewClient(SOCKET sock)
 					dataToSend += response[i];
 				}
 			}
+			buffer.clear();
 			Helper::sendData(sock, dataToSend);
 		}
 	}

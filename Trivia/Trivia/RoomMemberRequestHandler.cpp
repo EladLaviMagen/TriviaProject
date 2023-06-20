@@ -33,7 +33,9 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
     RequestResult result;
     this->m_room.removeUser(m_loggedUser);
     result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
-    result.response = JsonResponsePacketSerializer::serializeEmptyResponse();
+    LeaveRoomResponse res;
+    res.status = 1;
+    result.response = JsonResponsePacketSerializer::serializeResponse(res);
     return result;
 }
 

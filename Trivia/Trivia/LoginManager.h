@@ -7,6 +7,7 @@
 #include "UserNotExistException.h"
 #include "AccLoggedException.h"
 #include "IncorrectPasswordException.h"
+#include <mutex>
 
 class LoggedUser;
 class IDatabase;
@@ -21,5 +22,6 @@ public:
 private:
 	IDatabase* m_database;
 	std::vector<LoggedUser> m_loggedUsers;
+	static std::mutex login_lock;
 };
 

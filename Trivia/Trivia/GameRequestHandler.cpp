@@ -80,6 +80,8 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 	}
 	RequestResult result;
 	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
-	result.response = JsonResponsePacketSerializer::serializeEmptyResponse();
+	LeaveGameResponse res;
+	res.status = 1;
+	result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	return result;
 }

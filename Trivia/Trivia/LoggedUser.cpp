@@ -9,3 +9,8 @@ std::string LoggedUser::getUserName()
 {
 	return this->m_username;
 }
+
+void LoggedUser::signout()
+{
+	m_username = "";
+}

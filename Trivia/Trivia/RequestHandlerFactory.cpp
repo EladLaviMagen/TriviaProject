@@ -8,7 +8,7 @@ RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this, m_loginManager);
+    return new LoginRequestHandler(*this, std::ref(m_loginManager));
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()
