@@ -65,6 +65,12 @@ namespace Client
                 int bytesRead = clientStream.Read(code, 0, 8);
                 string code_str = System.Text.Encoding.Default.GetString(code);
                 clientStream.Flush();
+                byte[] size = new byte[32];
+                bytesRead = clientStream.Read(size, 0, 32);
+                string size_str = System.Text.Encoding.Default.GetString(size);
+                byte[] err = new byte[Convert.ToInt32(size_str, 2) * 8];
+                bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2) * 8);
+                string err_str = System.Text.Encoding.Default.GetString(err);
                 if (Convert.ToInt32(code_str, 2) == 1)
                 {
                     Audio.mediaPlayer.Close();
@@ -74,12 +80,7 @@ namespace Client
                 }
                 else
                 {
-                    byte[] size = new byte[32];
-                    bytesRead = clientStream.Read(size, 0, 32);
-                    string size_str = System.Text.Encoding.Default.GetString(size);
-                    byte[] err = new byte[Convert.ToInt32(size_str, 2) * 8];
-                    bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2) * 8);
-                    string err_str = System.Text.Encoding.Default.GetString(err);
+                    
                     ErrorResponse response = JsonConvert.DeserializeObject<ErrorResponse>(Translations.binaryToString(err_str));
                     notify.Text = response.message;
                 }

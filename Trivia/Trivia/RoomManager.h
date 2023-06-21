@@ -22,6 +22,6 @@ public:
 private:
 	static std::mutex room_lock;
 	static int id;
-	std::map<int, Room> m_rooms;
+	std::map<int, Room>* m_rooms;
 };
 

@@ -5,6 +5,7 @@ LoginManager::LoginManager(IDatabase* database)
 {
 	std::lock_guard<std::mutex> locker(login_lock);
 	m_database = database;
+	m_loggedUsers = new std::vector<LoggedUser>();
 }
 
 void LoginManager::signUp(std::string name, std::string password, std::string mail)
@@ -13,7 +14,7 @@ void LoginManager::signUp(std::string name, std::string password, std::string ma
 	{
 		std::lock_guard<std::mutex> locker(login_lock);
 		m_database->addNewUser(name, password, mail);
-		m_loggedUsers.push_back(LoggedUser(name));
+		m_loggedUsers->push_back(LoggedUser(name));
 	}
 	else
 	{
@@ -28,14 +29,15 @@ void LoginManager::login(std::string name, std::string password)
 		if (m_database->doesPasswordMatch(name, password))
 		{
 			std::lock_guard<std::mutex> locker(login_lock);
-			for (int i = 0; i < m_loggedUsers.size(); i++)
+
+			for (auto it = m_loggedUsers->begin(); it != m_loggedUsers->end(); it++)
 			{
-				if (m_loggedUsers[i].getUserName() == name)
+				if (it->getUserName() == name)
 				{
 					throw(AccLoggedException("Account already logged in"));
 				}
 			}
-			m_loggedUsers.push_back(LoggedUser(name));
+			m_loggedUsers->push_back(LoggedUser(name));
 		}
 		else
 		{
@@ -50,11 +52,13 @@ void LoginManager::login(std::string name, std::string password)
 }
 void LoginManager::logout(std::string name)
 {
-	for (int i = 0; i < m_loggedUsers.size(); i++)
+	std::lock_guard<std::mutex> locker(login_lock);
+	for (auto it = m_loggedUsers->begin(); it != m_loggedUsers->end(); it++)
 	{
-		if (m_loggedUsers[i].getUserName() == name)
+		if (it->getUserName() == name)
 		{
-			m_loggedUsers[i].signout();
+			m_loggedUsers->erase(it);
+			return;
 		}
 	}
 }

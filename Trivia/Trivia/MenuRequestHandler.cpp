@@ -136,6 +136,10 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	RoomData room;
 	room.id = m_roomManager.assignID();
 	room.isActive = 0;
+	room.maxPlayers = details.maxUsers;
+	room.name = details.roomName;
+	room.numOfQuestions = details.questionCount;
+	room.timePerQuestion = details.answerTimeout;
 	this->m_roomManager.createRoom(this->m_user, room);
 	CreateRoomResponse response;
 	response.status = STATUS_SUCCESS;

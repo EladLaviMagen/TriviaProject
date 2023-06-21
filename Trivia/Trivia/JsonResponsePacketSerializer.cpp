@@ -20,11 +20,11 @@ std::vector<std::string> roomToString(std::vector<RoomData> vec)
 	for (int i = 0; i < vec.size(); i++)
 	{
 		rooms.push_back(std::to_string(vec[i].id));
-		rooms.push_back(std::to_string(vec[i].isActive));
-		rooms.push_back(std::to_string(vec[i].maxPlayers));
 		rooms.push_back(vec[i].name);
+		rooms.push_back(std::to_string(vec[i].maxPlayers));
 		rooms.push_back(std::to_string(vec[i].numOfQuestions));
 		rooms.push_back(std::to_string(vec[i].timePerQuestion));
+		rooms.push_back(std::to_string(vec[i].isActive));
 	}
 	return rooms;
 }

@@ -21,7 +21,7 @@ public:
 	void logout(std::string name);
 private:
 	IDatabase* m_database;
-	std::vector<LoggedUser> m_loggedUsers;
+	std::vector<LoggedUser>* m_loggedUsers;
 	static std::mutex login_lock;
 };
 

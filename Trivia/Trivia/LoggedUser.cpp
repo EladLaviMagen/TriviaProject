@@ -14,3 +14,8 @@ void LoggedUser::signout()
 {
 	m_username = "";
 }
+
+bool LoggedUser::operator==(LoggedUser other)
+{
+	return this->m_username == other.getUserName();
+}
