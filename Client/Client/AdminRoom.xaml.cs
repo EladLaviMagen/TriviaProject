@@ -19,9 +19,17 @@ namespace Client
     /// </summary>
     public partial class AdminRoom : Window
     {
-        public AdminRoom()
+        bool _admin = false;
+        public AdminRoom(bool admin)
         {
+            _admin = admin;
             InitializeComponent();
+            if(!admin)
+            {
+                Start.Visibility = Visibility.Collapsed;
+                Start.IsEnabled = false;
+                close.Content = "Leave room";
+            }
         }
 
         private void membersList_SelectionChanged(object sender, SelectionChangedEventArgs e)

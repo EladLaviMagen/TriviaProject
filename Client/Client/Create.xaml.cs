@@ -65,7 +65,16 @@ namespace Client
                     byte[] code = new byte[8];
                     int bytesRead = clientStream.Read(code, 0, 8);
                     string code_str = System.Text.Encoding.Default.GetString(code);
+                    byte[] size = new byte[32];
+                    bytesRead = clientStream.Read(size, 0, 32);
+                    string size_str = System.Text.Encoding.Default.GetString(size);
+                    byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
+                    bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
                     clientStream.Flush();
+                    AdminRoom r = new AdminRoom(true);
+                    this.Close();
+                    r.ShowDialog();
+
                 }
             }
         }

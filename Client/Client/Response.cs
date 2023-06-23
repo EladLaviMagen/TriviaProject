@@ -45,4 +45,6 @@ namespace Client
                 this.rooms = rooms;
             }
         }
+
+        
 }

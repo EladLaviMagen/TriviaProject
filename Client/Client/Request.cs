@@ -67,4 +67,5 @@ namespace Client
                 this.roomId = roomId;
             }
         }
+
 }

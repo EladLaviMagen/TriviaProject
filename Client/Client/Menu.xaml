@@ -10,7 +10,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="https://cdn.discordapp.com/attachments/912783177465085983/1115250742127755264/1200.png"/>
         </Grid.Background>
-        <ListBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="572,217,47,110" SelectionChanged="ListBox_SelectionChanged"/>
+        <ComboBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="578,212,41,184" SelectionChanged="ListBox_SelectionChanged"/>
         <Button x:Name="ready" Content="" Margin="578,325,53,50" RenderTransformOrigin="-0.14,-0.275" Click="ready_Click" Background="{x:Null}"/>
         <Button x:Name="sign_out" Content="" Margin="46,10,652,373"  Background="{x:Null}" Click="sign_out_Click"/>
         <Button x:Name="create" Content="" Margin="530,190,233,201" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Click="create_Click"/>
