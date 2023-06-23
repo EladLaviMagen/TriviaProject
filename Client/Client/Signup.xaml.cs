@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Win32;
 using System.IO;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Client
 {
@@ -25,6 +26,7 @@ namespace Client
     /// </summary>
     public partial class Signup : Window
     {
+
         public Signup()
         {
             InitializeComponent();
@@ -52,16 +54,26 @@ namespace Client
                 string json = JsonConvert.SerializeObject(sign);
                 msg += Translations.padLeft(Convert.ToString(json.Length, 2), 32);
                 msg += Translations.stringToBinary(json);
-                Communicator.client.Connect(Communicator.serverEndPoint);
+                if (Communicator.first)
+                {
+                    Communicator.client.Connect(Communicator.serverEndPoint);
+                    Communicator.first = false;
+                }
+                
                 NetworkStream clientStream = Communicator.client.GetStream();
 
                 byte[] buffer = new ASCIIEncoding().GetBytes(msg);
                 clientStream.Write(buffer, 0, buffer.Length);
-                clientStream.Flush();
 
                 byte[] code = new byte[8];
                 int bytesRead = clientStream.Read(code, 0, 8);
                 string code_str = System.Text.Encoding.Default.GetString(code);
+                byte[] size = new byte[32];
+                bytesRead = clientStream.Read(size, 0, 32);
+                string size_str = System.Text.Encoding.Default.GetString(size);
+                byte[] err = new byte[Convert.ToInt32(size_str, 2) * 8];
+                bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2) * 8);
+                string err_str = System.Text.Encoding.Default.GetString(err);
                 clientStream.Flush();
                 if (Convert.ToInt32(code_str, 2) == 1)
                 {
@@ -72,12 +84,7 @@ namespace Client
                 }
                 else
                 {
-                    byte[] size = new byte[32];
-                    bytesRead = clientStream.Read(size, 0, 32);
-                    string size_str = System.Text.Encoding.Default.GetString(size);
-                    byte[] err = new byte[Convert.ToInt32(size_str, 2) * 8];
-                    bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2) * 8);
-                    string err_str = System.Text.Encoding.Default.GetString(err);
+
                     ErrorResponse response = JsonConvert.DeserializeObject<ErrorResponse>(Translations.binaryToString(err_str));
                     notify.Text = response.message;
                 }

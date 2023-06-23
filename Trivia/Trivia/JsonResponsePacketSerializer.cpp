@@ -4,7 +4,6 @@ using json = nlohmann::json;
 
 std::string int_to_bin_str(int num) {
 	std::string binary = "";
-
 	while (num > 0) {
 		int digit = num % 2;
 		binary = std::to_string(digit) + binary;

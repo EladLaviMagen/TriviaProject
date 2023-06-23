@@ -21,6 +21,7 @@ using System.Net.Sockets;
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
+using System.Runtime.CompilerServices;
 
 namespace Client
 {
@@ -78,6 +79,11 @@ namespace Client
                 {
                     bgWorker.CancelAsync();
                     stopFlag = false;
+                    
+                }
+                if (bgWorker.CancellationPending)
+                {
+                    return;
                 }
                 Thread.Sleep(1000);
 
@@ -103,10 +109,10 @@ namespace Client
                         listBox.SelectedItem = selected;
                     }
                 }
-
+                
             }
         }
-
+        
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -172,7 +178,10 @@ namespace Client
 
         private void create_Click(object sender, RoutedEventArgs e)
         {
-            
+            stopFlag = true;
+            while(stopFlag)
+            {}
+            bgWorker.CancelAsync();
             Audio.mediaPlayer.Close();
             Create build = new Create();
             this.Close();

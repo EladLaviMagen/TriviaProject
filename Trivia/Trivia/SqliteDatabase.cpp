@@ -180,9 +180,61 @@ void SqliteDatabase::build()
         << ANSWER1_COLUMN << " TEXT NOT NULL, "
         << ANSWER2_COLUMN << " TEXT NOT NULL, "
         << ANSWER3_COLUMN << " TEXT NOT NULL);";
+        sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
+        sql.str("");
+        //q1
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'Whats the name of the cup that Lightening McQueen is racing for ? '" << ", " << "'Piston Cup'" << ", " << "'You did what in your cup'" << ", " << "'Racing cup'" << ", " << "'Shield cup'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q2
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'Whos the voice of Lightening McQueen?'" << ", " << "'Owen Wilson'" << ", " << "'Liam Hemsworth'" << ", " << "'Changing Tatum'" << ", " << "'Tom Hanks'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q3
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'What year was the Cars movie released?'" << ", " << "'2006'" << ", " << "'2004'" << ", " << "'2010'" << ", " << "'2008'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q4
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'What year was the Cars movie released?'" << ", " << "'2006'" << ", " << "'2004'" << ", " << "'2010'" << ", " << "'2008'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q5
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'What is Lightening McQueens racing number?'" << ", " << "'95'" << ", " << "'94'" << ", " << "'65'" << ", " << "'59'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q6
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'In the movie which racing team did Lightening McQueen want to join?'" << ", " << "'Dinoco'" << ", " << "'Rusteeze'" << ", " << "'Dinosaur'" << ", " << "'Dinococo'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q7
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'What did Lightning McQueen have to fix to be allowed to leave Radiator Springs?'" << ", " << "'the road'" << ", " << "'the tower'" << ", " << "'the stadium'" << ", " << "'the ramp'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q8
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'what else was doc called?'" << ", " << "'hudson hornet'" << ", " << "'mater'" << ", " << "'dale'" << ", " << "'rpm'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q9
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'Who was lizzuy married to?'" << ", " << "'stanley'" << ", " << "'mack'" << ", " << "'sherrif'" << ", " << "'mater'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
+        //q10
+        sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
+            << " ) VALUES (" << "'When cars 3 came out?'" << ", " << "'june 16 2017'" << ", " << "'july 4 2020'" << ", " << "'august 17 2017'" << ", " << "'june 2 2018'" << "); ";
+        sqlRequest(sql);
+        sql.str("");
 
 
-    sqlite3_exec(_db, sql.str().c_str(), nullptr, nullptr, &error);
+    
     //This is a reset, it simply deletes all the previous strings that were inserted to it
     sql.str("");
     sql << "CREATE TABLE " << STATISTICS_TABLE << "("
