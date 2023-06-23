@@ -94,9 +94,9 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
    
 }
 
-std::vector<Question> SqliteDatabase::getQuestions(int numOf)
+std::vector<Question>* SqliteDatabase::getQuestions(int numOf)
 {
-    std::vector<Question> questionList;
+    std::vector<Question>* questionList = new std::vector<Question>();
     std::stringstream sql;
     sql << "SELECT * FROM " << QUESTIONS_TABLE << " LIMIT " << numOf << ";";
     sqlRequest(sql, SqliteDatabase::sqlGetQuestions, &questionList);
@@ -273,7 +273,7 @@ int SqliteDatabase::userExist(void* data, int argc, char** argv, char** azColNam
 int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** azColName)
 {
     //Takes ID and inputs it into pointer
-    std::vector<Question>* vec = (std::vector<Question>*)data;
+    std::vector<Question>** vec = (std::vector<Question>**)data;
     std::vector<std::string> ans;
     for (int i = 1; i < argc; i++)
     {
@@ -289,7 +289,7 @@ int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** az
             correct = i;
         }
     }
-    vec->push_back(Question(argv[0], ans, correct));
+    (*vec)->push_back(Question(argv[0], ans, correct));
     return 0;
 }
 

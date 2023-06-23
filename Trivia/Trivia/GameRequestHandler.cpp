@@ -1,8 +1,11 @@
 #include "GameRequestHandler.h"
 
 
-GameRequestHandler::GameRequestHandler(Game& game, LoggedUser user, GameManager manager, RequestHandlerFactory factory) : m_game(game), m_user(user), m_gameManager(manager), m_handlerFactory(factory)
-{}
+GameRequestHandler::GameRequestHandler(Game& game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory) : m_game(game), m_user(user)
+{
+	m_gameManager = manager;
+	m_handlerFactory = factory;
+}
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo info) 
 {
@@ -76,10 +79,10 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 	this->m_game.removeUser(m_user);
 	if (m_game.isEmpty())
 	{
-		m_gameManager.deleteGame(m_game.getId());
+		m_gameManager->deleteGame(m_game.getId());
 	}
 	RequestResult result;
-	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	result.newHandler = m_handlerFactory->createMenuRequestHandler(m_user);
 	LeaveGameResponse res;
 	res.status = 1;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);

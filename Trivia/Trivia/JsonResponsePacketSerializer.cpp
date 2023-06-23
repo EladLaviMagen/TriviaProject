@@ -205,7 +205,18 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetQu
 	json buff;
 	buff[STATUS] = res.status;
 	buff[QUESTION] = res.question;
-	buff[ANSWER] = res.answers;
+	std::vector<int> ids;
+	std::vector<std::string> ans;
+	if (res.answers.size() != 0)
+	{
+		for (auto it = res.answers.begin(); it != res.answers.end(); it++)
+		{
+			ids.push_back(it->first);
+			ans.push_back(it->second);
+		}
+	}
+	buff[ID_JSON] = ids;
+	buff[ANSWER] = ans;
 	return createBuffer(buff, SUCCESS_CODE);
 }
 

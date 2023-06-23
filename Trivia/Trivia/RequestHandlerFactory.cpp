@@ -1,10 +1,12 @@
 #include "RequestHandlerFactory.h"
 
-RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, StatisticsManager m_statistics) : m_loginManager(m_login), m_gameManager(GameManager(m_data))
+RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, StatisticsManager m_statistics) : m_loginManager(m_login)
 {
+    
     m_StatisticsManager = m_statistics;
     m_roomManager = new RoomManager();
     m_database = m_data;
+    m_gameManager = new GameManager(m_data);
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
@@ -44,10 +46,10 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 
 GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user)
 {
-    return new GameRequestHandler(m_gameManager.getGame(user.getUserName()),user, m_gameManager, *this);
+    return new GameRequestHandler(m_gameManager->getGame(user.getUserName()),user, m_gameManager, this);
 }
 
-GameManager& RequestHandlerFactory::getGameManager()
+GameManager* RequestHandlerFactory::getGameManager()
 {
     return m_gameManager;
 }

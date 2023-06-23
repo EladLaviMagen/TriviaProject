@@ -96,6 +96,13 @@ namespace Client
                 this.Close();
                 menu.ShowDialog();
             }
+            else if(response.status == 6)
+            {
+                leftOrClosed = true;
+                Game game = new Game();
+                this.Close();
+                game.ShowDialog();
+            }
             
         }
         private void membersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -105,6 +112,32 @@ namespace Client
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+            leftOrClosed = true;
+            string msg = Convert.ToString(12, 2);
+            msg = Translations.padLeft(msg, 8);
+            msg += Translations.padLeft("", 32);
+            NetworkStream clientStream = Communicator.client.GetStream();
+
+            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] code = new byte[8];
+            int bytesRead = clientStream.Read(code, 0, 8);
+            string code_str = System.Text.Encoding.Default.GetString(code);
+            byte[] size = new byte[32];
+            bytesRead = clientStream.Read(size, 0, 32);
+            string size_str = System.Text.Encoding.Default.GetString(size);
+            byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
+            bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
+            string rooms_str = System.Text.Encoding.Default.GetString(rooms);
+            Response res = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
+            if(res.status == 1)
+            {
+                Game game = new Game();
+                this.Close();
+                game.ShowDialog();
+            }
+
 
         }
 

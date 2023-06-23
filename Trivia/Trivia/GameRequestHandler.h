@@ -8,7 +8,7 @@ class RequestHandlerFactory;
 class GameRequestHandler : public IRequestHandler
 {
 public:
-	GameRequestHandler(Game& game, LoggedUser user, GameManager manager, RequestHandlerFactory factory);
+	GameRequestHandler(Game& game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory);
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
 	RequestResult getQuestion(RequestInfo info);
@@ -18,7 +18,7 @@ public:
 private:
 	Game& m_game;
 	LoggedUser m_user;
-	GameManager& m_gameManager;
-	RequestHandlerFactory& m_handlerFactory;
+	GameManager* m_gameManager;
+	RequestHandlerFactory* m_handlerFactory;
 };
 

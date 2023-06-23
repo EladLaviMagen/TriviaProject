@@ -14,6 +14,6 @@ public:
 private:
 	static std::mutex gamer_lock;
 	IDatabase* m_database;
-	std::vector<Game> m_games;
+	std::vector<Game>* m_games;
 };
 

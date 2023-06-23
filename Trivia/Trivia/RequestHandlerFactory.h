@@ -33,13 +33,13 @@ public:
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser loggedUser, Room room);
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser loggedUser, Room room);
 	GameRequestHandler* createGameRequestHandler(LoggedUser);
-	GameManager& getGameManager();
+	GameManager* getGameManager();
 
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;
 	RoomManager* m_roomManager;
 	StatisticsManager m_StatisticsManager;
-	GameManager m_gameManager;
+	GameManager* m_gameManager;
 };
 
