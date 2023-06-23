@@ -71,33 +71,32 @@ namespace Client
                 bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
                 string rooms_str = System.Text.Encoding.Default.GetString(rooms);
                 response = JsonConvert.DeserializeObject<GetRoomStateResponse>(Translations.binaryToString(rooms_str));
-                if(response.status == 1)
-                {
-                    if(response.players != null)
-                    {
-                        bgWorker.ReportProgress(0);
-                        
-                    }
-                }
-                else if(response.status == 3)
-                {
-                    Menu menu = new Menu();
-                    menu.notify.Text = "Room was closed";
-                    this.Close();
-                    menu.ShowDialog();
-                    return;
-                }
+                bgWorker.ReportProgress(0);
                 Thread.Sleep(1000);
 
             }
         }
         void actualWork(object sender, ProgressChangedEventArgs e)
         {
-            membersList.Items.Clear();
-            for (int i = 0; i < response.players.Length; i++)
+            if(response.status == 1)
             {
-                membersList.Items.Add(response.players[i]);
+                if(response.players != null)
+                {
+                    membersList.Items.Clear();
+                    for (int i = 0; i < response.players.Length; i++)
+                    {
+                        membersList.Items.Add(response.players[i]);
+                    }
+                }
             }
+            else if(response.status == 3)
+            {
+                leftOrClosed = true;
+                Menu menu = new Menu();
+                this.Close();
+                menu.ShowDialog();
+            }
+            
         }
         private void membersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
