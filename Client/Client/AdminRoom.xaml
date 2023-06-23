@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="AdminRoom" Height="450" Width="800">
     <Grid Margin="0,10,0,0">
-            <Grid.Background>
-                <ImageBrush ImageSource="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2021/04/rust-poker-april-update.jpg"/>
-            </Grid.Background>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2021/04/rust-poker-april-update.jpg"/>
+        </Grid.Background>
         <ListView x:Name="membersList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="310,76,310,158" SelectionChanged="membersList_SelectionChanged">
             <ListView.View>
                 <GridView>
@@ -19,5 +19,6 @@
         </ListView>
         <Button x:Name="Start" Content="Start" Margin="310,266,310,130" Click="Start_Click"/>
         <Button x:Name="close" Content="Close Room" Margin="32,360,638,26" Click="Close_Click"/>
+        <TextBlock x:Name="notify" HorizontalAlignment="Left" Margin="610,360,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="121" IsEnabled="False"/>
     </Grid>
 </Window>

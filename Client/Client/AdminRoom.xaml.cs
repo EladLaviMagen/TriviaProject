@@ -26,6 +26,7 @@ namespace Client
         GetRoomStateResponse response = null;
         bool _admin = false;
         BackgroundWorker bgWorker = new BackgroundWorker();
+        bool leftOrClosed = false;
 
         public AdminRoom(bool admin)
         {
@@ -48,6 +49,10 @@ namespace Client
         {
             while (true)
             {
+                if(leftOrClosed)
+                {
+                    return;
+                }
                 string msg = Convert.ToString(13, 2);
                 msg = Translations.padLeft(msg, 8);
                 msg += Translations.padLeft("", 32);
@@ -74,6 +79,14 @@ namespace Client
                         
                     }
                 }
+                else if(response.status == 3)
+                {
+                    Menu menu = new Menu();
+                    menu.notify.Text = "Room was closed";
+                    this.Close();
+                    menu.ShowDialog();
+                    return;
+                }
                 Thread.Sleep(1000);
 
             }
@@ -98,6 +111,40 @@ namespace Client
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            leftOrClosed = true;
+            int num = 15;
+            if(_admin)
+            {
+                num = 11;
+            }
+            string msg = Convert.ToString(num, 2);
+            msg = Translations.padLeft(msg, 8);
+            msg += Translations.padLeft("", 32);
+            NetworkStream clientStream = Communicator.client.GetStream();
+
+            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] code = new byte[8];
+            int bytesRead = clientStream.Read(code, 0, 8);
+            string code_str = System.Text.Encoding.Default.GetString(code);
+            byte[] size = new byte[32];
+            bytesRead = clientStream.Read(size, 0, 32);
+            string size_str = System.Text.Encoding.Default.GetString(size);
+            byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
+            bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
+            string rooms_str = System.Text.Encoding.Default.GetString(rooms);
+            if (Convert.ToInt32(code_str, 2) == 1)
+            {
+                Menu menu = new Menu();
+                this.Close();
+                menu.ShowDialog();
+            }
+            else
+            {
+                ErrorResponse response = JsonConvert.DeserializeObject<ErrorResponse>(Translations.binaryToString(rooms_str));
+                notify.Text = response.message;
+            }
 
         }
     }

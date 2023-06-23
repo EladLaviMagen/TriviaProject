@@ -1,7 +1,7 @@
 #include "RoomMemberRequestHandler.h"
 #define WAITING 0
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory* factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
 {
 }
 
@@ -30,9 +30,10 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 {
+
     RequestResult result;
+    result.newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_loggedUser);
     this->m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
-    result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
     LeaveRoomResponse res;
     res.status = 1;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
@@ -55,7 +56,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     }
     else if (m_roomManager->getRoom(data.id).getData().isActive == ROOMCLOSED)
     {
-        result.newHandler = m_handlerFactory.createMenuRequestHandler(m_loggedUser);
+        result.newHandler = m_handlerFactory->createMenuRequestHandler(m_loggedUser);
         res.answerTimeout = 1;
         res.hasGameBegun = false;
         res.questionCount = 1;
@@ -70,7 +71,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     }
     else
     {
-        result.newHandler = m_handlerFactory.createGameRequestHandler(m_loggedUser);
+        result.newHandler = m_handlerFactory->createGameRequestHandler(m_loggedUser);
         res.answerTimeout = 1;
         res.hasGameBegun = true;
         res.questionCount = 1;

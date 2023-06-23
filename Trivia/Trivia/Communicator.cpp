@@ -106,7 +106,6 @@ void Communicator::handleNewClient(SOCKET sock)
 					dataToSend += response[i];
 				}
 			}
-			buffer.clear();
 			Helper::sendData(sock, dataToSend);
 		}
 	}

@@ -18,7 +18,7 @@
         </ComboBox>
         <TextBox x:Name="name" TextWrapping="Wrap" Text="Room Name" Width="120" Margin="98,50,582,361" TextChanged="TextBox_TextChanged"/>
         <Button x:Name="create" Content="create" Margin="329,361,329,38" Click="create_Click"/>
-        <Button x:Name="_return" Content="return" Margin="0,0,727,405"/>
+        <Button x:Name="_return" Content="return" Margin="0,0,727,405" Height="29" VerticalAlignment="Bottom" Click="_return_Click"/>
         <TextBlock TextWrapping="Wrap" Margin="400,53,280,361" Background="White" IsEnabled="False" RenderTransformOrigin="0.544,0.03" Text="Number of questions"/>
         <TextBlock TextWrapping="Wrap" Margin="598,26,82,388" Background="White" IsEnabled="False" Text="Time per question"/>
         <TextBlock TextWrapping="Wrap" Margin="400,53,280,361" Background="White" IsEnabled="False" Text="Number of questions"/>

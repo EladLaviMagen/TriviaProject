@@ -6,6 +6,10 @@ RoomManager::RoomManager()
 {
 	m_rooms = new std::map<int, Room>();
 }
+RoomManager::~RoomManager()
+{
+	delete m_rooms;
+}
 void RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	std::lock_guard<std::mutex> locker(room_lock);
@@ -34,7 +38,7 @@ unsigned int RoomManager::getRoomState(int ID)
 std::vector<RoomData> RoomManager::getRooms()
 {
 	std::vector<RoomData> rooms;
-	if(m_rooms->size() != 0)
+	if(this->m_rooms->size() != 0)
 	{
 		{
 			std::lock_guard<std::mutex> locker(room_lock);

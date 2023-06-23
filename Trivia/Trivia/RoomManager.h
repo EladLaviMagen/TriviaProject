@@ -12,12 +12,12 @@ class RoomManager
 {
 public:
 	RoomManager();
+	~RoomManager();
 	void createRoom(LoggedUser user, RoomData data);
 	void deleteRoom(int ID);
 	unsigned int getRoomState(int ID);
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
-	int assignID();
 	int getID();
 private:
 	static std::mutex room_lock;

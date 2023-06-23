@@ -12,7 +12,7 @@ struct RequestResult;
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-	MenuRequestHandler(LoggedUser user, RoomManager* roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory);
+	MenuRequestHandler(LoggedUser user, RoomManager* roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory* handlerFactory);
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
 
@@ -29,6 +29,6 @@ private:
 	LoggedUser m_user;
 	RoomManager* m_roomManager;
 	StatisticsManager& m_statisticsManager;
-	RequestHandlerFactory& m_handlerFactory;
+	RequestHandlerFactory* m_handlerFactory;
 };
 

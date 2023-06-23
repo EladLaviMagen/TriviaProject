@@ -85,5 +85,12 @@ namespace Client
                 }
             }
         }
+
+        private void _return_Click(object sender, RoutedEventArgs e)
+        {
+            Menu r = new Menu();
+            this.Close();
+            r.ShowDialog();
+        }
     }
 }

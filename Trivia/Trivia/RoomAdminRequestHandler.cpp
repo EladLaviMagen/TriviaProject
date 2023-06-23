@@ -1,6 +1,6 @@
 #include "RoomAdminRequestHandler.h"
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory* factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
 {
 
 }
@@ -36,7 +36,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
     RequestResult result;
-    result.newHandler = m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
+    result.newHandler = m_handlerFactory->createMenuRequestHandler(this->m_loggedUser);
     m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     CloseRoomResponse res;
     res.status = 1;
@@ -55,8 +55,8 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
     RequestResult result;
-    result.newHandler = m_handlerFactory.createGameRequestHandler(this->m_loggedUser);
-    m_handlerFactory.getGameManager().createGame(m_roomManager->getRoom(m_room.getData().id));
+    result.newHandler = m_handlerFactory->createGameRequestHandler(this->m_loggedUser);
+    m_handlerFactory->getGameManager().createGame(m_roomManager->getRoom(m_room.getData().id));
     m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     StartGameResponse res;
     res.status = 1;

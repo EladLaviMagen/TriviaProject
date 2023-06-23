@@ -1,6 +1,6 @@
 #include "MenuRequestHandler.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager* roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory) : m_roomManager(roomManager), m_statisticsManager(statisticsManager), m_handlerFactory(handlerFactory), m_user(user)
+MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager* roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory* handlerFactory) : m_roomManager(roomManager), m_statisticsManager(statisticsManager), m_handlerFactory(handlerFactory), m_user(user)
 {}
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
@@ -14,6 +14,7 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 
 RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 {
+
 	RequestResult result;
 	if (info.id == LOGOUT)
 	{
@@ -49,10 +50,10 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	RequestResult result;
-	m_handlerFactory.getLoginManager().logout(m_user.getUserName());
+	m_handlerFactory->getLoginManager().logout(m_user.getUserName());
 	LogoutResponse response;
 	response.status = STATUS_SUCCESS;
-	result.newHandler = m_handlerFactory.createLoginRequestHandler();
+	result.newHandler = m_handlerFactory->createLoginRequestHandler();
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }
@@ -111,7 +112,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	if (m_roomManager->getRoomState(req.roomId) == 0 && m_roomManager->getRoom(req.roomId).getAllUsers().size() < m_roomManager->getRoom(req.roomId).getData().maxPlayers)
 	{
 		response.status = STATUS_SUCCESS;
-		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager->getRoom(req.roomId));
+		result.newHandler = m_handlerFactory->createRoomMemberRequestHandler(m_user, m_roomManager->getRoom(req.roomId));
 		m_roomManager->getRoom(req.roomId).addUser(m_user);
 		
 	}
@@ -138,7 +139,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	this->m_roomManager->createRoom(this->m_user, room);
 	CreateRoomResponse response;
 	response.status = STATUS_SUCCESS;
-	result.newHandler = m_handlerFactory.createRoomAdminRequestHandler(m_user, m_roomManager->getRoom(room.id));
+	result.newHandler = m_handlerFactory->createRoomAdminRequestHandler(m_user, m_roomManager->getRoom(room.id));
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }

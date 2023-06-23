@@ -16,11 +16,13 @@ void Room::addUser(LoggedUser user)
 
 void Room::removeUser(LoggedUser user)
 {
+
 	for (auto it = this->m_users->begin(); it != this->m_users->end(); it++)
 	{
 		if (it->getUserName() == user.getUserName())
 		{
 			this->m_users->erase(it);
+			return;
 		}
 	}
 }
