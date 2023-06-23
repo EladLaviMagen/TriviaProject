@@ -1,6 +1,6 @@
 #include "MenuRequestHandler.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory) : m_roomManager(roomManager), m_statisticsManager(statisticsManager), m_handlerFactory(handlerFactory), m_user(user)
+MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager* roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory) : m_roomManager(roomManager), m_statisticsManager(statisticsManager), m_handlerFactory(handlerFactory), m_user(user)
 {}
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
@@ -61,7 +61,7 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo info)
 {
 	RequestResult result;
 	GetRoomsResponse response;
-	std::vector<RoomData> rooms = m_roomManager.getRooms();
+	std::vector<RoomData> rooms = m_roomManager->getRooms();
 	response.rooms = rooms;
 	response.status = STATUS_SUCCESS;
 	result.newHandler = this;
@@ -74,7 +74,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 	RequestResult result;
 	GetPlayersInRoomResponse response;
 	GetPlayersInRoomRequest data = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
-	response.players = this->m_roomManager.getRoom(data.roomId).getAllUsers();
+	response.players = this->m_roomManager->getRoom(data.roomId).getAllUsers();
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = this;
 	return result;
@@ -108,17 +108,12 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	RequestResult result;
 	JoinRoomRequest req = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
 	JoinRoomResponse response;
-	if (m_roomManager.getRoomState(req.roomId) == 0)
+	if (m_roomManager->getRoomState(req.roomId) == 0 && m_roomManager->getRoom(req.roomId).getAllUsers().size() < m_roomManager->getRoom(req.roomId).getData().maxPlayers)
 	{
 		response.status = STATUS_SUCCESS;
-		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager.getRoom(req.roomId));
-		m_roomManager.getRoom(req.roomId).addUser(m_user);
+		result.newHandler = m_handlerFactory.createRoomMemberRequestHandler(m_user, m_roomManager->getRoom(req.roomId));
+		m_roomManager->getRoom(req.roomId).addUser(m_user);
 		
-	}
-	else if (m_roomManager.getRoom(req.roomId).getAllUsers().size() == m_roomManager.getRoom(req.roomId).getData().maxPlayers)
-	{
-		response.status = STATUS_FAILED;
-		result.newHandler = this;
 	}
 	else
 	{
@@ -134,16 +129,16 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	RequestResult result;
 	CreateRoomRequest details = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.buffer);
 	RoomData room;
-	room.id = m_roomManager.assignID();
+	room.id = m_roomManager->getID();
 	room.isActive = 0;
 	room.maxPlayers = details.maxUsers;
 	room.name = details.roomName;
 	room.numOfQuestions = details.questionCount;
 	room.timePerQuestion = details.answerTimeout;
-	this->m_roomManager.createRoom(this->m_user, room);
+	this->m_roomManager->createRoom(this->m_user, room);
 	CreateRoomResponse response;
 	response.status = STATUS_SUCCESS;
-	result.newHandler = m_handlerFactory.createRoomAdminRequestHandler(m_user, m_roomManager.getRoom(room.id));
+	result.newHandler = m_handlerFactory.createRoomAdminRequestHandler(m_user, m_roomManager->getRoom(room.id));
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }

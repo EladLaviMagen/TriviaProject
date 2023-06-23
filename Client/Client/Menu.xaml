@@ -17,5 +17,6 @@
         <Button x:Name="lead" Content="" Margin="517,43,180,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="lead_Click"/>
         <Button x:Name="shop" Margin="387,43,330,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="shop_Click"/>
         <Button x:Name="profile" Margin="457,43,271,355" Background="{x:Null}" Click="profile_Click"/>
+        <TextBlock x:Name="notify" HorizontalAlignment="Left" Margin="46,334,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="42" Width="152" IsEnabled="False"/>
     </Grid>
 </Window>

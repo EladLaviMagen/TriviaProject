@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -29,6 +31,11 @@ namespace Client
                 numOfQ.Items.Add(i);
                 time.Items.Add(i * 5);
             }
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+            openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\freddys.mp3";
+            Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
+            Audio.mediaPlayer.Play();
 
         }
 

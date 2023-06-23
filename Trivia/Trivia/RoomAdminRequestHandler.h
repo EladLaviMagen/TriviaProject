@@ -11,7 +11,7 @@ class RequestHandlerFactory;
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public:
-	RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory);
+	RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory factory);
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
 
@@ -23,7 +23,7 @@ private:
 
 	Room m_room;
 	LoggedUser m_loggedUser;
-	RoomManager& m_roomManager;
+	RoomManager* m_roomManager;
 	RequestHandlerFactory& m_handlerFactory;
 };
 

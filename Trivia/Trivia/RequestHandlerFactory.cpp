@@ -1,8 +1,9 @@
 #include "RequestHandlerFactory.h"
 
-RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, RoomManager m_rooms, StatisticsManager m_statistics) : m_loginManager(m_login), m_roomManager(m_rooms), m_gameManager(GameManager(m_data))
+RequestHandlerFactory::RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, StatisticsManager m_statistics) : m_loginManager(m_login), m_gameManager(GameManager(m_data))
 {
     m_StatisticsManager = m_statistics;
+    m_roomManager = new RoomManager();
     m_database = m_data;
 }
 
@@ -26,19 +27,19 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
     return m_StatisticsManager;
 }
 
-RoomManager& RequestHandlerFactory::getRoomManager()
+RoomManager* RequestHandlerFactory::getRoomManager()
 {
     return m_roomManager;
 }
 
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, Room room)
 {
-    return new RoomAdminRequestHandler(room, loggedUser, m_roomManager, *this);
+    return new RoomAdminRequestHandler(room, loggedUser, this->getRoomManager(), *this);
 }
 
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, Room room)
 {
-    return new RoomMemberRequestHandler(room, loggedUser, m_roomManager, *this);
+    return new RoomMemberRequestHandler(room, loggedUser, this->getRoomManager(), *this);
 }
 
 GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user)

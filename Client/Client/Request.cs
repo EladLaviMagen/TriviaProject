@@ -61,10 +61,10 @@ namespace Client
 
         class JoinRoomRequest
         {
-            public int roomId;
+            public int id;
             public JoinRoomRequest(int roomId)
             {
-                this.roomId = roomId;
+                this.id = roomId;
             }
         }
 

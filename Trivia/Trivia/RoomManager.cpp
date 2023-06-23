@@ -10,6 +10,7 @@ void RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	std::lock_guard<std::mutex> locker(room_lock);
 	(*this->m_rooms)[id] = Room(user, data);
+	id++;
 }
 
 void RoomManager::deleteRoom(int ID)
@@ -50,17 +51,17 @@ Room& RoomManager::getRoom(int ID)
 {
 	{
 		std::lock_guard<std::mutex> locker(room_lock);
-		return (*m_rooms)[ID];
+		for (auto it = m_rooms->begin(); it != m_rooms->end(); it++)
+		{
+			if (it->first == ID)
+			{
+				return it->second;
+			}
+		}
 	}
 	
 }
 
-int RoomManager::assignID()
-{
-	int ret = this->id;
-	this->id++;
-	return ret;
-}
 
 int RoomManager::getID()
 {

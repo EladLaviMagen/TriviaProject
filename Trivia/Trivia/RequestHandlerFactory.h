@@ -24,12 +24,12 @@ class RoomManager;
 class RequestHandlerFactory
 {
 public:
-	RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, RoomManager m_rooms, StatisticsManager m_statistics);
+	RequestHandlerFactory(LoginManager m_login, IDatabase* m_data, StatisticsManager m_statistics);
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	StatisticsManager& getStatisticsManager();
-	RoomManager& getRoomManager();
+	RoomManager* getRoomManager();
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser loggedUser, Room room);
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser loggedUser, Room room);
 	GameRequestHandler* createGameRequestHandler(LoggedUser);
@@ -38,7 +38,7 @@ public:
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;
-	RoomManager m_roomManager;
+	RoomManager* m_roomManager;
 	StatisticsManager m_StatisticsManager;
 	GameManager m_gameManager;
 };

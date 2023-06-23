@@ -150,25 +150,35 @@ namespace Client
                 byte[] size = new byte[32];
                 bytesRead = clientStream.Read(size, 0, 32);
                 string size_str = System.Text.Encoding.Default.GetString(size);
-                byte[] err = new byte[Convert.ToInt32(size_str, 2) * 8];
-                bytesRead = clientStream.Read(err, 0, Convert.ToInt32(size_str, 2) * 8);
+                byte[] res = new byte[Convert.ToInt32(size_str, 2) * 8];
+                bytesRead = clientStream.Read(res, 0, Convert.ToInt32(size_str, 2) * 8);
+                string rooms_str = System.Text.Encoding.Default.GetString(res);
                 if (Convert.ToInt32(code_str, 2) == 1)
                 {
-                    AdminRoom r = new AdminRoom(false);
-                    this.Close();
-                    r.ShowDialog();
+                    Response response = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
+                    if(response.status == 1)
+                    {
+                        AdminRoom r = new AdminRoom(false);
+                        this.Close();
+                        r.ShowDialog();
+                    }
+                    else
+                    {
+                        notify.Text = "Room is either full or game has started";
+                    }
                     
                 }
                 else
                 {
-                    bgWorker.ReportProgress(0);
+                    ErrorResponse response = JsonConvert.DeserializeObject<ErrorResponse>(Translations.binaryToString(rooms_str));
+                    notify.Text = response.message;
                 }
             }
         }
 
         private void sign_out_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void shop_Click(object sender, RoutedEventArgs e)

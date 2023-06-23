@@ -13,7 +13,7 @@ int main()
     std::string input = "";
     WSAInitializer wsaInit;
     IDatabase* data = new SqliteDatabase();
-    Server server(RequestHandlerFactory(LoginManager(data), data, RoomManager(), StatisticsManager(data)));
+    Server server(RequestHandlerFactory(LoginManager(data), data, StatisticsManager(data)));
     server.run();
     while(input != "EXIT")
     {

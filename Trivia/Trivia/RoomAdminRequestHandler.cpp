@@ -1,6 +1,6 @@
 #include "RoomAdminRequestHandler.h"
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
 {
 
 }
@@ -37,17 +37,17 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
     RequestResult result;
     result.newHandler = m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
-    m_roomManager.getRoom(m_room.getData().id).removeUser(m_loggedUser);
+    m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     CloseRoomResponse res;
     res.status = 1;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
-    if (m_roomManager.getRoom(m_room.getData().id).getAllUsers().size() == 0)
+    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)
     {
-        m_roomManager.deleteRoom(m_room.getData().id);
+        m_roomManager->deleteRoom(m_room.getData().id);
     }
     else
     {
-        m_roomManager.getRoom(m_room.getData().id).close();
+        m_roomManager->getRoom(m_room.getData().id).close();
     }
     return result;
 }
@@ -56,18 +56,18 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
     RequestResult result;
     result.newHandler = m_handlerFactory.createGameRequestHandler(this->m_loggedUser);
-    m_handlerFactory.getGameManager().createGame(m_roomManager.getRoom(m_room.getData().id));
-    m_roomManager.getRoom(m_room.getData().id).removeUser(m_loggedUser);
+    m_handlerFactory.getGameManager().createGame(m_roomManager->getRoom(m_room.getData().id));
+    m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     StartGameResponse res;
     res.status = 1;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
-    if (m_roomManager.getRoom(m_room.getData().id).getAllUsers().size() == 0)
+    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)
     {
-        m_roomManager.deleteRoom(m_room.getData().id);
+        m_roomManager->deleteRoom(m_room.getData().id);
     }
     else
     {
-        m_roomManager.getRoom(m_room.getData().id).activate();
+        m_roomManager->getRoom(m_room.getData().id).activate();
     }
     return result;
 }
@@ -77,10 +77,10 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;
-    res.answerTimeout = m_roomManager.getRoom(data.id).getData().timePerQuestion;
+    res.answerTimeout = m_roomManager->getRoom(data.id).getData().timePerQuestion;
     res.hasGameBegun = false;
-    res.players = m_roomManager.getRoom(data.id).getAllUsers();
-    res.questionCount = m_roomManager.getRoom(data.id).getData().numOfQuestions;
+    res.players = m_roomManager->getRoom(data.id).getAllUsers();
+    res.questionCount = m_roomManager->getRoom(data.id).getData().numOfQuestions;
     res.status = STATUS_SUCCESS;
     result.newHandler = this;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);

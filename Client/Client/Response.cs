@@ -46,5 +46,30 @@ namespace Client
             }
         }
 
-        
+    class GetRoomStateResponse
+    {
+        public int status;
+        public bool hasGameBegun;
+        public string[] players;
+        public int questionCount;
+        public int answerTimeout; 
+        public GetRoomStateResponse(int s, bool h, string[] p, int q, int a)
+        {
+            status = s;
+            hasGameBegun = h;
+            players = p;
+            questionCount = q;
+            answerTimeout = a;
+        }
+    };
+
+    class Response
+    {
+        public int status;
+        public Response(int status)
+        {
+            this.status = status;
+        }
+    }
+
 }

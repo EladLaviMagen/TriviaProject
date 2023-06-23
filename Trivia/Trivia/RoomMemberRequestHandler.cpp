@@ -1,7 +1,7 @@
 #include "RoomMemberRequestHandler.h"
 #define WAITING 0
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser loggedUser, RoomManager* roomManager, RequestHandlerFactory factory) : m_room(room), m_loggedUser(loggedUser), m_roomManager(roomManager), m_handlerFactory(factory)
 {
 }
 
@@ -31,7 +31,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 {
     RequestResult result;
-    this->m_room.removeUser(m_loggedUser);
+    this->m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_loggedUser);
     LeaveRoomResponse res;
     res.status = 1;
@@ -44,16 +44,16 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;
-    if(m_roomManager.getRoom(data.id).getData().isActive == WAITING)
+    if(m_roomManager->getRoom(data.id).getData().isActive == WAITING)
     {
-        res.answerTimeout = m_roomManager.getRoom(data.id).getData().timePerQuestion;
+        res.answerTimeout = m_roomManager->getRoom(data.id).getData().timePerQuestion;
         res.hasGameBegun = false;
-        res.players = m_roomManager.getRoom(data.id).getAllUsers();
-        res.questionCount = m_roomManager.getRoom(data.id).getData().numOfQuestions;
+        res.players = m_roomManager->getRoom(data.id).getAllUsers();
+        res.questionCount = m_roomManager->getRoom(data.id).getData().numOfQuestions;
         res.status = STATUS_SUCCESS;
         result.newHandler = this;
     }
-    else if (m_roomManager.getRoom(data.id).getData().isActive == ROOMCLOSED)
+    else if (m_roomManager->getRoom(data.id).getData().isActive == ROOMCLOSED)
     {
         result.newHandler = m_handlerFactory.createMenuRequestHandler(m_loggedUser);
         res.answerTimeout = 1;
@@ -63,9 +63,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
         RequestResult grab = leaveRoom(info);
         delete grab.newHandler;
         grab.newHandler = nullptr;
-        if (m_roomManager.getRoom(data.id).getAllUsers().size() == 0)
+        if (m_roomManager->getRoom(data.id).getAllUsers().size() == 0)
         {
-            m_roomManager.deleteRoom(m_room.getData().id);
+            m_roomManager->deleteRoom(m_room.getData().id);
         }
     }
     else
@@ -78,9 +78,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
         RequestResult grab = leaveRoom(info);
         delete grab.newHandler;
         grab.newHandler = nullptr;
-        if (m_roomManager.getRoom(data.id).getAllUsers().size() == 0)
+        if (m_roomManager->getRoom(data.id).getAllUsers().size() == 0)
         {
-            m_roomManager.deleteRoom(m_room.getData().id);
+            m_roomManager->deleteRoom(m_room.getData().id);
         }
     }
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
