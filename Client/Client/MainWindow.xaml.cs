@@ -44,7 +44,7 @@ namespace Client
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Audio.mediaPlayer.Close();
-            Signup signup = new Signup();
+            Signup signup = new Signup(quiet);
             this.Close();
             signup.ShowDialog();
         }
@@ -52,7 +52,7 @@ namespace Client
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Audio.mediaPlayer.Close();
-            Login signup = new Login();
+            Login signup = new Login(quiet);
             this.Close();
             signup.ShowDialog();
         }

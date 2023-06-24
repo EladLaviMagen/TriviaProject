@@ -27,9 +27,10 @@ namespace Client
         bool _admin = false;
         BackgroundWorker bgWorker = new BackgroundWorker();
         bool leftOrClosed = false;
-
-        public AdminRoom(bool admin)
+        bool _quiet = false;
+        public AdminRoom(bool quiet, bool admin)
         {
+            _quiet = quiet;
             _admin = admin;
             InitializeComponent();
             if(!admin)
@@ -92,14 +93,14 @@ namespace Client
             else if(response.status == 3)
             {
                 leftOrClosed = true;
-                Menu menu = new Menu();
+                Menu menu = new Menu(_quiet);
                 this.Close();
                 menu.ShowDialog();
             }
             else if(response.status == 6)
             {
                 leftOrClosed = true;
-                Game game = new Game(response.answerTimeout, response.questionCount, 0);
+                Game game = new Game(response.answerTimeout, response.questionCount - 1, 0);
                 this.Close();
                 game.ShowDialog();
             }
@@ -133,7 +134,7 @@ namespace Client
             Response res = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
             if(res.status == 1)
             {
-                Game game = new Game(response.answerTimeout, response.questionCount, 0);
+                Game game = new Game(response.answerTimeout, response.questionCount - 1, 0);
                 this.Close();
                 game.ShowDialog();
             }
@@ -168,7 +169,7 @@ namespace Client
             string rooms_str = System.Text.Encoding.Default.GetString(rooms);
             if (Convert.ToInt32(code_str, 2) == 1)
             {
-                Menu menu = new Menu();
+                Menu menu = new Menu(_quiet);
                 this.Close();
                 menu.ShowDialog();
             }

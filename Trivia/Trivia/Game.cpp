@@ -44,8 +44,13 @@ int Game::submitAnswer(LoggedUser user, unsigned int id)
             break;
         }
     }
-    (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
+    if (i != m_questions->size())
+    {
+        (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
+    }
     (*m_players)[user.getUserName()].averageAnswerTime += difftime(time(0), timer);
+    while (difftime(time(0), timer) < _time)
+    {}
     return right;
 }
 

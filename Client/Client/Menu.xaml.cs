@@ -33,14 +33,19 @@ namespace Client
         BackgroundWorker bgWorker = new BackgroundWorker();
         bool stopFlag = false;
         RoomData[] roomdatas = null;
-        public Menu()
+        bool _quiet = false;
+        public Menu(bool quiet)
         {
+            _quiet = quiet;
             InitializeComponent();
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-            openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\theme.mp3";
-            Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
-            Audio.mediaPlayer.Play();
+            if (!quiet)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+                openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\theme.mp3";
+                Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
+                Audio.mediaPlayer.Play();
+            }
             bgWorker.WorkerSupportsCancellation = true;
             bgWorker.WorkerReportsProgress = true;
             bgWorker.ProgressChanged += actualWork;
@@ -158,7 +163,7 @@ namespace Client
                     Response response = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
                     if(response.status == 1)
                     {
-                        AdminRoom r = new AdminRoom(false);
+                        AdminRoom r = new AdminRoom(_quiet, false);
                         this.Close();
                         r.ShowDialog();
                     }
@@ -193,7 +198,7 @@ namespace Client
             {}
             bgWorker.CancelAsync();
             Audio.mediaPlayer.Close();
-            Create build = new Create();
+            Create build = new Create(_quiet);
             this.Close();
             build.ShowDialog();
         }

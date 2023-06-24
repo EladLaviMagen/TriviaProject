@@ -15,7 +15,7 @@ Game* GameManager::createGame(Room room)
 	{
 		vec->push_back(LoggedUser(players[i]));
 	}
-	Game* game = new Game(m_database->getQuestions((room.getData()).timePerQuestion), vec, (room.getData()).timePerQuestion);
+	Game* game = new Game(m_database->getQuestions((room.getData()).numOfQuestions), vec, (room.getData()).timePerQuestion);
 	{
 		std::lock_guard<std::mutex> locker(gamer_lock);
 		m_games->push_back(game);

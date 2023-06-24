@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Xml.Linq;
 using System.Windows.Threading;
+using System.Drawing;
 
 namespace Client
 {
@@ -25,6 +26,7 @@ namespace Client
     /// </summary>
     public partial class Game : Window
     {
+        int id = 0;
         GetQuestionResponse res = null;
         private int timerSeconds = 0;
         private DispatcherTimer timer;
@@ -34,6 +36,7 @@ namespace Client
         bool unAnswered = true;
         bool midAnswer = false;
         SubmitAnswerResponse ans = null;
+        BackgroundWorker bgWorker = new BackgroundWorker();
         public Game(int time, int numOfQuestion, int right)
         {
             InitializeComponent();
@@ -44,11 +47,63 @@ namespace Client
             Rignt.Text = right.ToString();
             Left.Text = numOfQuestion.ToString();
             timeTxt.Text = time.ToString();
+            bgWorker.WorkerSupportsCancellation = true;
+            bgWorker.WorkerReportsProgress = true;
+            bgWorker.ProgressChanged += actualWork;
+            bgWorker.DoWork += work;
+
             ask();
 
         }
-        private void ask()
+        void work(object sender, DoWorkEventArgs e)
         {
+            unAnswered = false;
+            midAnswer = true;
+            string msg = Convert.ToString(17, 2);
+            msg = Translations.padLeft(msg, 8);
+            string json = JsonConvert.SerializeObject(new SubmitAnswerRequest(id));
+            msg += Translations.padLeft(Convert.ToString(json.Length, 2), 32);
+            msg += Translations.stringToBinary(json);
+            NetworkStream clientStream = Communicator.client.GetStream();
+            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] code = new byte[8];
+            int bytesRead = clientStream.Read(code, 0, 8);
+            string code_str = System.Text.Encoding.Default.GetString(code);
+            byte[] size = new byte[32];
+            bytesRead = clientStream.Read(size, 0, 32);
+            string size_str = System.Text.Encoding.Default.GetString(size);
+            byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
+            bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
+            string rooms_str = System.Text.Encoding.Default.GetString(rooms);
+            if (Convert.ToInt32(code_str, 2) == 1)
+            {
+                ans = JsonConvert.DeserializeObject<SubmitAnswerResponse>(Translations.binaryToString(rooms_str));
+                if (ans.correctAns == id)
+                {
+                    gotRight++;
+                }
+            }
+            bgWorker.ReportProgress(0);
+
+        }
+        void actualWork(object sender, ProgressChangedEventArgs e)
+        {
+            timer.Stop();
+            if (numq == 0)
+            {
+                EndScreen finish = new EndScreen();
+                this.Close();
+                finish.ShowDialog();
+
+            }
+            Game next = new Game(_time, numq - 1, gotRight);
+            this.Close();
+            next.ShowDialog();
+        }
+    private void ask()
+    {
             string msg = Convert.ToString(16, 2);
             msg = Translations.padLeft(msg, 8);
             msg += Translations.padLeft("", 32);
@@ -66,7 +121,7 @@ namespace Client
             byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
             bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
             string rooms_str = System.Text.Encoding.Default.GetString(rooms);
-            if(Convert.ToInt32(code_str, 2) == 1)
+            if (Convert.ToInt32(code_str, 2) == 1)
             {
                 res = JsonConvert.DeserializeObject<GetQuestionResponse>(Translations.binaryToString(rooms_str));
                 question.Text = res.question;
@@ -75,7 +130,8 @@ namespace Client
                 ans3.Content = res.answer[2];
                 ans4.Content = res.answer[3];
             }
-        }
+            
+    }
         
 
 
@@ -105,75 +161,13 @@ namespace Client
                 timer.Stop();
                 if (unAnswered)
                 {
-                    answer(5);
-
+                    id = 5;
+                    bgWorker.RunWorkerAsync();
                 }
-                if (ans.correctAns == 0)
-                {
-                    ans1.Content = ans1.Content + " CORRECT";
-                }
-                else if (ans.correctAns == 1)
-                {
-                    ans2.Content = ans2.Content + " CORRECT";
-                }
-                else if (ans.correctAns == 2)
-                {
-                    ans3.Content = ans3.Content + " CORRECT";
-                }
-                else if (ans.correctAns == 3)
-                {
-                    ans4.Content = ans4.Content + " CORRECT";
-                }
-                timer.Start();
-            }
-            if(timerSeconds <= -5)
-            {
-                timer.Stop();
-                if (numq == 0)
-                {
-                    EndScreen finish = new EndScreen();
-                    this.Close();
-                    finish.ShowDialog();
-
-                }
-                Game next = new Game(_time, numq - 1, gotRight);
-                this.Close();
-                next.ShowDialog();
             }
         }
 
-        private void answer(int id)
-        {
-            unAnswered = false;
-            midAnswer = true;
-            string msg = Convert.ToString(17, 2);
-            msg = Translations.padLeft(msg, 8);
-            string json = JsonConvert.SerializeObject(new SubmitAnswerRequest(id));
-            msg += Translations.padLeft(Convert.ToString(json.Length, 2), 32);
-            msg += Translations.stringToBinary(json);
-            NetworkStream clientStream = Communicator.client.GetStream();
-            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
-            clientStream.Write(buffer, 0, buffer.Length);
-            clientStream.Flush();
-            byte[] code = new byte[8];
-            int bytesRead = clientStream.Read(code, 0, 8);
-            string code_str = System.Text.Encoding.Default.GetString(code);
-            byte[] size = new byte[32];
-            bytesRead = clientStream.Read(size, 0, 32);
-            string size_str = System.Text.Encoding.Default.GetString(size);
-            byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
-            bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
-            string rooms_str = System.Text.Encoding.Default.GetString(rooms);
-            if(Convert.ToInt32(code_str, 2) == 1)
-            {
-                ans = JsonConvert.DeserializeObject<SubmitAnswerResponse>(Translations.binaryToString(rooms_str));
-                if (ans.correctAns == id)
-                {
-                    gotRight++;
-                }
-            }
-           
-        }
+
 
         private int getID(string ans)
         {
@@ -191,7 +185,11 @@ namespace Client
         {
             if(!midAnswer)
             {
-                answer(getID(ans1.Content.ToString()));
+
+                id = getID(ans1.Content.ToString());
+                ans1.IsEnabled = false;
+                bgWorker.RunWorkerAsync();
+
             }
             
 
@@ -200,7 +198,9 @@ namespace Client
         {
             if (!midAnswer)
             {
-                answer(getID(ans2.Content.ToString()));
+                id = getID(ans2.Content.ToString());
+                ans2.IsEnabled = false;
+                bgWorker.RunWorkerAsync();
             }
             
         }
@@ -208,7 +208,9 @@ namespace Client
         {
             if (!midAnswer)
             {
-                answer(getID(ans3.Content.ToString()));
+                id = getID(ans3.Content.ToString());
+                ans3.IsEnabled = false;
+                bgWorker.RunWorkerAsync();
             }
             
         }
@@ -216,7 +218,9 @@ namespace Client
         {
             if (!midAnswer)
             {
-                answer(getID(ans4.Content.ToString()));
+                id = getID(ans4.Content.ToString());
+                ans4.IsEnabled = false;
+                bgWorker.RunWorkerAsync();
 
             }
             

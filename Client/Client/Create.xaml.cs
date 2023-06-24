@@ -23,19 +23,24 @@ namespace Client
     /// </summary>
     public partial class Create : Window
     {
-        public Create()
+        bool _quiet = false;
+        public Create(bool quiet)
         {
+            _quiet = quiet;
             InitializeComponent();
             for (int i = 1; i <= 10; i++)
             {
                 numOfQ.Items.Add(i);
                 time.Items.Add(i * 5);
             }
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-            openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\freddys.mp3";
-            Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
-            Audio.mediaPlayer.Play();
+            if (!quiet)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+                openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\freddys.mp3";
+                Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
+                Audio.mediaPlayer.Play();
+            }
 
         }
 
@@ -78,7 +83,7 @@ namespace Client
                     byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
                     bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
                     clientStream.Flush();
-                    AdminRoom r = new AdminRoom(true);
+                    AdminRoom r = new AdminRoom(_quiet, true);
                     this.Close();
                     r.ShowDialog();
 
@@ -88,7 +93,7 @@ namespace Client
 
         private void _return_Click(object sender, RoutedEventArgs e)
         {
-            Menu r = new Menu();
+            Menu r = new Menu(_quiet);
             this.Close();
             r.ShowDialog();
         }

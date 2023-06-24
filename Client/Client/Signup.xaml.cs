@@ -26,15 +26,19 @@ namespace Client
     /// </summary>
     public partial class Signup : Window
     {
-
-        public Signup()
+        bool _quiet = false;
+        public Signup(bool quiet)
         {
+            _quiet = quiet;
             InitializeComponent();
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-            openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\used_to.mp3";
-            Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
-            Audio.mediaPlayer.Play();
+            if (!quiet)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+                openFileDialog.FileName = Directory.GetCurrentDirectory() + "\\used_to.mp3";
+                Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
+                Audio.mediaPlayer.Play();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -78,7 +82,7 @@ namespace Client
                 if (Convert.ToInt32(code_str, 2) == 1)
                 {
                     Audio.mediaPlayer.Close();
-                    Menu menu = new Menu();
+                    Menu menu = new Menu(_quiet);
                     this.Close();
                     menu.ShowDialog();
                 }
