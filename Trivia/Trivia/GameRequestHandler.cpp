@@ -1,7 +1,7 @@
 #include "GameRequestHandler.h"
 
 
-GameRequestHandler::GameRequestHandler(Game& game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory) : m_game(game), m_user(user)
+GameRequestHandler::GameRequestHandler(Game* game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory) : m_game(game), m_user(user)
 {
 	m_gameManager = manager;
 	m_handlerFactory = factory;
@@ -40,16 +40,25 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 {
 	RequestResult result;
 	GetQuestionResponse res;
-	Question question = m_game.getQuestionForUser(m_user);
+	Question question = m_game->getQuestionForUser(m_user);
 	std::map<unsigned int, std::string> ans;
-	for (int i = 0; i < 4; i++)
-	{
-		ans[i] = (question.getPossibleAnswers())[i];
-	}
-	res.answers = ans;
-	res.question = question.getQuestion();
-	res.status = 1;
 	result.newHandler = this;
+	if (question.getCorrectAnswerID() == -1)
+	{
+		res.status = 2;
+
+	}
+	else
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			ans[i] = (question.getPossibleAnswers())[i];
+		}
+		res.answers = ans;
+		res.question = question.getQuestion();
+		res.status = 1;
+
+	}
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	return result;
 }
@@ -58,7 +67,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo info)
 	RequestResult result;
 	SubmitAnswerResponse res;
 	SubmitAnswerRequest req = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.buffer);
-	res.correctAnswerId = m_game.submitAnswer(m_user, req.answerId);
+	res.correctAnswerId = m_game->submitAnswer(m_user, req.answerId);
 	res.status = 1;
 	result.newHandler = this;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
@@ -68,7 +77,7 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 {
 	RequestResult result;
 	GetGameResultsResponse res;
-	res.results = m_game.getResults(m_user);
+	res.results = m_game->getResults(m_user);
 	res.status = STATUS_GAME_FINISHED;
 	result.newHandler = this;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
@@ -76,10 +85,10 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 }
 RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 {
-	this->m_game.removeUser(m_user);
-	if (m_game.isEmpty())
+	this->m_game->removeUser(m_user);
+	if (m_game->isEmpty())
 	{
-		m_gameManager->deleteGame(m_game.getId());
+		m_gameManager->deleteGame(m_game->getId());
 	}
 	RequestResult result;
 	result.newHandler = m_handlerFactory->createMenuRequestHandler(m_user);

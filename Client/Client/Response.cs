@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,5 +72,59 @@ namespace Client
             this.status = status;
         }
     }
+
+    class PlayerResults
+    {
+        public string username;
+        public float averageAnswerTime;
+        public int correctAnswerCount;
+        public int answerTimeout;
+
+        public PlayerResults(string name, float ave, int cor, int time)
+        {
+            username = name;
+            averageAnswerTime = ave;
+            correctAnswerCount = cor;
+            answerTimeout = time;
+        }
+    };
+
+
+    class GetGameResultsResponse
+    {
+        public int status;
+        public PlayerResults[] results;
+        public GetGameResultsResponse(int sta, PlayerResults[] res)
+        {
+            results = res;
+            status = sta;
+        }
+    };
+
+    class SubmitAnswerResponse
+    {
+        public int status;
+        public int correctAnswerId;
+        public SubmitAnswerResponse(int sta, int cor)
+        {
+            status = sta;
+            correctAnswerId = cor;
+        }
+    };
+
+    class GetQuestionResponse
+    {
+        public int status;
+        public string question;
+        public int[] id;
+        public string[] answer;
+        public GetQuestionResponse(int sta, string q, int[] i, string[] ans)
+        {
+            status = sta;
+            question = q;
+            id = i;
+            answer = ans; 
+        }
+    };
 
 }

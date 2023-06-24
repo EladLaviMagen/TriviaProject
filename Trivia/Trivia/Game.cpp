@@ -45,15 +45,9 @@ int Game::submitAnswer(LoggedUser user, unsigned int id)
             it = m_questions->end();
         }
     }
-    if (i == m_questions->size())
-    {
-        (*m_players)[user.getUserName()].currentQuestion = Question("fake", std::vector <std::string>(), -1);
-    }
-    else
-    {
-        (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
-    }
-    while (difftime(time(0), timer) < (double)_time)
+    (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
+    (*m_players)[user.getUserName()].averageAnswerTime += difftime(time(0), timer);
+    while (difftime(time(0), timer) < _time)
     {}
     return right;
 }
@@ -69,7 +63,7 @@ std::vector<PlayerResults> Game::getResults(LoggedUser user)
         {
             data = it->second;
             results.username = it->first;
-            results.averageAnswerTime = data.averageAnswerTime / m_questions->size();
+            results.averageAnswerTime = data.averageAnswerTime / (float)m_questions->size();
             results.correctAnswerCount = data.correctAnswerCount;
             results.answerTimeout = 0;
             vec.push_back(results);

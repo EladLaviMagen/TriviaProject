@@ -99,7 +99,7 @@ namespace Client
             else if(response.status == 6)
             {
                 leftOrClosed = true;
-                Game game = new Game();
+                Game game = new Game(response.answerTimeout, response.questionCount);
                 this.Close();
                 game.ShowDialog();
             }
@@ -133,7 +133,7 @@ namespace Client
             Response res = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
             if(res.status == 1)
             {
-                Game game = new Game();
+                Game game = new Game(response.answerTimeout, response.questionCount);
                 this.Close();
                 game.ShowDialog();
             }

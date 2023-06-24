@@ -3,11 +3,11 @@
 std::mutex GameManager::gamer_lock;
 GameManager::GameManager(IDatabase* data)
 {
-	m_games = new std::vector<Game>();
+	m_games = new std::vector<Game*>();
 	m_database = data;
 }
 
-Game GameManager::createGame(Room room)
+Game* GameManager::createGame(Room room)
 {
 	std::vector<LoggedUser>* vec = new std::vector<LoggedUser>();
 	std::vector<std::string> players = room.getAllUsers();
@@ -15,7 +15,7 @@ Game GameManager::createGame(Room room)
 	{
 		vec->push_back(LoggedUser(players[i]));
 	}
-	Game game(m_database->getQuestions((room.getData()).timePerQuestion), vec, (room.getData()).timePerQuestion);
+	Game* game = new Game(m_database->getQuestions((room.getData()).timePerQuestion), vec, (room.getData()).timePerQuestion);
 	{
 		std::lock_guard<std::mutex> locker(gamer_lock);
 		m_games->push_back(game);
@@ -30,9 +30,9 @@ void GameManager::deleteGame(unsigned int gameId)
 	{
 		{
 			std::lock_guard<std::mutex> locker(gamer_lock);
-			for (auto it = this->m_games->begin(); it != this->m_games->end(); it++)
-			{
-				if (it->getId() == gameId)
+			for (auto it = m_games->begin(); it != m_games->end(); it++)
+			{	
+				if ((*it)->getId() == gameId)
 				{
 					m_games->erase(it);
 				}
@@ -42,13 +42,13 @@ void GameManager::deleteGame(unsigned int gameId)
 	}
 }
 
-Game& GameManager::getGame(std::string name)
+Game* GameManager::getGame(std::string name)
 {
 	{
 		std::lock_guard<std::mutex> locker(gamer_lock);
 		for (auto i = m_games->begin(); i != m_games->end(); i++)
 		{
-			for (auto it = i->getPlayers()->begin(); it != i->getPlayers()->end(); it++)
+			for (auto it = (*i)->getPlayers()->begin(); it != (*i)->getPlayers()->end(); it++)
 			{
 				if (it->first == name)
 				{

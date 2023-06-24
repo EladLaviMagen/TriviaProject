@@ -68,4 +68,13 @@ namespace Client
             }
         }
 
+        class SubmitAnswerRequest
+        {
+            public int answerId;
+            public SubmitAnswerRequest(int ans)
+            {
+                answerId = ans;
+            }
+        };
+
 }

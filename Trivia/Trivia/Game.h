@@ -3,6 +3,8 @@
 #include "LoggedUser.h"
 #include <ctime>
 #include <map>
+#include <thread>
+#include <chrono>
 #include "Response.h"
 
 typedef struct GameData

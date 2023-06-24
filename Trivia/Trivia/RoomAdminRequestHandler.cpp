@@ -55,8 +55,8 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
     RequestResult result;
-    result.newHandler = m_handlerFactory->createGameRequestHandler(this->m_loggedUser);
     m_handlerFactory->getGameManager()->createGame(m_roomManager->getRoom(m_room.getData().id));
+    result.newHandler = m_handlerFactory->createGameRequestHandler(this->m_loggedUser);
     m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     StartGameResponse res;
     res.status = 1;

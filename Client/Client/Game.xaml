@@ -10,15 +10,11 @@
         <Grid.Background>
             <ImageBrush ImageSource="https://static.vecteezy.com/system/resources/thumbnails/006/895/963/small/neon-quiz-game-template-four-options-answers-for-knowledge-exam-in-school-tv-show-illustration-10-eps-vector.jpg"/>
         </Grid.Background>
-        <TextBlock x:Name="question" TextWrapping="Wrap" Text="TextBlock" Margin="203,140,156,252"/>
-        <Button x:Name="ans1_click" Content="" Margin="132,223,418,145" Background="{x:Null}" Click="ans1_clicked"/>
-        <Button x:Name="ans2_click" Content="" Margin="448,223,102,145" Background="{x:Null}" Click="ans2_clicked"/>
-        <Button x:Name="ans3_click" Content="" Margin="132,294,418,74" Background="{x:Null}" Click="ans3_clicked"/>
-        <Button x:Name="ans4_click" Content="" Margin="448,294,102,74" Background="{x:Null}" Click="ans4_clicked"/>
-        <TextBlock x:Name="ans1" TextWrapping="Wrap" Text="TextBlock" Margin="132,226,418,145"/>
-        <TextBlock x:Name="ans2" TextWrapping="Wrap" Text="TextBlock" Margin="448,223,102,148"/>
-        <TextBlock x:Name="ans3" TextWrapping="Wrap" Text="TextBlock" Margin="132,297,418,74"/>
-        <TextBlock x:Name="ans4" TextWrapping="Wrap" Text="TextBlock" Margin="448,297,102,74"/>
+        <TextBlock x:Name="question" TextWrapping="Wrap" Text="TextBlock" Margin="203,140,156,252" Foreground="White"/>
+        <Button x:Name="ans1" Content="" Margin="132,223,418,145" Background="{x:Null}" Click="ans1_clicked" Foreground="White" />
+        <Button x:Name="ans2" Content="" Margin="448,223,102,145" Background="{x:Null}" Click="ans2_clicked" Foreground="White" />
+        <Button x:Name="ans3" Content="" Margin="132,294,418,74" Background="{x:Null}" Click="ans3_clicked" Foreground="White"/>
+        <Button x:Name="ans4" Content="" Margin="448,294,102,74" Background="{x:Null}" Click="ans4_clicked" Foreground="White"/>
 
 
     </Grid>
