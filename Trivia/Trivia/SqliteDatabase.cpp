@@ -199,7 +199,7 @@ void SqliteDatabase::build()
         sql.str("");
         //q4
         sql << "INSERT INTO " << QUESTIONS_TABLE << " ( " << QUESTION_COLUMN << ", " << CORRECT_ANSWER_COLUMN << ", " << ANSWER1_COLUMN << ", " << ANSWER2_COLUMN << ", " << ANSWER3_COLUMN
-            << " ) VALUES (" << "'What year was the Cars movie released?'" << ", " << "'2006'" << ", " << "'2004'" << ", " << "'2010'" << ", " << "'2008'" << "); ";
+            << " ) VALUES (" << "'Say my name'" << ", " << "'Heisenburg'" << ", " << "'JESSE!'" << ", " << "'My name is Gustavo'" << ", " << "'Waltuh'" << "); ";
         sqlRequest(sql);
         sql.str("");
         //q5

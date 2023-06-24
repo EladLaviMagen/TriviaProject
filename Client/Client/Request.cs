@@ -70,10 +70,10 @@ namespace Client
 
         class SubmitAnswerRequest
         {
-            public int answerId;
+            public int id;
             public SubmitAnswerRequest(int ans)
             {
-                answerId = ans;
+                id = ans;
             }
         };
 

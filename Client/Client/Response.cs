@@ -104,11 +104,11 @@ namespace Client
     class SubmitAnswerResponse
     {
         public int status;
-        public int correctAnswerId;
+        public int correctAns;
         public SubmitAnswerResponse(int sta, int cor)
         {
             status = sta;
-            correctAnswerId = cor;
+            correctAns = cor;
         }
     };
 

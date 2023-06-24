@@ -15,6 +15,10 @@
         <Button x:Name="ans2" Content="" Margin="448,223,102,145" Background="{x:Null}" Click="ans2_clicked" Foreground="White" />
         <Button x:Name="ans3" Content="" Margin="132,294,418,74" Background="{x:Null}" Click="ans3_clicked" Foreground="White"/>
         <Button x:Name="ans4" Content="" Margin="448,294,102,74" Background="{x:Null}" Click="ans4_clicked" Foreground="White"/>
+        <TextBlock x:Name="timeTxt" HorizontalAlignment="Left" Margin="648,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="46" Width="142" Foreground="Red" Background="White" RenderTransformOrigin="0.19,0.61"/>
+        <TextBlock x:Name="Left" HorizontalAlignment="Left" Margin="45,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="19" Width="134" Foreground="Red" Background="White"/>
+        <TextBlock x:Name="Rignt" HorizontalAlignment="Left" Margin="448,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="46" Width="162" Foreground="Red" Background="White"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="45,377,0,0" VerticalAlignment="Top"/>
 
 
     </Grid>

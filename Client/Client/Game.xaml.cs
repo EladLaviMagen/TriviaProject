@@ -16,6 +16,7 @@ using System.ComponentModel;
 using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Xml.Linq;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -25,9 +26,24 @@ namespace Client
     public partial class Game : Window
     {
         GetQuestionResponse res = null;
-        public Game(int time, int numOfQuestion)
+        private int timerSeconds = 0;
+        private DispatcherTimer timer;
+        private int numq = 0;
+        private int gotRight = 0;
+        private int _time = 0;
+        bool unAnswered = true;
+        bool midAnswer = false;
+        SubmitAnswerResponse ans = null;
+        public Game(int time, int numOfQuestion, int right)
         {
             InitializeComponent();
+            timerSeconds = time;
+            numq = numOfQuestion;
+            gotRight = right;
+            _time = time;
+            Rignt.Text = right.ToString();
+            Left.Text = numOfQuestion.ToString();
+            timeTxt.Text = time.ToString();
             ask();
 
         }
@@ -37,8 +53,8 @@ namespace Client
             msg = Translations.padLeft(msg, 8);
             msg += Translations.padLeft("", 32);
             NetworkStream clientStream = Communicator.client.GetStream();
-
             byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            StartTimer();
             clientStream.Write(buffer, 0, buffer.Length);
             clientStream.Flush();
             byte[] code = new byte[8];
@@ -60,9 +76,76 @@ namespace Client
                 ans4.Content = res.answer[3];
             }
         }
+        
+
+
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            timerSeconds--;
+            if(timerSeconds > 0)
+            {
+                timeTxt.Text = timerSeconds.ToString();
+            }
+            if (timerSeconds <= 0)
+            {
+                timer.Stop();
+                if (unAnswered)
+                {
+                    answer(5);
+
+                }
+                if (ans.correctAns == 0)
+                {
+                    ans1.Content = ans1.Content + " CORRECT";
+                }
+                else if (ans.correctAns == 1)
+                {
+                    ans2.Content = ans2.Content + " CORRECT";
+                }
+                else if (ans.correctAns == 2)
+                {
+                    ans3.Content = ans3.Content + " CORRECT";
+                }
+                else if (ans.correctAns == 3)
+                {
+                    ans4.Content = ans4.Content + " CORRECT";
+                }
+                timer.Start();
+            }
+            if(timerSeconds <= -5)
+            {
+                timer.Stop();
+                if (numq == 0)
+                {
+                    EndScreen finish = new EndScreen();
+                    this.Close();
+                    finish.ShowDialog();
+
+                }
+                Game next = new Game(_time, numq - 1, gotRight);
+                this.Close();
+                next.ShowDialog();
+            }
+        }
 
         private void answer(int id)
         {
+            unAnswered = false;
+            midAnswer = true;
             string msg = Convert.ToString(17, 2);
             msg = Translations.padLeft(msg, 8);
             string json = JsonConvert.SerializeObject(new SubmitAnswerRequest(id));
@@ -83,34 +166,18 @@ namespace Client
             string rooms_str = System.Text.Encoding.Default.GetString(rooms);
             if(Convert.ToInt32(code_str, 2) == 1)
             {
-                SubmitAnswerResponse ans = JsonConvert.DeserializeObject<SubmitAnswerResponse>(rooms_str);
-                if(ans.correctAnswerId == 0)
+                ans = JsonConvert.DeserializeObject<SubmitAnswerResponse>(Translations.binaryToString(rooms_str));
+                if (ans.correctAns == id)
                 {
-                    ans1.Content = ans1.Content + " CORRECT";
+                    gotRight++;
                 }
-                else if (ans.correctAnswerId == 1)
-                {
-                    ans2.Content = ans2.Content + " CORRECT";
-                }
-                else if (ans.correctAnswerId == 2)
-                {
-                    ans3.Content = ans3.Content + " CORRECT";
-                }
-                else if (ans.correctAnswerId == 3)
-                {
-                    ans4.Content = ans4.Content + " CORRECT";
-                }
-                if (ans.correctAnswerId == id)
-                {
-
-                }
-
             }
            
         }
 
         private int getID(string ans)
         {
+            
             for (int i = 0; i < res.answer.Length; i++)
             {
                 if(ans == res.answer[i])
@@ -122,20 +189,37 @@ namespace Client
         }
         private void ans1_clicked(object sender, RoutedEventArgs e)
         {
-            answer(getID(ans1.Content.ToString()));
+            if(!midAnswer)
+            {
+                answer(getID(ans1.Content.ToString()));
+            }
+            
 
         }
         private void ans2_clicked(object sender, RoutedEventArgs e)
         {
-            answer(getID(ans2.Content.ToString()));
+            if (!midAnswer)
+            {
+                answer(getID(ans2.Content.ToString()));
+            }
+            
         }
         private void ans3_clicked(object sender, RoutedEventArgs e)
         {
-            answer(getID(ans3.Content.ToString()));
+            if (!midAnswer)
+            {
+                answer(getID(ans3.Content.ToString()));
+            }
+            
         }
         private void ans4_clicked(object sender, RoutedEventArgs e)
         {
-            answer(getID(ans4.Content.ToString())); ;
+            if (!midAnswer)
+            {
+                answer(getID(ans4.Content.ToString()));
+
+            }
+            
         }
     }
 }

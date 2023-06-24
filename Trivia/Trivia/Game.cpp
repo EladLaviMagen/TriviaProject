@@ -26,9 +26,8 @@ Question Game::getQuestionForUser(LoggedUser user)
 
 int Game::submitAnswer(LoggedUser user, unsigned int id)
 {
- 
-    int right = getQuestionForUser(user).getCorrectAnswerID();
-    if (getQuestionForUser(user).getCorrectAnswerID() == id)
+    int right = (*m_players)[user.getUserName()].currentQuestion.getCorrectAnswerID();
+    if (right == id)
     {
         (*m_players)[user.getUserName()].correctAnswerCount++;
     }
@@ -42,13 +41,11 @@ int Game::submitAnswer(LoggedUser user, unsigned int id)
         i++;
         if (it->getQuestion() == (*m_players)[user.getUserName()].currentQuestion.getQuestion())
         {
-            it = m_questions->end();
+            break;
         }
     }
     (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
     (*m_players)[user.getUserName()].averageAnswerTime += difftime(time(0), timer);
-    while (difftime(time(0), timer) < _time)
-    {}
     return right;
 }
 

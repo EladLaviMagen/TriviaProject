@@ -45,21 +45,19 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;
+    res.answerTimeout = m_roomManager->getRoom(data.id).getData().timePerQuestion;
+    res.hasGameBegun = false;
+    res.players = m_roomManager->getRoom(data.id).getAllUsers();
+    res.questionCount = m_roomManager->getRoom(data.id).getData().numOfQuestions;
     if(m_roomManager->getRoom(data.id).getData().isActive == WAITING)
     {
-        res.answerTimeout = m_roomManager->getRoom(data.id).getData().timePerQuestion;
-        res.hasGameBegun = false;
-        res.players = m_roomManager->getRoom(data.id).getAllUsers();
-        res.questionCount = m_roomManager->getRoom(data.id).getData().numOfQuestions;
+
         res.status = STATUS_SUCCESS;
         result.newHandler = this;
     }
     else if (m_roomManager->getRoom(data.id).getData().isActive == ROOMCLOSED)
     {
         result.newHandler = m_handlerFactory->createMenuRequestHandler(m_loggedUser);
-        res.answerTimeout = 1;
-        res.hasGameBegun = false;
-        res.questionCount = 1;
         res.status = ROOMCLOSED;
         RequestResult grab = leaveRoom(info);
         delete grab.newHandler;
@@ -72,9 +70,6 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
     else
     {
         result.newHandler = m_handlerFactory->createGameRequestHandler(m_loggedUser);
-        res.answerTimeout = 1;
-        res.hasGameBegun = true;
-        res.questionCount = 1;
         res.status = GAMEBEGUN;
         RequestResult grab = leaveRoom(info);
         delete grab.newHandler;
