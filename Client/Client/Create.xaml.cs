@@ -60,7 +60,7 @@ namespace Client
             if(name.Text != "")
             {
                 string players = numOfPlayers.Text;
-                if (players.All(char.IsNumber))
+                if (players.All(char.IsNumber) && numOfQ.SelectedItem!= null && time.SelectedItem != null)
                 {
                     CreateRoomRequest req = new CreateRoomRequest(name.Text, int.Parse(players), int.Parse(numOfQ.Text), int.Parse(time.Text));
                     string msg = Convert.ToString(8, 2);

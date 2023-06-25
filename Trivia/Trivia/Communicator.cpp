@@ -113,7 +113,35 @@ void Communicator::handleNewClient(SOCKET sock)
 	{
 		if (hold != nullptr)
 		{
+
 			RequestInfo check;
+			check.id = LEAVEGAME;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
+			check.id = LEAVEROOM;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
+			check.id = CLOSEROOM;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
 			check.id = LOGOUT;
 			if (hold->isRequestRelevant(check))
 			{

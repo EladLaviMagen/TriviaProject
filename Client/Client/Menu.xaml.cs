@@ -183,7 +183,33 @@ namespace Client
 
         private void sign_out_Click(object sender, RoutedEventArgs e)
         {
-            
+            stopFlag = true;
+            while (stopFlag)
+            { }
+            string msg = Convert.ToString(2, 2);
+            msg = Translations.padLeft(msg, 8);
+            msg += Translations.padLeft("", 32);
+            NetworkStream clientStream = Communicator.client.GetStream();
+
+            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] code = new byte[8];
+            int bytesRead = clientStream.Read(code, 0, 8);
+            string code_str = System.Text.Encoding.Default.GetString(code);
+            byte[] size = new byte[32];
+            bytesRead = clientStream.Read(size, 0, 32);
+            string size_str = System.Text.Encoding.Default.GetString(size);
+            byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
+            bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
+            string rooms_str = System.Text.Encoding.Default.GetString(rooms);
+            if (Convert.ToInt32(code_str, 2) == 1)
+            {
+                MainWindow main = new MainWindow();
+                this.Close();
+                main.ShowDialog();
+
+            }
         }
 
         private void shop_Click(object sender, RoutedEventArgs e)

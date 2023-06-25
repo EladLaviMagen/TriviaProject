@@ -35,6 +35,7 @@ void GameManager::deleteGame(unsigned int gameId)
 				if ((*it)->getId() == gameId)
 				{
 					m_games->erase(it);
+					return;
 				}
 			}
 		}
