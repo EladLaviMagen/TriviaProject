@@ -127,4 +127,16 @@ namespace Client
         }
     };
 
+    class statsResponse
+    {
+        public int status;
+        public string[] statistics;
+        public statsResponse(int sta, string[] stats)
+        {
+            status = sta;
+            statistics = stats;
+        }
+    };
+
+
 }

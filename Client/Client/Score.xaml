@@ -10,8 +10,8 @@
         <Grid.Background>
             <ImageBrush ImageSource="https://cdn.mos.cms.futurecdn.net/X3LBHs4Zfx7SbyvJ86BnmW.jpg"/>
         </Grid.Background>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="623,10,10,164"/>
-        <Button Content="Leave" HorizontalAlignment="Left" Margin="27,32,0,0" VerticalAlignment="Top" Height="25" Width="54"/>
+        <ListBox x:Name="scores" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="623,10,10,164"/>
+        <Button x:Name="leave" Content="Leave" HorizontalAlignment="Left" Margin="27,32,0,0" VerticalAlignment="Top" Height="25" Width="54" Click="leave_Click"/>
 
 
     </Grid>

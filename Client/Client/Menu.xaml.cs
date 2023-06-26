@@ -231,12 +231,22 @@ namespace Client
 
         private void lead_Click(object sender, RoutedEventArgs e)
         {
-
+            bgWorker.CancelAsync();
+            while (stopFlag)
+            { }
+            Score score = new Score(10, _quiet);
+            this.Close();
+            score.ShowDialog();
         }
 
         private void profile_Click(object sender, RoutedEventArgs e)
         {
-
+            bgWorker.CancelAsync();
+            while (stopFlag)
+            { }
+            Score score = new Score(6, _quiet);
+            this.Close();
+            score.ShowDialog();
         }
     }
 }
