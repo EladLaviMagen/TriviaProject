@@ -1,0 +1,25 @@
+﻿<Window x:Class="Client.Game"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Game" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://static.vecteezy.com/system/resources/thumbnails/006/895/963/small/neon-quiz-game-template-four-options-answers-for-knowledge-exam-in-school-tv-show-illustration-10-eps-vector.jpg"/>
+        </Grid.Background>
+        <TextBlock x:Name="question" TextWrapping="Wrap" Text="TextBlock" Margin="203,140,156,252" Foreground="White"/>
+        <Button x:Name="ans1" Content="" Margin="132,223,418,145" Background="{x:Null}" Click="ans1_clicked" Foreground="White" />
+        <Button x:Name="ans2" Content="" Margin="448,223,102,145" Background="{x:Null}" Click="ans2_clicked" Foreground="White" />
+        <Button x:Name="ans3" Content="" Margin="132,294,418,74" Background="{x:Null}" Click="ans3_clicked" Foreground="White"/>
+        <Button x:Name="ans4" Content="" Margin="448,294,102,74" Background="{x:Null}" Click="ans4_clicked" Foreground="White"/>
+        <TextBlock x:Name="timeTxt" HorizontalAlignment="Left" Margin="648,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="46" Width="142" Foreground="Red" Background="White" RenderTransformOrigin="0.19,0.61"/>
+        <TextBlock x:Name="Left" HorizontalAlignment="Left" Margin="45,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="19" Width="134" Foreground="Red" Background="White"/>
+        <TextBlock x:Name="Rignt" HorizontalAlignment="Left" Margin="448,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" IsEnabled="False" Height="46" Width="162" Foreground="Red" Background="White"/>
+        <Button Content="Leave Game" HorizontalAlignment="Left" Margin="45,377,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
+
+    </Grid>
+</Window>

@@ -1,15 +1,36 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "LoginRequestHandler.h"
-#include "Communicator.h"
+#include "IRequestHandler.h"
 
 #define PASSWORD "password"
 #define USERNAME "username"
 #define EMAIL "mail"
+#define ID_JSON "id"
+#define TIME "time"
+#define MAX_USERS "max"
+#define QUESTION_COUNT "count"
+#define NAME "name"
 
-class LoginRequestHandler;
-class Communicator;
+#define SIGN 3
+#define LOGOUT 2
+#define LOG 1
+#define CREATEROOM 8
+#define GETPLAYERSINROOM 7
+#define JOINROOM 5
+#define GETALLROOMS 9
+#define GETPLAYERSTATS 6
+#define GETHIGHSCORES 10
+#define CLOSEROOM 11
+#define STARTGAME 12
+#define GETSTATE 13
+#define LEAVEROOM 15
+#define GETQUESTION 16
+#define SUBMITANS 17
+#define GETRESULTS 18
+#define LEAVEGAME 19
+
+
 class IRequestHandler;
 
 typedef struct LoginRequest
@@ -41,5 +62,27 @@ typedef struct RequestInfo
 	std::vector<unsigned char> buffer;
 }RequestInfo;
 
+typedef struct CreateRoomRequest
+{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+};
 
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+};
+
+typedef struct JoinRoomRequest
+{
+	unsigned int roomId;
+};
+
+
+typedef struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+};
 

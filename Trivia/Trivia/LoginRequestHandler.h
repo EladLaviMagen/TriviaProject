@@ -1,16 +1,23 @@
 #pragma once
 #include "IRequestHandler.h"
-#include "JsonRequestPacketDeserializer.h"
+#include "RequestHandlerFactory.h"
 
-class IRequestHandler;
-#define SIGN 3
-#define LOG 1
-#define STATUS_SUCCESS 1
-#define STATUS_FAILED 0
+class RequestHandlerFactory;
+struct RequestInfo;
+struct RequestResult;
+class RoomManager;
+class StatisticsManager;
+class LoginManager;
 
 class LoginRequestHandler : public IRequestHandler
 {
 public:
+	LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager);
 	virtual bool isRequestRelevant(RequestInfo info) override;
 	virtual RequestResult handleRequest(RequestInfo info) override;
+private:
+	RequestResult login(RequestInfo info);
+	RequestResult signUp(RequestInfo info);
+	RequestHandlerFactory& m_handlerFactory;
+	LoginManager& m_loginManager;
 };

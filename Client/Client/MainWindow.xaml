@@ -1,0 +1,19 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0,10,0,0">
+
+        <Button Content="Sign up" HorizontalAlignment="Left" Margin="226,294,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click"/>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="503,294,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click_1"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://media.wired.com/photos/5c9ba67d1e34481170ef2bcd/16:9/w_2400,h_1350,c_limit/Culture_Matrix_RedPillBluePill-1047403844.jpg"/>
+        </Grid.Background>
+
+
+    </Grid>
+</Window>

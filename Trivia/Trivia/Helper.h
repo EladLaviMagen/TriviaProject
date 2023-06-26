@@ -2,7 +2,8 @@
 #include <vector>
 #include <string>
 #include <WinSock2.h>
-
+#define SIZE 32
+#define CODE 8
 
 enum MessageType : byte
 {

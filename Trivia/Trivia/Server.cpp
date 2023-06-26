@@ -1,5 +1,8 @@
 #include "Server.h"
 
+Server::Server(RequestHandlerFactory handlerFactory) : m_handlerFactory(handlerFactory) , m_comminicator(handlerFactory)
+{
+}
 
 void Server::run()
 {

@@ -1,0 +1,22 @@
+﻿<Window x:Class="Client.Menu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Menu" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://cdn.discordapp.com/attachments/912783177465085983/1115250742127755264/1200.png"/>
+        </Grid.Background>
+        <ComboBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="548,212,41,169" SelectionChanged="ListBox_SelectionChanged"/>
+        <Button x:Name="ready" Content="" Margin="578,325,53,50" RenderTransformOrigin="-0.14,-0.275" Click="ready_Click" Background="{x:Null}"/>
+        <Button x:Name="sign_out" Content="" Margin="46,10,652,373"  Background="{x:Null}" Click="sign_out_Click"/>
+        <Button x:Name="create" Content="" Margin="530,190,233,201" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Click="create_Click"/>
+        <Button x:Name="lead" Content="" Margin="517,43,180,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="lead_Click"/>
+        <Button x:Name="shop" Margin="387,43,330,355" Background="{x:Null}" RenderTransformOrigin="0.474,0.585" Click="shop_Click"/>
+        <Button x:Name="profile" Margin="457,43,271,355" Background="{x:Null}" Click="profile_Click"/>
+        <TextBlock x:Name="notify" HorizontalAlignment="Left" Margin="46,334,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="42" Width="152" IsEnabled="False"/>
+    </Grid>
+</Window>

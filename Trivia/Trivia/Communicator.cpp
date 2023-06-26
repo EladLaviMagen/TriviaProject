@@ -1,6 +1,6 @@
 #include "Communicator.h"
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -31,7 +31,7 @@ void Communicator::bindAndListen()
 
 	while (true)
 	{
-		IRequestHandler* handler = new LoginRequestHandler();
+		IRequestHandler* handler = m_handlerFactory.createLoginRequestHandler();
 		// this accepts the client and create a specific socket from server to this client
 		// the process will not continue until a client connects to the server
 		SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
@@ -49,56 +49,108 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET sock)
 {
-	while (true)
+	IRequestHandler* hold = nullptr;
+	try
 	{
-		std::string dataToSend = "";
-		std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);
-		int code = std::stoi(biNumber, 0, 2);
-		int size = 0;
-		std::string keep = "";
-		std::string biSize = "";
-		
-		for (int i = 0; i < SIZE / 8; i++)
+		while (true)
 		{
-			size *= 10;
-			keep = Helper::getStringPartFromSocket(sock, CODE);
-			size += std::stoi(keep, 0, 2);
-			biSize += keep;
-			
-		}
-		std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);
-		std::vector<byte> buffer;
-		for (int i = 0; i < biSize.length(); i++)
-		{
-			buffer.push_back(biSize[i]);
-		}
-		for (int i = 0; i < msg.length(); i++)
-		{
-			buffer.push_back(msg[i]);
-		}
-		RequestInfo info = { code, buffer };
-		if (m_clients[sock]->isRequestRelevant(info))
-		{
-			RequestResult result = m_clients[sock]->handleRequest(info);
-			m_clients[sock] = result.newHandler;
-			for (int i = 0; i < result.response.size(); i++)
+			std::string dataToSend = "";
+			std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);//getting the code from the msg
+			int code = std::stoi(biNumber, 0, 2);
+			int size = 0;
+			std::string keep = "";
+			std::string biSize = "";
+
+			for (int i = 0; i < SIZE / 8; i++)//getting the size of the data
 			{
-				dataToSend += result.response[i];
+				size *= 10;
+				keep = Helper::getStringPartFromSocket(sock, CODE);
+				size += std::stoi(keep, 0, 2);
+				biSize += keep;
+
 			}
-		}
-		else
-		{
-			ErrorResponse err = { "Request irrelevant" };
-			std::vector<unsigned char> response = JsonResponsePacketSerializer::serializeResponse(err);
-			
-			for (int i = 0; i < response.size(); i++)
+			std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);//getting the data
+			std::vector<byte> buffer;
+			for (int i = 0; i < biSize.length(); i++)
 			{
-				dataToSend += response[i];
+				buffer.push_back(biSize[i]);
 			}
+			for (int i = 0; i < msg.length(); i++)
+			{
+				buffer.push_back(msg[i]);
+			}
+			RequestInfo info = { code, buffer };
+			if (m_clients[sock]->isRequestRelevant(info))//checking if request is relevant
+			{
+				RequestResult result = m_clients[sock]->handleRequest(info);
+				hold = result.newHandler;
+				if (m_clients[sock] != result.newHandler)//changing handler if needed
+				{
+					IRequestHandler* temp =  m_clients[sock];
+					m_clients[sock] = result.newHandler;
+					delete temp;
+					
+				}
+				for (int i = 0; i < result.response.size(); i++)//entring to data to send the results
+				{
+					dataToSend += result.response[i];
+				}
+			}
+			else//if the request is irrelevant
+			{
+				ErrorResponse err = { "Request irrelevant" };//sending an error response to client
+				std::vector<unsigned char> response = JsonResponsePacketSerializer::serializeResponse(err);
+
+				for (int i = 0; i < response.size(); i++)
+				{
+					dataToSend += response[i];
+				}
+			}
+			Helper::sendData(sock, dataToSend);
 		}
-		Helper::sendData(sock, dataToSend);
 	}
-	
+	catch (std::exception ex)//if there is an error in the middle than catching it and handling
+	{
+		if (hold != nullptr)//if the handler is not null
+		{
+			//checking the user state and logging him out ;)
+			RequestInfo check;
+			check.id = LEAVEGAME;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
+			check.id = LEAVEROOM;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
+			check.id = CLOSEROOM;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				check.id = LOGOUT;
+				RequestResult removal2 = removal.newHandler->handleRequest(check);
+				delete removal.newHandler;
+				delete removal2.newHandler;
+			}
+			check.id = LOGOUT;
+			if (hold->isRequestRelevant(check))
+			{
+				RequestResult removal = hold->handleRequest(check);
+				delete removal.newHandler;
+			}
+			delete hold;
+		}
+	}
 }
 
 void Communicator::startHandleRequest()
