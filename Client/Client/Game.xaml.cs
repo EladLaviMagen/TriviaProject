@@ -37,11 +37,12 @@ namespace Client
         bool midAnswer = false;
         SubmitAnswerResponse ans = null;
         BackgroundWorker bgWorker = new BackgroundWorker();
+        BackgroundWorker asker = new BackgroundWorker();
         bool _quiet;
         public Game(bool quiet, int time, int numOfQuestion, int right)
         {
-            _quiet = quiet;
             InitializeComponent();
+            _quiet = quiet;
             timerSeconds = time;
             numq = numOfQuestion;
             gotRight = right;
@@ -51,11 +52,15 @@ namespace Client
             timeTxt.Text = time.ToString();
             bgWorker.WorkerSupportsCancellation = true;
             bgWorker.WorkerReportsProgress = true;
+            asker.WorkerSupportsCancellation = true;
+            asker.WorkerReportsProgress = true;
             bgWorker.ProgressChanged += actualWork;
             bgWorker.DoWork += work;
-
-            ask();
-
+            asker.ProgressChanged += show;
+            asker.DoWork += ask;
+            asker.RunWorkerAsync();
+            StartTimer();
+            
         }
         void work(object sender, DoWorkEventArgs e)
         {
@@ -95,23 +100,34 @@ namespace Client
             timer.Stop();
             if (numq == 0)
             {
-                EndScreen finish = new EndScreen();
+                EndScreen finish = new EndScreen(_quiet);
                 this.Close();
                 finish.ShowDialog();
 
             }
-            Game next = new Game(_quiet, _time, numq - 1, gotRight);
-            this.Close();
-            next.ShowDialog();
+            else
+            {
+                Game next = new Game(_quiet, _time, numq - 1, gotRight);
+                this.Close();
+                next.ShowDialog();
+            }
+           
         }
-    private void ask()
-    {
+        private void show(object sender, ProgressChangedEventArgs e)
+        {
+            question.Text = res.question;
+            ans1.Content = res.answer[0];
+            ans2.Content = res.answer[1];
+            ans3.Content = res.answer[2];
+            ans4.Content = res.answer[3];
+        }
+        private void ask(object sender, DoWorkEventArgs e)
+        {
             string msg = Convert.ToString(16, 2);
             msg = Translations.padLeft(msg, 8);
             msg += Translations.padLeft("", 32);
             NetworkStream clientStream = Communicator.client.GetStream();
             byte[] buffer = new ASCIIEncoding().GetBytes(msg);
-            StartTimer();
             clientStream.Write(buffer, 0, buffer.Length);
             clientStream.Flush();
             byte[] code = new byte[8];
@@ -126,14 +142,9 @@ namespace Client
             if (Convert.ToInt32(code_str, 2) == 1)
             {
                 res = JsonConvert.DeserializeObject<GetQuestionResponse>(Translations.binaryToString(rooms_str));
-                question.Text = res.question;
-                ans1.Content = res.answer[0];
-                ans2.Content = res.answer[1];
-                ans3.Content = res.answer[2];
-                ans4.Content = res.answer[3];
             }
-            
-    }
+            asker.ReportProgress(0);
+        }
         
 
 

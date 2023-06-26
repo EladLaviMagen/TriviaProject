@@ -10,12 +10,13 @@
         <Grid.Background>
             <ImageBrush ImageSource="https://www.videomeme.in/wp-content/uploads/2023/04/speed-skipping-screen.jpg"/>
         </Grid.Background>
-        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="320,47,263,148" SelectionChanged="ListView_SelectionChanged">
+        <ListView x:Name="resultsView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="320,47,75,148" SelectionChanged="ListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="leave" Content="return to lobby" HorizontalAlignment="Left" Margin="65,84,0,0" VerticalAlignment="Top" Width="107" Click="leave_Click"/>
     </Grid>
 </Window>

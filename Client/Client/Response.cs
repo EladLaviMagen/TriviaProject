@@ -93,8 +93,8 @@ namespace Client
     class GetGameResultsResponse
     {
         public int status;
-        public PlayerResults[] results;
-        public GetGameResultsResponse(int sta, PlayerResults[] res)
+        public string[] results;
+        public GetGameResultsResponse(int sta, string[] res)
         {
             results = res;
             status = sta;
