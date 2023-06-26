@@ -23,6 +23,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         bool quiet = true;
         public MainWindow()
         {

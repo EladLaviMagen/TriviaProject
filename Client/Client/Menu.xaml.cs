@@ -30,6 +30,7 @@ namespace Client
     /// </summary>
     public partial class Menu : Window
     {
+        //Here will the explanation for use of background workers
         BackgroundWorker bgWorker = new BackgroundWorker();
         bool stopFlag = false;
         RoomData[] roomdatas = null;
@@ -46,6 +47,7 @@ namespace Client
                 Audio.mediaPlayer.Open(new Uri(openFileDialog.FileName));
                 Audio.mediaPlayer.Play();
             }
+            //Preperations
             bgWorker.WorkerSupportsCancellation = true;
             bgWorker.WorkerReportsProgress = true;
             bgWorker.ProgressChanged += actualWork;
@@ -54,8 +56,10 @@ namespace Client
         }
         void work(object sender, DoWorkEventArgs e)
         {
+            //Infinite update loop
             while (true)
             {
+                //Contructing message
                 string msg = Convert.ToString(9, 2);
                 msg = Translations.padLeft(msg, 8);
                 msg += Translations.padLeft("", 32);
@@ -73,6 +77,7 @@ namespace Client
                 byte[] rooms = new byte[Convert.ToInt32(size_str, 2) * 8];
                 bytesRead = clientStream.Read(rooms, 0, Convert.ToInt32(size_str, 2) * 8);
                 string rooms_str = System.Text.Encoding.Default.GetString(rooms);
+                //Deserialization of response to a class
                 GetRoomsResponse response = JsonConvert.DeserializeObject<GetRoomsResponse>(Translations.binaryToString(rooms_str));
                 roomdatas = new RoomData[response.rooms.Length / 6];
                 for (int i = 0; i < response.rooms.Length / 6; i++)
