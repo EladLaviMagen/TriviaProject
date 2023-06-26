@@ -20,5 +20,6 @@ private:
 	LoggedUser m_user;
 	GameManager* m_gameManager;
 	RequestHandlerFactory* m_handlerFactory;
+	static std::mutex check;
 };
 

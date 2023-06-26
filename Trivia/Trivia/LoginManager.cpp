@@ -8,6 +8,7 @@ LoginManager::LoginManager(IDatabase* database)
 	m_loggedUsers = new std::vector<LoggedUser>();
 }
 
+
 void LoginManager::signUp(std::string name, std::string password, std::string mail)
 {
 	if (!m_database->doesUserExist(name))

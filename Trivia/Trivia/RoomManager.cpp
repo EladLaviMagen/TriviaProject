@@ -6,10 +6,7 @@ RoomManager::RoomManager()
 {
 	m_rooms = new std::map<int, Room>();
 }
-RoomManager::~RoomManager()
-{
-	delete m_rooms;
-}
+
 void RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	std::lock_guard<std::mutex> locker(room_lock);

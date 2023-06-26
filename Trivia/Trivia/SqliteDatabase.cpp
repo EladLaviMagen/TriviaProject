@@ -4,6 +4,7 @@
 #include <chrono> 
 
 std::mutex SqliteDatabase::users_lock;
+std::mutex SqliteDatabase::score_lock;
 const char* SqliteDatabase::DB_FILE_NAME = "DB.sqlite";
 const char* SqliteDatabase::USERS_TABLE = "users";
 const char* SqliteDatabase::PASSWORD_COLUMN = "password";
@@ -91,6 +92,14 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
         std::lock_guard<std::mutex> locker(users_lock);
         sqlRequest(sql);
     }
+    sql.str();
+    sql << "INSERT INTO " << STATISTICS_TABLE
+    << " ( " << NAME_COLUMN << ", " << TIME_COLUMN << ", " << RIGHT_ANS_COLUMN << ", " << ANSWERS_COLUMN << ", " << GAMES_COLUMN << " ) VALUES (" << " '" << name << "', " << 0 << ", " << 0 << ", " << 0 << ", " << 0 << " );";
+    {
+        std::lock_guard<std::mutex> locker(users_lock);
+        sqlRequest(sql);
+    }
+  
    
 }
 
@@ -107,7 +116,8 @@ float SqliteDatabase::getPlayerAverageAnswerTime(std::string name)
 {
     float average = 0.0;
     std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = '" << name << "';";
     sqlRequest(sql, SqliteDatabase::getAverage, &average);
     return average;
 }
@@ -116,7 +126,8 @@ int SqliteDatabase::getNumOfCorrectAnswer(std::string name)
 {
     int corrects = 0;
     std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = '" << name << "';";
     sqlRequest(sql, SqliteDatabase::getCorrects, &corrects);
     return corrects;
 }
@@ -125,7 +136,7 @@ int SqliteDatabase::getNumOfTotalAnswers(std::string name)
 {
     int total = 0;
     std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = '" << name << "';";
     sqlRequest(sql, SqliteDatabase::getTotal, &total);
     return total;
 }
@@ -134,18 +145,15 @@ int SqliteDatabase::getNumOfPlayerGames(std::string name)
 {
     int games = 0;
     std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
+    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = '" << name << "';";
     sqlRequest(sql, SqliteDatabase::getGames, &games);
     return games;
 }
 
 int SqliteDatabase::getPlayerScore(std::string name)
 {
-    int score = 0;
-    std::stringstream sql;
-    sql << "SELECT * FROM " << STATISTICS_TABLE << " WHERE " << NAME_COLUMN << " = " << name << ";";
-    sqlRequest(sql, SqliteDatabase::getScore, &score);
-    return score;
+    return -1;
+    //Really didn't know what to do here
 }
 
 std::vector<std::string> SqliteDatabase::getHighScores()
@@ -156,6 +164,8 @@ std::vector<std::string> SqliteDatabase::getHighScores()
     sqlRequest(sql, SqliteDatabase::getHighestScores, &highestScorers);
     return highestScorers;
 }
+
+
 
 /*
 * Function builds a new database
@@ -248,6 +258,13 @@ void SqliteDatabase::build()
     sql.str("");
 }
 
+void SqliteDatabase::updateScores(PlayerResults data)
+{
+    std::stringstream sql;
+    sql << "UPDATE " << STATISTICS_TABLE << " SET " << NAME_COLUMN << "='" << data.username << "', " << TIME_COLUMN << "=" << (getPlayerAverageAnswerTime(data.username) * getNumOfTotalAnswers(data.username) + (data.averageAnswerTime * (data.correctAnswerCount + data.answerTimeout))) / (float)(getNumOfTotalAnswers(data.username) + data.correctAnswerCount + data.answerTimeout) << ", " << RIGHT_ANS_COLUMN << "=" << getNumOfCorrectAnswer(data.username) + data.correctAnswerCount << ", " << ANSWERS_COLUMN << "=" << getNumOfTotalAnswers(data.username) + data.correctAnswerCount + data.answerTimeout << ", " << GAMES_COLUMN << "=" << getNumOfPlayerGames(data.username) + 1 << " WHERE " << NAME_COLUMN << "='" << data.username << "';";
+    sqlRequest(sql);
+    sql.str("");
+}
 void SqliteDatabase::sqlRequest(const char* sql, int(*callback)(void*, int, char**, char**), void* data)
 {
     char* errMsg = nullptr;
@@ -296,20 +313,15 @@ int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** az
 int SqliteDatabase::getAverage(void* data, int argc, char** argv, char** azColName)
 {
     float* average = (float*)data;
-    int numOfQuestions = 0;
     for (int i = 0; i < argc; i++)
     {
         if (azColName[i] == TIME_COLUMN)
         {
             *average = std::stof(argv[i]);
         }
-        else if (azColName[i] == ANSWERS_COLUMN)
-        {
-            numOfQuestions = std::stoi(argv[i]);
-        }
+
     }
 
-    *average /= (float)numOfQuestions;
     return 0;
 }
 

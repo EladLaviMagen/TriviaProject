@@ -9,6 +9,7 @@ public:
 	GameManager(IDatabase* data);
 	Game* createGame(Room room);
 	void deleteGame(unsigned int gameId);
+	void updateScores(PlayerResults data);
 	Game* getGame(std::string name);
 
 private:

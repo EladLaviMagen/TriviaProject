@@ -182,10 +182,10 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetGa
 	std::vector<std::string> vec;
 	for (int i = 0; i < gameRes.results.size(); i++)
 	{
-		vec.push_back(std::to_string(gameRes.results[i].answerTimeout));
+		vec.push_back(gameRes.results[i].username);
 		vec.push_back(std::to_string(gameRes.results[i].averageAnswerTime));
 		vec.push_back(std::to_string(gameRes.results[i].correctAnswerCount));
-		vec.push_back(gameRes.results[i].username);
+		vec.push_back(std::to_string(gameRes.results[i].answerTimeout));
 	}
 	buff[RESULTS] = vec;
 

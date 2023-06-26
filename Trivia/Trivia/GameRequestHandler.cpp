@@ -1,6 +1,6 @@
 #include "GameRequestHandler.h"
 
-
+std::mutex GameRequestHandler::check;
 GameRequestHandler::GameRequestHandler(Game* game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory) : m_game(game), m_user(user)
 {
 	m_gameManager = manager;
@@ -83,8 +83,22 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
 	return result;
 }
+
+/*Tried to update and it didn't work :(
+* std::vector<PlayerResults> vec = m_game->getResults(m_user);
+* for (int i = 0; i < vec.size(); i++)
+	{
+		if (vec[i].username == m_user.getUserName())
+		{
+			m_gameManager->updateScores(vec[i]);
+		}
+	}
+*/
+
 RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 {
+
+	
 	this->m_game->removeUser(m_user);
 	if (m_game->isEmpty())
 	{

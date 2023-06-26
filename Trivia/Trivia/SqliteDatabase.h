@@ -1,8 +1,11 @@
 #pragma once
 #include "IDatabase.h"
+#include "Game.h"
 #include <sstream>
 #include <mutex>
 #include"MyException.h"
+class Game;
+
 class SqliteDatabase : public IDatabase
 {
 public:
@@ -19,6 +22,7 @@ public:
 	virtual int getNumOfPlayerGames(std::string name) override;
 	virtual int getPlayerScore(std::string name) override;
 	virtual std::vector<std::string> getHighScores() override;
+	virtual void updateScores(PlayerResults data) override;
 	
 private:
 	static int passwordMatch(void* data, int argc, char** argv, char** azColName);
@@ -52,6 +56,7 @@ private:
 	static const char* GAMES_COLUMN;
 	static const char* SCORE_COLUMN;
 	static std::mutex users_lock;
+	static std::mutex score_lock;
 	sqlite3* _db;
 };
 

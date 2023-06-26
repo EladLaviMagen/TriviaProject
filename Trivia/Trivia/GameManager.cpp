@@ -7,6 +7,8 @@ GameManager::GameManager(IDatabase* data)
 	m_database = data;
 }
 
+
+
 Game* GameManager::createGame(Room room)
 {
 	std::vector<LoggedUser>* vec = new std::vector<LoggedUser>();
@@ -41,6 +43,11 @@ void GameManager::deleteGame(unsigned int gameId)
 		}
 		
 	}
+}
+
+void GameManager::updateScores(PlayerResults data)
+{
+	m_database->updateScores(data);
 }
 
 Game* GameManager::getGame(std::string name)

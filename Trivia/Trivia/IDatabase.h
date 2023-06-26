@@ -5,6 +5,7 @@
 #include <vector>
 #include "sqlite3.h"
 #include "Question.h"
+#include "Game.h"
 
 class Question;
 
@@ -22,5 +23,6 @@ public:
 	virtual int getNumOfTotalAnswers(std::string name) = 0;
 	virtual int getNumOfPlayerGames(std::string name) = 0;
 	virtual int getPlayerScore(std::string name) = 0;
+	virtual void updateScores(PlayerResults data) = 0;
 	virtual std::vector<std::string> getHighScores() = 0;
 };

@@ -1,6 +1,5 @@
 #include "Game.h"
 int Game::id = 1;
-
 Game::Game(std::vector<Question>* questions, std::vector<LoggedUser>* players, int qtime)
 {
     m_questions = questions;
@@ -17,6 +16,7 @@ Game::Game(std::vector<Question>* questions, std::vector<LoggedUser>* players, i
     id++;
     _time = qtime;
 }
+
 
 Question Game::getQuestionForUser(LoggedUser user)
 {
@@ -48,6 +48,10 @@ int Game::submitAnswer(LoggedUser user, unsigned int id)
     {
         (*m_players)[user.getUserName()].currentQuestion = (*m_questions)[i];
     }
+    else
+    {
+        (*m_players)[user.getUserName()].currentQuestion = Question("finish", std::vector<std::string>(), 5);
+    }
     (*m_players)[user.getUserName()].averageAnswerTime += difftime(time(0), timer);
     while (difftime(time(0), timer) < _time)
     {}
@@ -59,15 +63,29 @@ std::vector<PlayerResults> Game::getResults(LoggedUser user)
     GameData data;
     PlayerResults results;
     std::vector<PlayerResults> vec;
+    
     if (m_players->size() != 0)
     {
+        bool checker = true;
+        while (checker)
+        {
+            checker = false;
+            for (auto it = m_players->begin(); it != m_players->end(); it++)
+            {
+                if (it->second.currentQuestion.getQuestion() != "finish")
+                {
+                    checker = true;
+                }
+            }
+        }
+        
         for (auto it = m_players->begin(); it != m_players->end(); it++)
         {
             data = it->second;
             results.username = it->first;
             results.averageAnswerTime = data.averageAnswerTime / (float)m_questions->size();
             results.correctAnswerCount = data.correctAnswerCount;
-            results.answerTimeout = 0;
+            results.answerTimeout = data.wrongAnswerCount;
             vec.push_back(results);
         }
     }

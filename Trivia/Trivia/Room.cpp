@@ -2,6 +2,7 @@
 
 
 
+
 Room::Room(LoggedUser user, RoomData data)
 {
 	m_users = new std::vector<LoggedUser>();
