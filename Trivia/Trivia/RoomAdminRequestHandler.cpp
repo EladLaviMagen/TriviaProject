@@ -7,7 +7,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser loggedUse
 
 bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo info)
 {
-    if (info.id == CLOSEROOM || info.id == STARTGAME || info.id == GETSTATE)
+    if (info.id == CLOSEROOM || info.id == STARTGAME || info.id == GETSTATE)//checking if the request is relevant
     {
         return true;
     }
@@ -16,6 +16,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo info)
 
 RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 {
+    //giving the right handling for the request
     RequestResult result;
     if (info.id == CLOSEROOM)
     {
@@ -41,11 +42,11 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
     CloseRoomResponse res;
     res.status = 1;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
-    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)
+    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)//if there are no users than deleting the room
     {
         m_roomManager->deleteRoom(m_room.getData().id);
     }
-    else
+    else//closing it
     {
         m_roomManager->getRoom(m_room.getData().id).close();
     }
@@ -55,17 +56,17 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
     RequestResult result;
-    m_handlerFactory->getGameManager()->createGame(m_roomManager->getRoom(m_room.getData().id));
+    m_handlerFactory->getGameManager()->createGame(m_roomManager->getRoom(m_room.getData().id));//creating game
     result.newHandler = m_handlerFactory->createGameRequestHandler(this->m_loggedUser);
     m_roomManager->getRoom(m_room.getData().id).removeUser(m_loggedUser);
     StartGameResponse res;
     res.status = 1;
     result.response = JsonResponsePacketSerializer::serializeResponse(res);
-    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)
+    if (m_roomManager->getRoom(m_room.getData().id).getAllUsers().size() == 0)// if there are no users than deleting the room
     {
         m_roomManager->deleteRoom(m_room.getData().id);
     }
-    else
+    else//starting game
     {
         m_roomManager->getRoom(m_room.getData().id).activate();
     }
@@ -74,6 +75,7 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 
 RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 {
+    //sending to the client the current room info :)
     RequestResult result;
     RoomData data = m_room.getData();
     GetRoomStateResponse res;

@@ -55,6 +55,7 @@ void SqliteDatabase::close()
 bool SqliteDatabase::doesUserExist(std::string name)
 {
     int answer = 0;
+    //Checking if the user exists
     std::stringstream sql;
     sql << "SELECT * FROM " << USERS_TABLE << " WHERE "
         << NAME_COLUMN << " = '" << name << "';";
@@ -68,6 +69,7 @@ bool SqliteDatabase::doesUserExist(std::string name)
 
 bool SqliteDatabase::doesPasswordMatch(std::string name, std::string password)
 {
+    //Checking if password matches
     std::string answer = password;
     std::stringstream sql;
     sql << "SELECT password FROM " << USERS_TABLE << " WHERE "
@@ -85,6 +87,7 @@ bool SqliteDatabase::doesPasswordMatch(std::string name, std::string password)
 
 void SqliteDatabase::addNewUser(std::string name, std::string password, std::string mail)
 {
+    //Adding user into the users and statistics table
     std::stringstream sql;
     sql << "INSERT INTO " << USERS_TABLE
     << " ( " << NAME_COLUMN << ", " << PASSWORD_COLUMN << ", " << MAIL_COLUMN << " ) VALUES (" << " '" << name << "', '" << password << "', '" << mail << "' );";
@@ -105,6 +108,7 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 
 std::vector<Question>* SqliteDatabase::getQuestions(int numOf)
 {
+    //Getting the number of questions requested
     std::vector<Question>* questionList = new std::vector<Question>();
     std::stringstream sql;
     sql << "SELECT * FROM " << QUESTIONS_TABLE << " LIMIT " << numOf << ";";
@@ -114,6 +118,7 @@ std::vector<Question>* SqliteDatabase::getQuestions(int numOf)
 
 float SqliteDatabase::getPlayerAverageAnswerTime(std::string name)
 {
+    //Getting average answer time
     float average = 0.0;
     std::stringstream sql;
     
@@ -158,6 +163,8 @@ int SqliteDatabase::getPlayerScore(std::string name)
 
 std::vector<std::string> SqliteDatabase::getHighScores()
 {
+    //Ordering stats by number of correct answers and returning the results as a string vector in this format:
+    //username - number of right answers
     std::vector<std::string> highestScorers;
     std::stringstream sql;
     sql << "SELECT * FROM " << STATISTICS_TABLE << " ORDER BY " << RIGHT_ANS_COLUMN << " DESC LIMIT 5;";
@@ -260,6 +267,7 @@ void SqliteDatabase::build()
 
 void SqliteDatabase::updateScores(PlayerResults data)
 {
+    //This doesn't work, however it is supposed to update the user statistics and change them according to the most recent results given
     std::stringstream sql;
     sql << "UPDATE " << STATISTICS_TABLE << " SET " << NAME_COLUMN << "='" << data.username << "', " << TIME_COLUMN << "=" << (getPlayerAverageAnswerTime(data.username) * getNumOfTotalAnswers(data.username) + (data.averageAnswerTime * (data.correctAnswerCount + data.answerTimeout))) / (float)(getNumOfTotalAnswers(data.username) + data.correctAnswerCount + data.answerTimeout) << ", " << RIGHT_ANS_COLUMN << "=" << getNumOfCorrectAnswer(data.username) + data.correctAnswerCount << ", " << ANSWERS_COLUMN << "=" << getNumOfTotalAnswers(data.username) + data.correctAnswerCount + data.answerTimeout << ", " << GAMES_COLUMN << "=" << getNumOfPlayerGames(data.username) + 1 << " WHERE " << NAME_COLUMN << "='" << data.username << "';";
     sqlRequest(sql);
@@ -296,6 +304,7 @@ int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** az
     {
         ans.push_back(argv[i]);
     }
+    //Shuffling them
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::shuffle(ans.begin(), ans.end(), std::default_random_engine(seed));
     int correct = -1;
@@ -306,12 +315,14 @@ int SqliteDatabase::sqlGetQuestions(void* data, int argc, char** argv, char** az
             correct = i;
         }
     }
+    //Creating question and adding it to vector
     (*vec)->push_back(Question(argv[0], ans, correct));
     return 0;
 }
 
 int SqliteDatabase::getAverage(void* data, int argc, char** argv, char** azColName)
 {
+    //Gets the average
     float* average = (float*)data;
     for (int i = 0; i < argc; i++)
     {
@@ -327,6 +338,7 @@ int SqliteDatabase::getAverage(void* data, int argc, char** argv, char** azColNa
 
 int SqliteDatabase::getCorrects(void* data, int argc, char** argv, char** azColName)
 {
+    //Gets the correct amount of ans
     int* num = (int*)data;
     for (int i = 0; i < argc; i++)
     {
@@ -340,6 +352,7 @@ int SqliteDatabase::getCorrects(void* data, int argc, char** argv, char** azColN
 
 int SqliteDatabase::getTotal(void* data, int argc, char** argv, char** azColName)
 {
+    //Unreal
     int* num = (int*)data;
     for (int i = 0; i < argc; i++)
     {
@@ -353,6 +366,7 @@ int SqliteDatabase::getTotal(void* data, int argc, char** argv, char** azColName
 
 int SqliteDatabase::getScore(void* data, int argc, char** argv, char** azColName)
 {
+    //Getting number of games
     int* num = (int*)data;
     for (int i = 0; i < argc; i++)
     {
@@ -366,6 +380,7 @@ int SqliteDatabase::getScore(void* data, int argc, char** argv, char** azColName
 
 int SqliteDatabase::getGames(void* data, int argc, char** argv, char** azColName)
 {
+    //Getting number of games
     int* num = (int*)data;
     for (int i = 0; i < argc; i++)
     {
@@ -379,6 +394,7 @@ int SqliteDatabase::getGames(void* data, int argc, char** argv, char** azColName
 
 int SqliteDatabase::getHighestScores(void* data, int argc, char** argv, char** azColName)
 {
+    //Sets highest scores in the format I showed in the function
     std::vector<std::string>* vec = (std::vector<std::string>*)data;
     std::string stat = argv[0];
     stat += '-';

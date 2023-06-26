@@ -1,6 +1,7 @@
 #include "GameRequestHandler.h"
 
 std::mutex GameRequestHandler::check;
+//C'tor
 GameRequestHandler::GameRequestHandler(Game* game, LoggedUser user, GameManager* manager, RequestHandlerFactory* factory) : m_game(game), m_user(user)
 {
 	m_gameManager = manager;
@@ -9,7 +10,7 @@ GameRequestHandler::GameRequestHandler(Game* game, LoggedUser user, GameManager*
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo info) 
 {
-	if (info.id == GETQUESTION || info.id == SUBMITANS || info.id == GETRESULTS || info.id == LEAVEGAME)
+	if (info.id == GETQUESTION || info.id == SUBMITANS || info.id == GETRESULTS || info.id == LEAVEGAME)//checking if the request is relevant
 	{
 		return true;
 	}
@@ -17,6 +18,7 @@ bool GameRequestHandler::isRequestRelevant(RequestInfo info)
 }
 RequestResult GameRequestHandler::handleRequest(RequestInfo info)
 {
+	//giving the right handling for the request
 	RequestResult result;
 	if (info.id == GETQUESTION)
 	{
@@ -40,21 +42,21 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 {
 	RequestResult result;
 	GetQuestionResponse res;
-	Question question = m_game->getQuestionForUser(m_user);
+	Question question = m_game->getQuestionForUser(m_user);//getting the current question
 	std::map<unsigned int, std::string> ans;
 	result.newHandler = this;
-	if (question.getCorrectAnswerID() == -1)
+	if (question.getCorrectAnswerID() == -1)//showing end
 	{
 		res.status = 2;
 
 	}
 	else
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)//getting all possible answers
 		{
 			ans[i] = (question.getPossibleAnswers())[i];
 		}
-		res.answers = ans;
+		res.answers = ans;//ading response the answers and the question
 		res.question = question.getQuestion();
 		res.status = 1;
 
@@ -67,7 +69,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo info)
 	RequestResult result;
 	SubmitAnswerResponse res;
 	SubmitAnswerRequest req = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.buffer);
-	res.correctAnswerId = m_game->submitAnswer(m_user, req.answerId);
+	res.correctAnswerId = m_game->submitAnswer(m_user, req.answerId);//getting the right answer id so the client would know 
 	res.status = 1;
 	result.newHandler = this;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
@@ -77,7 +79,7 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 {
 	RequestResult result;
 	GetGameResultsResponse res;
-	res.results = m_game->getResults(m_user);
+	res.results = m_game->getResults(m_user);//getting the results and sending a msg
 	res.status = STATUS_GAME_FINISHED;
 	result.newHandler = this;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
@@ -97,15 +99,13 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 {
-
-	
-	this->m_game->removeUser(m_user);
-	if (m_game->isEmpty())
+	this->m_game->removeUser(m_user);//if the persong leaving the game fromm the client than remove from game
+	if (m_game->isEmpty())//if the game is empty (there are no users in it) removing it from the vector
 	{
 		m_gameManager->deleteGame(m_game->getId());
 	}
 	RequestResult result;
-	result.newHandler = m_handlerFactory->createMenuRequestHandler(m_user);
+	result.newHandler = m_handlerFactory->createMenuRequestHandler(m_user);//returning him to main
 	LeaveGameResponse res;
 	res.status = 1;
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);

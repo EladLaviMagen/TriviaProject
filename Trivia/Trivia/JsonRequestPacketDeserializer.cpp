@@ -13,7 +13,7 @@ std::string binaryToString(std::string binaryStr) {
 	}
 	return str;
 }
-
+//creating json from client's data so we can match it with server structs
 json createJson(std::vector<unsigned char> buffer)
 {
 	int size = 0;
@@ -39,14 +39,14 @@ json createJson(std::vector<unsigned char> buffer)
 	json j = json::parse(str);
 	return j;
 }
-
+//all are the same
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer)
 {
 	
-	json j = createJson(buffer);
+	json j = createJson(buffer);//creating a json with all the data
 
 	LoginRequest log;
-	log.password = j[PASSWORD];
+	log.password = j[PASSWORD];//d'toring the json for the srever (to a struct)
 	log.username = j[USERNAME];
 	return log;
 }

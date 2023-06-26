@@ -36,7 +36,7 @@ std::string str_to_bin_str(const std::string& str) {
 	}
 	return binary_str;
 }
-
+//creating buffer from the json to send to the client :)
 std::vector<unsigned char> createBuffer(json buff, std::string code)
 {
 	std::string bufferStr = "";
@@ -58,12 +58,12 @@ std::vector<unsigned char> createBuffer(json buff, std::string code)
 }
 
 
-
+//all the same
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(ErrorResponse err)
 {
 	json buff;
-	buff[MESSAGE] = err.message;
-	return createBuffer(buff, ERROR_CODE);
+	buff[MESSAGE] = err.message;//adding to the json
+	return createBuffer(buff, ERROR_CODE);//yesssss
 }
 
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LoginResponse log)
@@ -180,7 +180,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetGa
 	json buff;
 	buff[STATUS] = gameRes.status;
 	std::vector<std::string> vec;
-	for (int i = 0; i < gameRes.results.size(); i++)
+	for (int i = 0; i < gameRes.results.size(); i++)//because we can't send vector od struct than we convert it to a vector of strings
 	{
 		vec.push_back(gameRes.results[i].username);
 		vec.push_back(std::to_string(gameRes.results[i].averageAnswerTime));

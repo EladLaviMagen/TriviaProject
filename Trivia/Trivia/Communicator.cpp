@@ -55,13 +55,13 @@ void Communicator::handleNewClient(SOCKET sock)
 		while (true)
 		{
 			std::string dataToSend = "";
-			std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);
+			std::string biNumber = Helper::getStringPartFromSocket(sock, CODE);//getting the code from the msg
 			int code = std::stoi(biNumber, 0, 2);
 			int size = 0;
 			std::string keep = "";
 			std::string biSize = "";
 
-			for (int i = 0; i < SIZE / 8; i++)
+			for (int i = 0; i < SIZE / 8; i++)//getting the size of the data
 			{
 				size *= 10;
 				keep = Helper::getStringPartFromSocket(sock, CODE);
@@ -69,7 +69,7 @@ void Communicator::handleNewClient(SOCKET sock)
 				biSize += keep;
 
 			}
-			std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);
+			std::string msg = Helper::getStringPartFromSocket(sock, 8 * size);//getting the data
 			std::vector<byte> buffer;
 			for (int i = 0; i < biSize.length(); i++)
 			{
@@ -80,25 +80,25 @@ void Communicator::handleNewClient(SOCKET sock)
 				buffer.push_back(msg[i]);
 			}
 			RequestInfo info = { code, buffer };
-			if (m_clients[sock]->isRequestRelevant(info))
+			if (m_clients[sock]->isRequestRelevant(info))//checking if request is relevant
 			{
 				RequestResult result = m_clients[sock]->handleRequest(info);
 				hold = result.newHandler;
-				if (m_clients[sock] != result.newHandler)
+				if (m_clients[sock] != result.newHandler)//changing handler if needed
 				{
 					IRequestHandler* temp =  m_clients[sock];
 					m_clients[sock] = result.newHandler;
 					delete temp;
 					
 				}
-				for (int i = 0; i < result.response.size(); i++)
+				for (int i = 0; i < result.response.size(); i++)//entring to data to send the results
 				{
 					dataToSend += result.response[i];
 				}
 			}
-			else
+			else//if the request is irrelevant
 			{
-				ErrorResponse err = { "Request irrelevant" };
+				ErrorResponse err = { "Request irrelevant" };//sending an error response to client
 				std::vector<unsigned char> response = JsonResponsePacketSerializer::serializeResponse(err);
 
 				for (int i = 0; i < response.size(); i++)
@@ -109,11 +109,11 @@ void Communicator::handleNewClient(SOCKET sock)
 			Helper::sendData(sock, dataToSend);
 		}
 	}
-	catch (std::exception ex)
+	catch (std::exception ex)//if there is an error in the middle than catching it and handling
 	{
-		if (hold != nullptr)
+		if (hold != nullptr)//if the handler is not null
 		{
-
+			//checking the user state and logging him out ;)
 			RequestInfo check;
 			check.id = LEAVEGAME;
 			if (hold->isRequestRelevant(check))
