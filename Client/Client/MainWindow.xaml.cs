@@ -23,7 +23,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        //FOR YOUR COMFORT, IF QUIET IS TRUE MUSIC WILL BE TURNED OFF
         bool quiet = true;
         public MainWindow()
         {

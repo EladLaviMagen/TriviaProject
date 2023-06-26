@@ -33,6 +33,7 @@ namespace Client
             _quiet = quiet;
             _admin = admin;
             InitializeComponent();
+            //Preparing the room properly if the user is/n't an admin
             if(!admin)
             {
                 Start.Visibility = Visibility.Collapsed;
@@ -50,6 +51,7 @@ namespace Client
         {
             while (true)
             {
+                //Update thread
                 if(leftOrClosed)
                 {
                     return;
@@ -79,6 +81,7 @@ namespace Client
         }
         void actualWork(object sender, ProgressChangedEventArgs e)
         {
+            //Updating visuals
             if(response.status == 1)
             {
                 if(response.players != null)
@@ -90,7 +93,7 @@ namespace Client
                     }
                 }
             }
-            else if(response.status == 3)
+            else if(response.status == 3)//If the game was closed/started, moving the user to a proper window
             {
                 leftOrClosed = true;
                 Menu menu = new Menu(_quiet);
@@ -113,6 +116,7 @@ namespace Client
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+            //For admins only, setting up and sending a game start request
             leftOrClosed = true;
             string msg = Convert.ToString(12, 2);
             msg = Translations.padLeft(msg, 8);
@@ -134,6 +138,7 @@ namespace Client
             Response res = JsonConvert.DeserializeObject<Response>(Translations.binaryToString(rooms_str));
             if(res.status == 1)
             {
+                //Moving admin to game too
                 Game game = new Game(_quiet,response.answerTimeout, response.questionCount - 1, 0);
                 this.Close();
                 game.ShowDialog();

@@ -24,6 +24,14 @@ namespace Client
     /// <summary>
     /// Interaction logic for Game.xaml
     /// </summary>
+
+    /*
+         * Most aspects here are explained in the menu and signup however just to explain why I used 2 threads here
+         * one thread is for responses to make sure the window doesn't freeze and the other is because:
+         * Windows are a bit problematic, as for they need to be "active", and a screen doesn't build itself until 
+         * it's contructor is done, so to give it an easier time and to give the users a nicer time while playing
+         * I used a thread to allow the window to open quick, this helps in case of a timeout, as for the window updating is troublesome
+        */
     public partial class Game : Window
     {
         int id = 0;
@@ -164,12 +172,13 @@ namespace Client
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            //Timer updates visuals to show how much time is left
             timerSeconds--;
             if(timerSeconds > 0)
             {
                 timeTxt.Text = timerSeconds.ToString();
             }
-            if (timerSeconds <= 0)
+            if (timerSeconds <= 0)//In case of a timeout, the timer stops itself and if no answer was sent he sends a dummy answer to keep the game going
             {
                 timer.Stop();
                 if (unAnswered)
@@ -184,7 +193,7 @@ namespace Client
 
         private int getID(string ans)
         {
-            
+            //Functions gets the ID of the answer given
             for (int i = 0; i < res.answer.Length; i++)
             {
                 if(ans == res.answer[i])

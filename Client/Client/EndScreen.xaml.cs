@@ -27,6 +27,13 @@ namespace Client
         bool _quiet = true;
         BackgroundWorker bgWorker = new BackgroundWorker();
         GetGameResultsResponse res = null;
+
+        /*
+         * Most aspects here are explained in the menu and signup however just to explain why I used a thread here
+         * Windows are a bit problematic, as for they need to be "active", and a screen doesn't build itself until 
+         * it's contructor is done, so to give it an easier time and to give the users a nicer time while playing
+         * I used a thread to allow the window to open quick, the results are a bit delayed however
+        */
         public EndScreen(bool quiet)
         {
             _quiet = quiet;
@@ -46,7 +53,7 @@ namespace Client
 
     void work(object sender, DoWorkEventArgs e)
     {
-        
+        //Getting results
         string msg = Convert.ToString(18, 2);
         msg = Translations.padLeft(msg, 8);
         msg += Translations.padLeft("", 32);
@@ -65,6 +72,7 @@ namespace Client
         string rooms_str = System.Text.Encoding.Default.GetString(rooms);
         if (Convert.ToInt32(code_str, 2) == 1)
         {
+                //Displaying
             res = JsonConvert.DeserializeObject<GetGameResultsResponse>(Translations.binaryToString(rooms_str));
             bgWorker.ReportProgress(0);
 
@@ -73,6 +81,7 @@ namespace Client
 
         void actualWork(object sender, ProgressChangedEventArgs e)
         {
+            //Updating visuals
             PlayerResults[] arr = new PlayerResults[res.results.Length / 4];
             for (int i = 0; i < res.results.Length / 4; i++)
             {
@@ -99,6 +108,7 @@ namespace Client
         }
         private void leave_Click(object sender, RoutedEventArgs e)
         {
+            //Leaving
             string msg = Convert.ToString(19, 2);
             msg = Translations.padLeft(msg, 8);
             msg += Translations.padLeft("", 32);

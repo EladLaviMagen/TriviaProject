@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-
+    //All response classes
         class ErrorResponse
         {
             public string message;

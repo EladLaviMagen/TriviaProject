@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
+    //All requests classes
         class LoginRequest
         {
             public string username;

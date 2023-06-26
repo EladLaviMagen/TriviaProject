@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
+    //Functions to ease up some processes 
     internal class Translations
     {
         public static string padLeft(string num, int size)
